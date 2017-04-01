@@ -13,7 +13,8 @@ Time spent: **X** hours spent in total
 The following **required** functionality is completed:
 
 * [ ] User can login with his Facebook account and is authorized to do any REST API calls
-* [ ] User can login with his Google account and is authorized to do any REST API calls
+* [ ] App could be authorized to do any Google Map REST API calls - Google Map API
+* [ ] App could be authorized to do any Google Places REST API calls - Google Places API
 
 The following **optional** features are implemented:
 
@@ -40,7 +41,8 @@ User object contains 2 fields where we can take his location:
 * /{user-id}/friendlists - an object which refers to a grouping of friends [Friend List](https://developers.facebook.com/docs/graph-api/reference/friend-list/)
 * /{place-id} return a [Place](https://developers.facebook.com/docs/graph-api/reference/place/)
 * /{page-id} returns a [Page](https://developers.facebook.com/docs/graph-api/reference/page/)
-* /search?q={your-query}&type={object-type} user can search in the social graph for these types: user, page, place with center parameter (with latitude and longitude), etc. [Searching](https://developers.facebook.com/docs/graph-api/using-graph-api) 
+* /search?q={your-query}&type={object-type} user can search in the social graph for these types: user, page, place with center parameter (with latitude and longitude), etc. [Searching](https://developers.facebook.com/docs/graph-api/using-graph-api)
+* /{user-id}/likes - list of pages this person has liked. [Likes](https://developers.facebook.com/docs/graph-api/reference/user/likes/). 
 
 ### Uploading Photos and Creating Photo Albums
 Apps are able to publish and create new photo albums, and publish photos via the Graph API.
