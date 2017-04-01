@@ -3,8 +3,8 @@
 **Name of your app** is an android app that allows a user to view home and mentions timelines, view user profiles with user timelines, as well as compose and post a new tweet. 
 The app utilizes:
  - [Facebook REST API](https://developers.facebook.com/docs/graph-api)
- - [Google Maps API](https://developers.google.com/maps)
  - [Google Places API](https://developers.google.com/places/)
+ - [Google Maps API](https://developers.google.com/maps)
 
 Time spent: **X** hours spent in total
 
