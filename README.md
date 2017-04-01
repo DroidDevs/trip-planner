@@ -39,7 +39,7 @@ User object contains 2 fields where we can take his location:
 * /search?q={your-query}&type={object-type} user can search in the social graph for these types: user, page, place with center parameter (with latitude and longitude), etc. [Searching](https://developers.facebook.com/docs/graph-api/using-graph-api) 
 
 ### Uploading Photos and Creating Photo Albums
-Apps are able to publish and create new photo albums, and publish photos via the Graph API on behalf of people or Facebook Pages.
+Apps are able to publish and create new photo albums, and publish photos via the Graph API.
 * /{user-id}/albums to create empty photo albums for people.
 * /{user-id}/photos to add individual photos for people.
 * /{album-id}/photos to add photos to an existing album for people or for Pages.
