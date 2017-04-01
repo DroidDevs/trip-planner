@@ -26,22 +26,23 @@ The following **bonus** features are implemented:
 
 ## Facebook REST API calls:
 
+### How to connect a user to some location:
+User object contains 2 fields where we can take his location:
+* hometown - the person's hometown. The type of [Page](https://developers.facebook.com/docs/graph-api/reference/page/)
+* location - the person's current location as entered by them on their profile. This field is not related to check-ins. The type of [Page](https://developers.facebook.com/docs/graph-api/reference/page/)
+
+### General
 * /{user-id} returns a [single user](https://developers.facebook.com/docs/graph-api/reference/user)
 * /{user-id}/friendlists - an object which refers to a grouping of friends [Friend List](https://developers.facebook.com/docs/graph-api/reference/friend-list/)
 * /{place-id} return a [Place](https://developers.facebook.com/docs/graph-api/reference/place/)
 * /{page-id} returns a [Page](https://developers.facebook.com/docs/graph-api/reference/page/)
-* /search?q={your-query}&type={object-type} user can search in the social graph for these types: user, page, place with center parameter (with latitude and longitude), etc.[Searching](https://developers.facebook.com/docs/graph-api/using-graph-api) 
+* /search?q={your-query}&type={object-type} user can search in the social graph for these types: user, page, place with center parameter (with latitude and longitude), etc. [Searching](https://developers.facebook.com/docs/graph-api/using-graph-api) 
 
-# Uploading Photos and Creating Photo Albums
+### Uploading Photos and Creating Photo Albums
 Apps are able to publish and create new photo albums, and publish photos via the Graph API on behalf of people or Facebook Pages.
 * /{user-id}/albums to create empty photo albums for people.
 * /{user-id}/photos to add individual photos for people.
 * /{album-id}/photos to add photos to an existing album for people or for Pages.
-
-# Facebook Events API Apps can respond to events on behalf of people.
-* /{event-id}/attending to say the person is attending.
-* /{event-id}/maybe to say the person might attend.
-* /{event-id}/declined to say the person has declined to attend.
 
 ## Google Places REST API calls
 
