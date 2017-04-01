@@ -23,6 +23,10 @@ The following **bonus** features are implemented:
 
 * [ ] Test
 
+## Android Technical details
+* [] All REST API cals have to be done in background
+* [] App should  run offline, persist all data in the SQLite database.
+* [] App will use [MVP](https://github.com/googlesamples/android-architecture/tree/todo-mvp-contentproviders/) architecture.
 
 ## Facebook REST API calls:
 
