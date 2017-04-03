@@ -1,28 +1,50 @@
 # Project  - *Name of App Here*
 
-**Name of your app** is an android app that allows a user to view home and mentions timelines, view user profiles with user timelines, as well as compose and post a new tweet. 
-The app utilizes:
- - [Facebook REST API](https://developers.facebook.com/docs/graph-api)
- - [Google Places API](https://developers.google.com/places/)
- - [Google Maps API](https://developers.google.com/maps)
-
-Time spent: **X** hours spent in total
+**Name of your app** App Description
 
 ## User Stories
 
 The following **required** functionality is completed:
 
-* [ ] User can login with his Facebook account and is authorized to do any REST API calls
-* [ ] App could be authorized to do any Google Map REST API calls - Google Map API
-* [ ] App could be authorized to do any Google Places REST API calls - Google Places API
+* [ ] User can log in using their Facebook account
+* [ ] Ability to add friends from Facebook to the app 
+* [ ] Ability to remove friends
+* [ ] Ability to create a trip
+    * [ ] Trip will be namable
+    * [ ] Trip will have a end location
+    * [ ] Trip will have a start date
+* [ ] Trip should be editable
+* [ ] Trip should be able to be cancelled alerting any meetups
+* [ ] Display a home screen with list of upcoming trips
+    * [ ] Also the ability to look at past trips
+* [ ] Trips should be selectable which would then show a trip details screen
+* [ ] Trips can have stops along the way before reaching final destination
+    * [ ] Stops can have a duration 
+    * [ ] Stops can have priorities (must see/go, like to, etc)
+* [ ] Adding stops to a trip should readjust total trip duration and related stop dates
+* [ ] Stops can be reordered for a trip via drag and drop
+* [ ] Stops can be selected from a list in a certain location from Google Maps API
+    * [ ] Stops can be filtered by type (restaurant, bar, coffee shop, cafe, etc)
+* [ ] Stops can also be selected from a list of friends “Likes” in a particular location 
+    * [ ] This will be generated from the Facebook API
+* [ ] For each destination or stop show a list of friends who live close to that location
+* [ ] Friends can be sent requests to meet up at stops along a trip
+    * [ ] Should also determine a meet up date & time
+* [ ] Friends who have accepted a meet up should be shown real-time ETA within 1 hour of a meet up start time
+* [ ] Map of the planned trip should be shown with a pin at each stop and/or final destination
+* [ ] Friends, Trips, Meetups should be persisted to database via Parse
+    * [ ] Logging in should check Parse for any already created user information
 
 The following **optional** features are implemented:
 
-* [ ] Test
+* [ ] Ability to see realtime location of friends on a map
+* [ ] User can share a trip and map to their Facebook wall
 
 The following **bonus** features are implemented:
 
-* [ ] Test
+* [ ] Upload trip photos to Facebook 
+* [ ] Suggest places to check out when user is in a certain location
+* [ ] Use Messenger API to chat with friends via Facebook
 
 ## Android Technical details
 * [ ] All REST API calls have to be done in background thread(s)
@@ -51,7 +73,6 @@ Apps are able to publish and create new photo albums, and publish photos via the
 * /{album-id}/photos to add photos to an existing album for people or for Pages.
 
 ## Google Places REST API calls
-
 
 ## Google Maps REST API calls
 
