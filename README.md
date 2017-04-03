@@ -20,7 +20,7 @@ The following **required** functionality is completed:
     * [ ] Ability to change the duration in days per a single destination. Zero days are allowed.
 * [ ] Trips should be selectable which would then show a trip details screen
     * [ ] Trip details would show all destinations, start times and durations, any other relevant info
-    * [ ] Destination details will be grouped by
+    * [ ] Destination details page will be grouped by
       * [ ] Saved places
       * [ ] Food and drink
       * [ ] Things to do
@@ -29,8 +29,7 @@ The following **required** functionality is completed:
     * [ ] Places will be generated from Google Places API 
       * [ ] Fooad and drink - places with type "bakery", "cafe", "restaurant" which are located near the target destination
       * [ ] Things to do - places with type "aquarium", "park", "spa", "stadium", "point_of_interest", etc. This could be separated into several groups(!)       
-* [ ] App will generate friends list for each destination who live close to that location 
-   * [ ] This will be done using Facebook API
+* [ ] App will generate friends list for each destination who live close to that location - Facebook API
 * [ ] App will show "saved places" per each destination    
     * [ ] Ability to see a list of "saved places"
     * [ ] Ability to add/remove suggested place to/from "saved places" list.
