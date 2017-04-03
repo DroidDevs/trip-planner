@@ -7,36 +7,39 @@
 The following **required** functionality is completed:
 
 * [ ] User can log in using their Facebook account
-* [ ] Ability to add friends from Facebook to the app 
-* [ ] Ability to remove friends
-* [ ] Ability to create a trip
-    * [ ] Trip will be namable
-    * [ ] Trip will have a end location
-    * [ ] Trip will have a start date
-* [ ] Trip should be editable
-* [ ] Trip should be able to be cancelled alerting any meetups
 * [ ] Display a home screen with list of upcoming trips
     * [ ] Also the ability to look at past trips
+* [ ] Ability to create a trip
+    * [ ] Trip will be nameable
+    * [ ] Trip can have multiple destinations
+    * [ ] Trip will have a start date
+* [ ] Trip should be editable
+    * [ ] Ability to add/remove destinations
 * [ ] Trips should be selectable which would then show a trip details screen
-* [ ] Trips can have stops along the way before reaching final destination
+    * [ ] Details would show all destinations, start times and durations, any other relevant info
+* [ ] Trips can have stops at each destination
+    * [ ] Stops will be generated from Google Maps API
+    * [ ] Stops can be selected from a list by type restaurant, bar, coffee shop, cafe, etc
     * [ ] Stops can have a duration 
     * [ ] Stops can have priorities (must see/go, like to, etc)
-* [ ] Adding stops to a trip should readjust total trip duration and related stop dates
-* [ ] Stops can be reordered for a trip via drag and drop
-* [ ] Stops can be selected from a list in a certain location from Google Maps API
-    * [ ] Stops can be filtered by type (restaurant, bar, coffee shop, cafe, etc)
+    * [ ] Stops can be reordered for a destination via drag and drop
 * [ ] Stops can also be selected from a list of friends “Likes” in a particular location 
     * [ ] This will be generated from the Facebook API
-* [ ] For each destination or stop show a list of friends who live close to that location
-* [ ] Friends can be sent requests to meet up at stops along a trip
-    * [ ] Should also determine a meet up date & time
-* [ ] Friends who have accepted a meet up should be shown real-time ETA within 1 hour of a meet up start time
+* [ ] Adding stops to a trip should readjust total trip duration 
 * [ ] Map of the planned trip should be shown with a pin at each stop and/or final destination
-* [ ] Friends, Trips, Meetups should be persisted to database via Parse
+* [ ] Trips should be persisted to database via Parse
     * [ ] Logging in should check Parse for any already created user information
 
 The following **optional** features are implemented:
 
+* [ ] Ability to save places such as restaurants, bar, coffee shop, for future stops 
+* [ ] Ability to add friends from Facebook to the app 
+* [ ] Ability to remove friends
+* [ ] For each destination or stop show a list of friends who live close to that location
+* [ ] Friends can be sent requests to meet up at stops along a trip
+    * [ ] Should also determine a meet up date & time
+* [ ] Friends who have accepted a meet up should be shown real-time ETA within 1 hour of a meet up start time
+* [ ] If a destination is removed, any relevant friends/meetups should be notified 
 * [ ] Ability to see realtime location of friends on a map
 * [ ] User can share a trip and map to their Facebook wall
 
