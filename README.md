@@ -96,6 +96,7 @@ Apps are able to publish and create new photo albums, and publish photos via the
 
 <img src="https://github.com/DroidDevs/trip-planner/blob/master/page1-3.png"  title="" />
 <img src="https://github.com/DroidDevs/trip-planner/blob/master/pages%204-6.png"  title="" />
+<img src="https://github.com/DroidDevs/trip-planner/blob/master/pages7-9.png"  title="" />
 
 
 
