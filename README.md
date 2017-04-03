@@ -92,5 +92,8 @@ Apps are able to publish and create new photo albums, and publish photos via the
 ## Google Maps REST API calls
 
 
+# Wireframes
+
+<img src="https://github.com/DroidDevs/trip-planner/blob/master/page1-3.png"  title="" />
 
 
