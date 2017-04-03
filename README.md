@@ -19,8 +19,8 @@ The following **required** functionality is completed:
     * [ ] Ability to change the destination(s) order 
     * [ ] Ability to change the duration in days per a single destination. Zero days are allowed.
 * [ ] Trips should be selectable which would then show a trip details screen
-    * [ ] Details would show all destinations, start times and durations, any other relevant info
-    * [ ] Details will be displayed per a destination like
+    * [ ] Trip details would show all destinations, start times and durations, any other relevant info
+    * [ ] Destination details will be grouped by
       * [ ] Saved places
       * [ ] Food and drink
       * [ ] Things to do
