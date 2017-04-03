@@ -47,21 +47,20 @@ The following **optional** features are implemented:
 * [ ] Ability to see a list of archived trips
 * [ ] Detailed page for a destinaction will have additional group:
    * [ ] Friends recommendations - list of places which are liked by FB friends - Facebook API
+* [ ] App will suggest places to check out when user is in a certain location - i.e. add destination automatically to a trip based on current user location. 
+* [ ] User can share a trip with map to their Facebook wall
+* [ ] User can share a trip's destination with it's map to their Facebook wall
 * [ ] "Saved places" per destination can have priorities (must see/go, like to, etc)
 * [ ] Ability to save places such as restaurants, bar, coffee shop, for future stops (?)
 * [ ] Ability to add friends from Facebook to the app 
 * [ ] Ability to remove friends
+
+The following **bonus** features are implemented:
+* [ ] Upload trip photos to Facebook
 * [ ] Friends can be sent requests to meet up at stops along a trip
     * [ ] Should also determine a meet up date & time
 * [ ] Friends who have accepted a meet up should be shown real-time ETA within 1 hour of a meet up start time
 * [ ] If a destination is removed, any relevant friends/meetups should be notified 
-* [ ] Ability to see location of friends on a map
-* [ ] User can share a trip and map to their Facebook wall
-
-The following **bonus** features are implemented:
-
-* [ ] Upload trip photos to Facebook 
-* [ ] Suggest places to check out when user is in a certain location
 
 ## Android Technical details
 * [ ] All REST API calls have to be done in background thread(s)
