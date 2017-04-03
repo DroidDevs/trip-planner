@@ -44,11 +44,11 @@ The following **optional** features are implemented:
     
 * [ ] Ability to archive a trip
 * [ ] Ability to see a list of archived trips
-* [ ] Detailed page for a destinaction will have additional group:
+* [ ] Destination detailed page will have additional group:
    * [ ] Friends recommendations - list of places which are liked by FB friends - Facebook API
-* [ ] App will suggest places to check out when user is in a certain location - i.e. add destination automatically to a trip based on current user location. 
-* [ ] User can share a trip with map to their Facebook wall
-* [ ] User can share a trip's destination with it's map to their Facebook wall
+* [ ] App will allow add current destination to a trip based on current user location - app will suggest places to check out when user is in a certain location
+* [ ] User can share a whole trip with it's map to their Facebook wall
+* [ ] User can share a separate trip's destination details with it's map to their Facebook wall
 * [ ] "Saved places" per destination can have priorities (must see/go, like to, etc)
 * [ ] Ability to save places such as restaurants, bar, coffee shop, for future stops (?)
 * [ ] Ability to add friends from Facebook to the app 
