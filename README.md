@@ -11,36 +11,45 @@ The following **required** functionality is completed:
     * [ ] Also the ability to look at past trips
 * [ ] Ability to create a trip
     * [ ] Trip will be nameable
-    * [ ] Trip can have multiple destinations
+    * [ ] Trip can have multiple destinations, use will select them via location search suggestions from Google Map API. Destination will have geographical coordinates.
     * [ ] Trip will have a start date
+    * [ ] Trip destinations can be reordered via drag and drop
 * [ ] Trip should be editable
     * [ ] Ability to add/remove destinations
+    * [ ] Ability the change trip name/start date
+    * [ ] Ability to change the destination(s) order 
+    * [ ] Ability to change the duration in days per a single destination. Zero days are allowed.
 * [ ] Trips should be selectable which would then show a trip details screen
     * [ ] Details would show all destinations, start times and durations, any other relevant info
-* [ ] Trips can have stops at each destination
-    * [ ] Stops will be generated from Google Maps API
-    * [ ] Stops can be selected from a list by type restaurant, bar, coffee shop, cafe, etc
-    * [ ] Stops can have a duration 
-    * [ ] Stops can have priorities (must see/go, like to, etc)
-    * [ ] Stops can be reordered for a destination via drag and drop
-* [ ] Stops can also be selected from a list of friends “Likes” in a particular location 
+* [ ] App will generate place suggestions for each destination
+    * [ ] Places will be generated from Google Places API 
+      * [ ] Fooad and drink - places with type "bar", "bakery", "cafe", "restaurant" which are located near teh target destination
+      * [ ] Things to do - places with type "aquarium", "park", "spa", "stadium", "point_of_interest", etc      
+    * [ ] Places will be generated from Facebook API
+      * [ ] List of places liked by user's friends in FB  
+* [ ] App will show "saved places" per each destination    
+    * [ ] Ability to see a list of "saved places"
+    * [ ] Ability to add/remove suggested place to/from "saved places" list.
+* [ ] Stops can also be selected from a list of friends “Likes” in a particular destination 
     * [ ] This will be generated from the Facebook API
-* [ ] Adding stops to a trip should readjust total trip duration 
-* [ ] Map of the planned trip should be shown with a pin at each stop and/or final destination
+* [ ] Adding/change/removing destination(s) to a trip and changing the trip start date should readjust total trip duration. I.e. end day of a trip and start/end dates per destinations will be calculated automatically based on trip start date and destination(s) order and duration. 
+* [ ] Global map of the planned trip should be shown with a pinned destination(s)
+* [ ] Detailed map per destination should be shown with pinned saved places
 * [ ] Trips should be persisted to database via Parse
     * [ ] Logging in should check Parse for any already created user information
 
 The following **optional** features are implemented:
 
-* [ ] Ability to save places such as restaurants, bar, coffee shop, for future stops 
+* [ ] "Saved places" per destination can have priorities (must see/go, like to, etc)
+* [ ] Ability to save places such as restaurants, bar, coffee shop, for future stops (?)
 * [ ] Ability to add friends from Facebook to the app 
 * [ ] Ability to remove friends
-* [ ] For each destination or stop show a list of friends who live close to that location
+* [ ] For each destination app will show a list of friends who live close to that location
 * [ ] Friends can be sent requests to meet up at stops along a trip
     * [ ] Should also determine a meet up date & time
 * [ ] Friends who have accepted a meet up should be shown real-time ETA within 1 hour of a meet up start time
 * [ ] If a destination is removed, any relevant friends/meetups should be notified 
-* [ ] Ability to see realtime location of friends on a map
+* [ ] Ability to see location of friends on a map
 * [ ] User can share a trip and map to their Facebook wall
 
 The following **bonus** features are implemented:
