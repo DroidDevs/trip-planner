@@ -1,0 +1,49 @@
+package droiddevs.com.tripplanner.model;
+
+import com.parse.ParseObject;
+
+import java.util.Date;
+
+/**
+ * Created by elmira on 4/3/17.
+ */
+
+public class Trip extends ParseObject {
+
+    public static final String TRIP_ID_KEY = "tripId";
+    public static final String NAME_KEY = "name";
+    public static final String START_DATE_KEY = "startDate";
+    public static final String END_DATE_KEY = "endDate";
+
+    public String getTripId() {
+        return getString(TRIP_ID_KEY);
+    }
+
+    public void setTripId(String tripId) {
+        put(TRIP_ID_KEY, tripId);
+    }
+
+    public String getName() {
+        return getString(NAME_KEY);
+    }
+
+    public void setName(String name) {
+        put(NAME_KEY, name);
+    }
+
+    public Date getStartDate() {
+        return getDate(START_DATE_KEY);
+    }
+
+    public void setStartDate(Date startDate) {
+        put(START_DATE_KEY, startDate);
+    }
+
+    public Date getEndDate() {
+        return getDate(END_DATE_KEY);
+    }
+
+    public void setEndDate(Date endDate) {
+        put(END_DATE_KEY, endDate);
+    }
+}
