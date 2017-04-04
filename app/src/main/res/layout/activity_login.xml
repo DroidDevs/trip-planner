@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="droiddevs.com.tripplanner.activities.LoginActivity">
+
+    <Button
+        android:id="@+id/btContinueWithFB"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="20dp"
+        android:background="@color/com_facebook_blue"
+        android:text="Continue with Facebook"
+        android:textColor="@android:color/white"
+        android:layout_centerInParent="true" />
+
+</RelativeLayout>
