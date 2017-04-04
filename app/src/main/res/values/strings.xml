@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">TripPlanner</string>
+
+    <!-- Parse configuration-->
+    <string name="parse_server_url">url</string>
+    <string name="parse_app_id">appid</string>
+
 </resources>
