@@ -50,9 +50,13 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
 
+    // Parse
     compile 'com.parse:parse-android:1.14.1'
     compile 'com.parse:parsefacebookutils-v4-android:1.10.4@aar'
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+
+    //stetho
+    compile 'com.facebook.stetho:stetho-okhttp3:1.4.1'
 
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
