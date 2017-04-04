@@ -1,8 +1,7 @@
 <resources>
     <string name="app_name">TripPlanner</string>
-
-    <!-- Parse configuration-->
-    <string name="parse_server_url">url</string>
-    <string name="parse_app_id">appid</string>
-
+    <string name="facebook_app_id">620302168179784</string>
+    <string name="fb_login_protocol_scheme">fb620302168179784</string>
+    <string name="parse_server_url">https://android-trip-planner.herokuapp.com/parse/</string>
+    <string name="parse_app_id">droidDevsTripPlanner</string>
 </resources>
