@@ -8,4 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.PopupOverlay" parent="Theme.AppCompat.Light">
+        <!-- This was missing and causing compile errors -->
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="Theme.AppCompat.Light">
+        <!-- This was missing and causing compile errors -->
+    </style>
 </resources>

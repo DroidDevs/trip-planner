@@ -5,4 +5,5 @@ package droiddevs.com.tripplanner.model.source;
  */
 
 public interface DataSource {
+
 }

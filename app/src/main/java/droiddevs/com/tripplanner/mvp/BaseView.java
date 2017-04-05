@@ -1,3 +1,5 @@
+package droiddevs.com.tripplanner.mvp;
+
 /*
  * Copyright 2016, The Android Open Source Project
  *
@@ -14,10 +16,6 @@
  * limitations under the License.
  */
 
-package me.elmira.simpletwitterclient.mvp;
-
 public interface BaseView<T> {
-
     void setPresenter(T presenter);
-
 }
