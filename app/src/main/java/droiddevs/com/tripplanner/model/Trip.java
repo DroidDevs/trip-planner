@@ -1,5 +1,6 @@
 package droiddevs.com.tripplanner.model;
 
+import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
 import java.util.Date;
@@ -8,6 +9,7 @@ import java.util.Date;
  * Created by elmira on 4/3/17.
  */
 
+@ParseClassName("Trip")
 public class Trip extends ParseObject {
 
     public static final String TRIP_ID_KEY = "tripId";
@@ -45,5 +47,15 @@ public class Trip extends ParseObject {
 
     public void setEndDate(Date endDate) {
         put(END_DATE_KEY, endDate);
+    }
+
+    @Override
+    public String toString() {
+        return "Trip{" +
+                "tripId='" + getTripId() + '\'' +
+                ", name='" + getName() + '\'' +
+                ", startDate=" + getStartDate() +
+                ", endDate=" + getEndDate() +
+                '}';
     }
 }
