@@ -2,6 +2,7 @@ package droiddevs.com.tripplanner.triplist;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -16,9 +17,10 @@ import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.activities.LoginActivity;
 import droiddevs.com.tripplanner.addedittrip.AddEditTripActivity;
 
-public class TripListActivity extends AppCompatActivity {
+public class TripsActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    TripsPresenter mTripsPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,9 +28,11 @@ public class TripListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_trip_list);
         ButterKnife.bind(this);
 
+        // Setup toolbar
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        // Change toolbar title
         TextView tvTitle = (TextView)
                 ButterKnife.findById(toolbar, R.id.toolbar_title);
         tvTitle.setText("Trips");
@@ -39,16 +43,21 @@ public class TripListActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
-//        ParseQuery<Trip> query = ParseQuery.getQuery(Trip.class);
-//        query.findInBackground(new FindCallback<Trip>() {
-//            @Override
-//            public void done(List<Trip> results, ParseException e) {
-//
-//            }
-//        });
+        // Add fragment to content frame
+        TripsFragment tripsFragment =
+                (TripsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+        if (tripsFragment == null) {
+            tripsFragment = TripsFragment.newInstance();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.add(R.id.contentFrame, tripsFragment);
+            transaction.commit();
+        }
+
+        // Create the presenter
+        //mTripsPresenter = new TripsPresenter(Repository.getInstance(), tripsFragment);
     }
 
-    public void createTrip(View view){
+    public void createTrip(View view) {
         Intent intent = new Intent(this, AddEditTripActivity.class);
         startActivity(intent);
     }
