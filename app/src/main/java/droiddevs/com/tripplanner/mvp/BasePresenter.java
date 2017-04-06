@@ -1,3 +1,5 @@
+package droiddevs.com.tripplanner.mvp;
+
 /*
  * Copyright 2016, The Android Open Source Project
  *
@@ -14,11 +16,6 @@
  * limitations under the License.
  */
 
-package droiddevs.com.tripplanner.mvp;
-
 public interface BasePresenter {
-
     void start();
-
-    void destroy();
 }

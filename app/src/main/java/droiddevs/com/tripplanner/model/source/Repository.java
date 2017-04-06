@@ -18,24 +18,26 @@ import droiddevs.com.tripplanner.model.source.remote.RemoteDataSource;
 
 public class Repository implements DataSource {
 
+    private static Repository SHARED_INSTANCE;
+
     private LocalDataSource localDataSource;
     private RemoteDataSource remoteDataSource;
 
     private LinkedHashMap<String, Trip> mCachedTrips;
     private static Repository instance;
 
-    private Repository(LocalDataSource localDataSource, RemoteDataSource remoteDataSource) {
-        this.localDataSource = localDataSource;
-        this.remoteDataSource = remoteDataSource;
-
-        mCachedTrips = new LinkedHashMap<>();
-    }
-
     public static Repository getInstance(LocalDataSource localDataSource, RemoteDataSource remoteDataSource) {
         if (instance == null) {
             instance = new Repository(localDataSource, remoteDataSource);
         }
         return instance;
+    }
+
+    private Repository(LocalDataSource localDataSource, RemoteDataSource remoteDataSource) {
+        this.localDataSource = localDataSource;
+        this.remoteDataSource = remoteDataSource;
+
+        mCachedTrips = new LinkedHashMap<>();
     }
 
     @Override
