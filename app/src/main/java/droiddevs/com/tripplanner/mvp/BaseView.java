@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.elmira.simpletwitterclient.mvp;
+package droiddevs.com.tripplanner.mvp;
 
 public interface BaseView<T> {
 

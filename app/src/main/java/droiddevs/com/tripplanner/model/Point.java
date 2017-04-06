@@ -9,18 +9,18 @@ import java.util.List;
  * Created by elmira on 4/4/17.
  */
 
-@ParseClassName("Place")
-public class Place extends ParseObject {
+@ParseClassName("Point")
+public class Point extends ParseObject {
 
     public static final String NAME_KEY = "name";
-    public static final String PLACE_ID_KEY = "placeId";
+    public static final String POINT_ID_KEY = "pointId";
     public static final String LATITUDE_KEY = "latitude";
     public static final String LONGITUDE_KEY = "longitude";
     public static final String RATING_KEY = "rating";
     public static final String PHONE_KEY = "phoneNumber";
     public static final String TYPES_KEY = "types";
 
-    public Place(){
+    public Point(){
         super();
     }
 
@@ -32,12 +32,12 @@ public class Place extends ParseObject {
         put(NAME_KEY, name);
     }
 
-    public String getPlaceId() {
-        return getString(PLACE_ID_KEY);
+    public String getPointId() {
+        return getString(POINT_ID_KEY);
     }
 
-    public void setPlaceId(String placeId) {
-        put(PLACE_ID_KEY, placeId);
+    public void setPointId(String pointId) {
+        put(POINT_ID_KEY, pointId);
     }
 
     public double getLatitude() {
@@ -82,9 +82,9 @@ public class Place extends ParseObject {
 
     @Override
     public String toString() {
-        return "Place{" +
+        return "Point{" +
                 "name='" + getName() + '\'' +
-                ", placeId='" + getPlaceId() + '\'' +
+                ", pointId='" + getPointId() + '\'' +
                 ", latitude=" + getLatitude() +
                 ", longitude=" + getLongitude() +
                 ", rating=" + getRating() +

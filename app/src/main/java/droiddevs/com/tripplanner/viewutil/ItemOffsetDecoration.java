@@ -1,4 +1,4 @@
-package me.elmira.simpletwitterclient.viewutil;
+package droiddevs.com.tripplanner.viewutil;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +20,5 @@ public class ItemOffsetDecoration extends RecyclerView.ItemDecoration {
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
         outRect.set(mItemOffset, mItemOffset, mItemOffset, mItemOffset);
-
     }
 }
