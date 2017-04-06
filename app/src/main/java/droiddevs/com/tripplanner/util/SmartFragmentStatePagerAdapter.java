@@ -1,4 +1,4 @@
-package me.elmira.simpletwitterclient.util;
+package droiddevs.com.tripplanner.util;
 
 /*
  Extension of FragmentStatePagerAdapter which intelligently caches

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
@@ -13,11 +15,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.activities.LoginActivity;
-import droiddevs.com.tripplanner.model.source.Repository;
+import droiddevs.com.tripplanner.addedittrip.AddEditTripActivity;
 
 public class TripsActivity extends AppCompatActivity {
-    @BindView(R.id.toolbar) Toolbar toolbar;
-
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     TripsPresenter mTripsPresenter;
 
     @Override
@@ -51,7 +53,25 @@ public class TripsActivity extends AppCompatActivity {
             transaction.commit();
         }
 
-       // Create the presenter
-        mTripsPresenter = new TripsPresenter(Repository.getInstance(), tripsFragment);
+        // Create the presenter
+        //mTripsPresenter = new TripsPresenter(Repository.getInstance(), tripsFragment);
+    }
+
+    public void createTrip(View view) {
+        Intent intent = new Intent(this, AddEditTripActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.nav_create_trip:
+                Intent intent = new Intent(this, AddEditTripActivity.class);
+                startActivity(intent);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

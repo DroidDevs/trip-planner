@@ -13,11 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".triplist.TripsActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -36,20 +32,34 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".activities.LoginActivity"/>
+
+        <activity
+            android:name=".addedittrip.AddEditTripActivity"
+            android:label="@string/title_activity_add_edit_trip"
+            android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="ecca4edc49db77a33ce2e400abc8c57694555857" />
+            android:value="ecca4edc49db77a33ce2e400abc8c57694555857"/>
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
+            android:value="@string/facebook_app_id"/>
         <meta-data
             android:name="com.parse.SERVER_URL"
-            android:value="@string/parse_server_url" />
+            android:value="@string/parse_server_url"/>
         <meta-data
             android:name="com.parse.APPLICATION_ID"
-            android:value="@string/parse_app_id" />
+            android:value="@string/parse_app_id"/>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_places_api_key"/>
 
-        <activity android:name=".activities.LoginActivity" />
     </application>
 
 </manifest>
