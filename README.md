@@ -84,7 +84,7 @@ The following **bonus** features are implemented:
 | SuggestedPlaces |  | List with suggested places: user can switch to list or map view. Suggested places are egnerated at runtime from Google Places API | ? |  |
 | ... | SuggestedPlacesList |  | ? |  |
 | ... | SuggestedPlacesMap | map with saved places | ? |  |
-| PlaceDetails |  | activity with details per page: all place data we can take from Google Places | ? |  |
+| PlaceDetails | PlaceDetails | details per place: all data we can take from Google Places | ? |  |
 | Friends |  | List with FB friends: user can switch to list or map view | Elmira |  |
 | ... | FriendsList |  | Elmira |  |
 | ... | FriendsMap | map with FB friends | Elmira |  |
