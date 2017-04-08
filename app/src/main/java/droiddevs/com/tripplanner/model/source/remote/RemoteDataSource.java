@@ -12,6 +12,7 @@ import com.parse.SaveCallback;
 import java.util.Date;
 import java.util.List;
 
+import droiddevs.com.tripplanner.model.Destination;
 import droiddevs.com.tripplanner.model.Trip;
 import droiddevs.com.tripplanner.model.source.DataSource;
 
@@ -59,17 +60,39 @@ public class RemoteDataSource implements DataSource {
 
     @Override
     public void loadTrip(String tripId, final LoadTripCallback callback) {
-        ParseQuery<Trip> query = ParseQuery.getQuery(Trip.class).fromLocalDatastore();
+        ParseQuery<Trip> query = ParseQuery.getQuery(Trip.class);
         query.whereGreaterThanOrEqualTo(Trip.TRIP_ID_KEY, tripId);
         query.getFirstInBackground(new GetCallback<Trip>() {
             @Override
-            public void done(Trip object, ParseException e) {
+            public void done(final Trip trip, ParseException e) {
                 if (e != null) {
                     Log.e(LOG_TAG, e.toString());
                     callback.onFailure();
                 }
                 else {
-                    callback.onTripLoaded(object);
+                    loadTripDestinations(trip, callback);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void loadTripDestinations(final Trip trip, final LoadTripCallback callback) {
+        if (trip == null) {
+            callback.onFailure();
+            return;
+        }
+        trip.fetchAllInBackground(trip.getDestinations(), new FindCallback<Destination>() {
+            @Override
+            public void done(List<Destination> objects, ParseException e) {
+                if (e != null) {
+                    Log.e(LOG_TAG, e.toString());
+                    callback.onFailure();
+                }
+                else {
+                    Log.d(LOG_TAG, "loaded trip with destinations");
+                    trip.setDestinations(objects);
+                    callback.onTripLoaded(trip);
                 }
             }
         });
@@ -77,7 +100,7 @@ public class RemoteDataSource implements DataSource {
 
     @Override
     public void updateTrip(final Trip trip, final SaveTripCallback callback) {
-         trip.saveEventually(new SaveCallback() {
+        trip.saveEventually(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e != null) {
@@ -90,5 +113,10 @@ public class RemoteDataSource implements DataSource {
                 }
             }
         });
+    }
+
+    @Override
+    public void updateTrip(Trip trip) {
+        trip.saveEventually();
     }
 }

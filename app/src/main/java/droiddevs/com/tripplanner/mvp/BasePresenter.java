@@ -18,4 +18,5 @@ package droiddevs.com.tripplanner.mvp;
 
 public interface BasePresenter {
     void start();
+    //void destroy();
 }
