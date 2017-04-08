@@ -68,8 +68,8 @@ The following **bonus** features are implemented:
 
 # Activities list
 
-- Activity name|Fragment name|Developer|Status
--Create/edit trip|AddEditTripFragment|Elmira|80%done
+Activity name | Fragment name | Developer | Status
+AddEditTripActivity | AddEditTripFragment | Elmira | 80%done
 
 
 # Wireframes
