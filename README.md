@@ -77,15 +77,16 @@ The following **bonus** features are implemented:
 | ... | TripSummary | list of all trip destinations with start/end dates | ? | 
 | ... | TripSummaryMap | a map of connected trip destinations | ? | |
 | ... | TripDestination | only trip start/ednd date + places group names | ? | |
-| SavedPlaces |  | user can swith to 2 list or map view | ? |  |
-| ... | SavedPlacesList |  | Elmira? |  |
+| ... | FriendsDestinationMap | map with friends related to that destination | Elmira | |
+| SavedPlaces |  | List with saved places: user can switch to list or map view | ? |  |
+| ... | SavedPlacesList | list | ? |  |
 | ... | SavedPlacesMap | map with saved places | ? |  |
-| SuggestedPlaces |  | user can swith to 2 list or map view | ? |  |
+| SuggestedPlaces |  | List with suggested places: user can switch to list or map view. Suggested places are egnerated at runtime from Google Places API | ? |  |
 | ... | SuggestedPlacesList |  | ? |  |
 | ... | SuggestedPlacesMap | map with saved places | ? |  |
-| Friends |  | user can swith to 2 list or map view | ? |  |
-| ... | FriendsList |  | ? |  |
-| ... | FriendsMap | map with FB friends | ? |  |
+| Friends |  | List with FB friends: user can switch to list or map view | Elmira |  |
+| ... | FriendsList |  | Elmira |  |
+| ... | FriendsMap | map with FB friends | Elmira |  |
 
 |  |  |  |  |  |
 
