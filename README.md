@@ -70,13 +70,24 @@ The following **bonus** features are implemented:
 
 | Activity name | Fragment name | Comments | Developer | Status |
 | ------------- | ------------- | ---------- | ---------- | ----- | 
-| AddEditTripActivity | AddEditTripFragment | ability to add/edit trip | Elmira | 80% done |
-| TripsACtivity | TripsFragment | list of open trips | Jared | ? |
+| AddEditTrip | AddEditTrip | ability to add/edit trip | Elmira | 80% done |
+| Trips | Trips | list of open trips | Jared | ? |
 | FacebookLogin |  | login with facebook account | ? |  |
-| TripDetailsACtivity| | | | |
-| ... | TripSummaryFragment | list of all trip destinations with start/end dates | ? | 
-| ... | TripSummaryMapFragment | a map of connected trip destinations | ? | |
+| TripDetails| | will contain a destinations tabs | ? | |
+| ... | TripSummary | list of all trip destinations with start/end dates | ? | 
+| ... | TripSummaryMap | a map of connected trip destinations | ? | |
+| ... | TripDestination | only trip start/ednd date + places group names | ? | |
+| SavedPlaces |  | user can swith to 2 list or map view | ? |  |
+| ... | SavedPlacesList |  | Elmira? |  |
+| ... | SavedPlacesMap | map with saved places | ? |  |
+| SuggestedPlaces |  | user can swith to 2 list or map view | ? |  |
+| ... | SuggestedPlacesList |  | ? |  |
+| ... | SuggestedPlacesMap | map with saved places | ? |  |
+| Friends |  | user can swith to 2 list or map view | ? |  |
+| ... | FriendsList |  | ? |  |
+| ... | FriendsMap | map with FB friends | ? |  |
 
+|  |  |  |  |  |
 
 # Wireframes
 
