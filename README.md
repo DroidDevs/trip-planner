@@ -66,30 +66,8 @@ The following **bonus** features are implemented:
 * [ ] App should  run offline, persist all data in the SQLite database.
 * [ ] App will use [MVP](https://github.com/googlesamples/android-architecture/tree/todo-mvp-contentproviders/) architecture.
 
-## Facebook REST API calls:
+# Activities list
 
-### How to connect a user to some location:
-User object contains 2 fields where we can take his location:
-* hometown - the person's hometown. The type of [Page](https://developers.facebook.com/docs/graph-api/reference/page/)
-* location - the person's current location as entered by them on their profile. This field is not related to check-ins. The type of [Page](https://developers.facebook.com/docs/graph-api/reference/page/)
-
-### General
-* /{user-id} returns a [single user](https://developers.facebook.com/docs/graph-api/reference/user)
-* /{user-id}/friendlists - an object which refers to a grouping of friends [Friend List](https://developers.facebook.com/docs/graph-api/reference/friend-list/)
-* /{place-id} return a [Place](https://developers.facebook.com/docs/graph-api/reference/place/)
-* /{page-id} returns a [Page](https://developers.facebook.com/docs/graph-api/reference/page/)
-* /search?q={your-query}&type={object-type} user can search in the social graph for these types: user, page, place with center parameter (with latitude and longitude), etc. [Searching](https://developers.facebook.com/docs/graph-api/using-graph-api)
-* /{user-id}/likes - list of pages this person has liked. [Likes](https://developers.facebook.com/docs/graph-api/reference/user/likes/). 
-
-### Uploading Photos and Creating Photo Albums
-Apps are able to publish and create new photo albums, and publish photos via the Graph API.
-* /{user-id}/albums to create empty photo albums for people.
-* /{user-id}/photos to add individual photos for people.
-* /{album-id}/photos to add photos to an existing album for people or for Pages.
-
-## Google Places REST API calls
-
-## Google Maps REST API calls
 
 
 # Wireframes
