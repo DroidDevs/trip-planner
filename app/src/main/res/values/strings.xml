@@ -8,4 +8,18 @@
     <string name="title_activity_add_edit_trip">AddEditTripActivity</string>
 
     <string name="create_trip">Create new trip</string>
+
+    <string name="trip_addedit_name">Trip name</string>
+    <string name="trip_addedit_start_date">Start date</string>
+    <string name="trip_addedit_end_date">End date</string>
+    <string name="trip_addedit_destination">Destination</string>
+    <string name="trip_addedit_add_destination">Add Destination</string>
+    <string name="trip_addedit_load_failed">Can\'t load trip details</string>
+    <string name="trip_addedit_default_trip_name">Trip to %1$s</string>
+    <string name="trip_addedit_save_success">Trip was successfully created</string>
+    <string name="trip_addedit_update_success">Trip was successfully updated</string>
+    <string name="trip_addedit_save_failed">Can\'t save trip</string>
+    <string name="trip_addedit_error_message_empty_name">Please select a name</string>
+    <string name="trip_addedit_error_message_empty_destination">Please select a destination</string>
+
 </resources>

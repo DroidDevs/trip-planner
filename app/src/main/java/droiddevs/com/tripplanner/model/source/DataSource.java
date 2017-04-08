@@ -37,4 +37,8 @@ public interface DataSource {
 
     void updateTrip(Trip trip, SaveTripCallback callback);
 
+    void updateTrip(Trip trip);
+
+    void loadTripDestinations(Trip trip, LoadTripCallback callback);
+
 }

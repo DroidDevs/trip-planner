@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.design.widget.TextInputLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tripTitleLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_large"
+    android:layout_marginLeft="@dimen/margin_medium"
+    app:hintTextAppearance="@style/AppTheme.TextAppearance.HintText">
+
+    <EditText
+        android:id="@+id/tripTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:background="@android:color/transparent"
+        android:hint="@string/trip_addedit_name"
+        android:inputType="textCapSentences"
+        android:lines="1"
+        android:maxLines="1"
+        android:textAlignment="viewStart"
+        android:theme="@style/AppTheme.TextAppearance.EditText"/>
+
+</android.support.design.widget.TextInputLayout>

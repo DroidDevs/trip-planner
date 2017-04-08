@@ -1,23 +1,13 @@
 package droiddevs.com.tripplanner.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.SaveCallback;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.UUID;
+import android.view.View;
 
 import droiddevs.com.tripplanner.R;
-import droiddevs.com.tripplanner.model.Trip;
+import droiddevs.com.tripplanner.addedittrip.AddEditTripActivity;
+import droiddevs.com.tripplanner.addedittrip.AddEditTripFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,123 +24,49 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }*/
 
-        Calendar calendar = GregorianCalendar.getInstance();
-        calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + 2);
-
-        createParseDataRemote(calendar.getTime());
-        createParseDataLocally(calendar.getTime());
-
-        getParseDataLocally();
-        getParseDataRemote();
-    }
-
-    private void createParseDataRemote(Date endDate) {
-
-        Trip trip = ParseObject.create(Trip.class);
-        String uid = UUID.randomUUID().toString();
-        trip.setName("Trip Remote " + uid);
-        trip.setTripId(uid);
-        trip.setStartDate(new Date());
-        trip.setEndDate(endDate);
-
-        trip.saveInBackground(new SaveCallback() {
+        /*final Repository repository = TripPlannerApplication.getRepository();
+        repository.setCanLoadFromRemoteSource(NetworkUtil.isNetworkAvailable(this));
+        repository.loadOpenTrips(new DataSource.LoadTripListCallback() {
             @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    Log.d(LOG_TAG, "Trip was successfully saved remotely!");
-                }
-                else {
-                    Log.e(LOG_TAG, e.toString());
-                }
-            }
-        });
-    }
-
-    private void createParseDataLocally(Date endDate) {
-        Trip trip = ParseObject.create(Trip.class);
-        String uid = UUID.randomUUID().toString();
-        trip.setName("Trip Local " + uid);
-        trip.setTripId(uid);
-        trip.setStartDate(new Date());
-        trip.setEndDate(endDate);
-
-        trip.pinInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    Log.d(LOG_TAG, "Trip was successfully saved locally!");
-                }
-                else {
-                    Log.e(LOG_TAG, e.toString());
-                }
-            }
-        });
-    }
-
-    private void getParseDataLocally() {
-        Log.d(LOG_TAG, "Get data from local data source");
-        ParseQuery<Trip> query = ParseQuery.getQuery(Trip.class).fromLocalDatastore();
-
-        query.whereGreaterThanOrEqualTo(Trip.END_DATE_KEY, new Date());
-        query.findInBackground(new FindCallback<Trip>() {
-            @Override
-            public void done(List<Trip> objects, ParseException e) {
-                if (e != null) {
-                    Log.e(LOG_TAG, e.toString());
-                }
-                else {
-                    Log.d(LOG_TAG, "local trip size: " + objects.size());
-                    for (Trip trip : objects) {
-                        Log.d(LOG_TAG, trip.toString());
-                        trip.setName("Updated " + trip.getName());
-                        trip.pinInBackground(new SaveCallback() {
+            public void onTripListLoaded(List<Trip> trips) {
+                Log.d(LOG_TAG, "Loaded trips size: " + (trips == null ? 0 : trips.size()));
+                if (trips != null && trips.size() > 0) {
+                    for (Trip trip : trips) {
+                        Log.d(LOG_TAG, "Trip name: " + trip.getName() + ", destinations size: " + (trip.getDestinations() == null ? 0 : trip.getDestinations().size()));
+                        repository.loadTripDestinations(trip, new DataSource.LoadTripCallback() {
                             @Override
-                            public void done(ParseException e) {
-                                if (e != null) {
-                                    Log.e(LOG_TAG, e.toString());
+                            public void onTripLoaded(Trip trip) {
+                                if (trip.getDestinations() != null) {
+                                    for (Destination dest : trip.getDestinations()) {
+                                        Log.d(LOG_TAG, "destination name: " + dest.getName());
+                                    }
                                 }
-                                else {
-                                    Log.d(LOG_TAG, "Trip was successfully updated locally!");
-                                }
+                            }
+
+                            @Override
+                            public void onFailure() {
+
                             }
                         });
                     }
                 }
             }
-        });
+
+            @Override
+            public void onFailure() {
+
+            }
+        });*/
     }
 
-    private void getParseDataRemote() {
-        Log.d(LOG_TAG, "Get data from remote data source");
-        ParseQuery<Trip> query = ParseQuery.getQuery(Trip.class);
-        query.whereGreaterThanOrEqualTo(Trip.END_DATE_KEY, new Date());
+    public void createNewTrip(View view) {
+        Intent intent = new Intent(this, AddEditTripActivity.class);
+        startActivity(intent);
+    }
 
-        query.findInBackground(new FindCallback<Trip>() {
-            @Override
-            public void done(List<Trip> objects, ParseException e) {
-                if (e != null) {
-                    Log.e(LOG_TAG, e.toString());
-                }
-                else {
-                    Log.d(LOG_TAG, "remote trip size: " + objects.size());
-                    for (Trip trip : objects) {
-                        Log.d(LOG_TAG, trip.toString());
-
-                        trip.setName("Updated " + trip.getName());
-                        trip.saveInBackground(new SaveCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                if (e != null) {
-                                    Log.e(LOG_TAG, e.toString());
-                                }
-                                else {
-                                    Log.d(LOG_TAG, "Trip was successfully updated remotely!");
-                                }
-                            }
-                        });
-                    }
-                }
-            }
-        });
+    public void updateTrip(View view) {
+        Intent intent = new Intent(this, AddEditTripActivity.class);
+        intent.putExtra(AddEditTripFragment.ARGUMENT_TRIP_ID, "4dea3ae5-4f1a-4502-90d2-099be4c6fe6e");
+        startActivity(intent);
     }
 }

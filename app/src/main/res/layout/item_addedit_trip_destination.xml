@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvDest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:text="@string/trip_addedit_destination"/>
+
+    <ImageView
+        android:id="@+id/ivClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_close"/>
+
+     <TextView
+        android:id="@+id/tvDestinationTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:layout_marginRight="@dimen/margin_medium"
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvDest"
+        android:textAppearance="@style/Trip.Destination.Text"
+        android:drawableLeft="@drawable/ic_place_color_accent"
+        android:drawablePadding="@dimen/margin_medium"/>
+
+     <TextView
+        android:id="@+id/tvDuration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:layout_marginRight="@dimen/margin_medium"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvDestinationTitle"
+        android:textAppearance="@style/Trip.Destination.Text"
+        android:drawableLeft="@drawable/ic_hourglass_empty"
+        android:drawablePadding="@dimen/margin_medium"/>
+
+</RelativeLayout>

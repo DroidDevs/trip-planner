@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#6D4C41</color>
+    <color name="colorPrimaryDark">#6D4C41</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="textPrimary">#3E2723</color>
 
-    <color name="controlNormal">#3F51B5</color>
-    <color name="controlActivated">#FF4081</color>
+    <color name="colorControlNormal">#6D4C41</color>
+    <color name="colorControlActivated">#D81B60</color>
+    <color name="colorControlHighlight">#F48FB1</color>
+
+    <color name="background_color">#D7CCC8</color>
+    <color name="background_color_light">#EFEBE9</color>
+
+    <color name="colorAccentLight">#EC407A</color>
 
 </resources>
