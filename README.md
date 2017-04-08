@@ -68,9 +68,14 @@ The following **bonus** features are implemented:
 
 # Activities list
 
-| Activity name | Fragment name | Developer | Status |
+| Activity name | Fragment name | Comments | Developer | Status |
 | ------------- | ------------- | ---------- | ---------- |
-| AddEditTripActivity | AddEditTripFragment | Elmira | 80% done |
+| AddEditTripActivity | AddEditTripFragment | ability to add/edit trip | Elmira | 80% done |
+| TripsACtivity | TripsFragment | list of open trips | Jared | ? |
+| FacebookLogin |  | login with facebook account | ? |  |
+| TripDetailsACtivity| | | | |
+| ... | TripSummaryFragment | list of all trip destinations with start/end dates | ? | 
+| ... | TripSummaryMapFragment | a map of connected trip destinations | ? | |
 
 
 # Wireframes
