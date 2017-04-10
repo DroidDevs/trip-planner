@@ -1,5 +1,6 @@
 package droiddevs.com.tripplanner.triplist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,7 +19,7 @@ import butterknife.Unbinder;
 import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.adapters.triplist.TripAdapter;
 import droiddevs.com.tripplanner.model.Trip;
-import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
+import droiddevs.com.tripplanner.tripdetails.TripDetailsActivity;
 
 /**
  * Created by jared.manfredi on 4/5/17.
@@ -82,7 +83,7 @@ public class TripsFragment extends Fragment implements TripsContract.View, TripA
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rvTrips.setLayoutManager(linearLayoutManager);
-        rvTrips.setItemAnimator(new SlideInUpAnimator());
+        //rvTrips.setItemAnimator(new SlideInUpAnimator());
     }
 
     @Override
@@ -93,6 +94,8 @@ public class TripsFragment extends Fragment implements TripsContract.View, TripA
 
     @Override
     public void OnTripClicked(Trip trip) {
-        // TODO: SHOW TRIP DETAILS
+        Intent detailsIntent = new Intent(getContext(), TripDetailsActivity.class);
+        detailsIntent.putExtra("trip_id", trip.getTripId());
+        startActivity(detailsIntent);
     }
 }

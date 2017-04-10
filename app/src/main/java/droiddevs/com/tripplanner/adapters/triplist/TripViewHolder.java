@@ -30,6 +30,7 @@ public class TripViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         super(itemView);
         ButterKnife.bind(this, itemView);
         mListener = listener;
+        itemView.setOnClickListener(this);
     }
 
     @Override

@@ -24,4 +24,7 @@
 
     <string name="trip_menu_accessibility">Trip Menu</string>
     <string name="trip_image_accessibility">Trip Image</string>
+
+    <string name="drawer_open">Open Navigation Drawer</string>
+    <string name="drawer_close">Close Navigation Drawer</string>
 </resources>

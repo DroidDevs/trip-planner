@@ -54,7 +54,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripViewHolder> implements
         holder.tvTripTitle.setText(trip.getName());
         //holder.ivTripImage.setImageBitmap();
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM, dd", Locale.US);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM d", Locale.US);
         String dateString = simpleDateFormat.format(trip.getStartDate()) + " - " + simpleDateFormat.format(trip.getEndDate());
         holder.tvTripDate.setText(dateString);
 
@@ -85,8 +85,9 @@ public class TripAdapter extends RecyclerView.Adapter<TripViewHolder> implements
     }
 
     public void setTrips(List<Trip> trips) {
+        mTrips.clear();
         mTrips.addAll(trips);
-        notifyItemRangeInserted(0, trips.size());
+        notifyDataSetChanged();
     }
 
     private void removeTrip(int position) {
