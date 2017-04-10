@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import droiddevs.com.tripplanner.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -26,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ButterKnife.bind(this);
 
         // Login OnClick
         btContinueWithFB.setOnClickListener(new View.OnClickListener() {
