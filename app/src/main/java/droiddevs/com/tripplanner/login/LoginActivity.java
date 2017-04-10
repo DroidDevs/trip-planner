@@ -1,4 +1,4 @@
-package droiddevs.com.tripplanner.activities;
+package droiddevs.com.tripplanner.login;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -71,12 +71,12 @@ The following **bonus** features are implemented:
 | Activity name | Fragment name | Comments | Developer | Status |
 | ------------- | ------------- | ---------- | ---------- | ----- | 
 | AddEditTrip | AddEditTrip | ability to add/edit trip | Elmira | 80% done |
-| Trips | Trips | list of open trips | Jared | ? |
-| FacebookLogin |  | login with facebook account | ? |  |
-| TripDetails| | summary + destinations tabs | ? | |
-| ... | TripSummary? | list of all trip destinations with start/end dates | ? | 
+| Trips | Trips | list of open trips | Jared | In Progress |
+| FacebookLogin |  | login with facebook account | Jared | 95% done |
+| TripDetails| | summary + destinations tabs | Jared | In Progress |
+| ... | TripSummary? | list of all trip destinations with start/end dates | Jared | In Progress |
 | ... | TripSummaryMap | a map of connected trip destinations | ? | |
-| ... | TripDestination | only trip start/edn dates + places group names | ? | |
+| ... | TripDestination | only trip start/edn dates + places group names | Jared | In Progress |
 | ... | FriendsDestinationMap | map with friends related to that destination | Elmira | |
 | SavedPlaces |  | List with saved places: user can switch to list or map view | ? |  |
 | ... | SavedPlacesList | list | ? |  |
