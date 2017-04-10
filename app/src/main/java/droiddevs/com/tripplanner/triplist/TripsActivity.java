@@ -14,12 +14,12 @@ import com.facebook.AccessToken;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import droiddevs.com.tripplanner.R;
-import droiddevs.com.tripplanner.activities.LoginActivity;
+import droiddevs.com.tripplanner.login.LoginActivity;
 import droiddevs.com.tripplanner.addedittrip.AddEditTripActivity;
+import droiddevs.com.tripplanner.application.TripPlannerApplication;
 
 public class TripsActivity extends AppCompatActivity {
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    @BindView(R.id.include_toolbar) Toolbar toolbar;
     TripsPresenter mTripsPresenter;
 
     @Override
@@ -48,13 +48,14 @@ public class TripsActivity extends AppCompatActivity {
                 (TripsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
         if (tripsFragment == null) {
             tripsFragment = TripsFragment.newInstance();
+
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.add(R.id.contentFrame, tripsFragment);
             transaction.commit();
         }
 
         // Create the presenter
-        //mTripsPresenter = new TripsPresenter(Repository.getInstance(), tripsFragment);
+        mTripsPresenter = new TripsPresenter(TripPlannerApplication.getRepository(), tripsFragment);
     }
 
     public void createTrip(View view) {

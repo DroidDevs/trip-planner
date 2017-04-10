@@ -2,6 +2,10 @@ package droiddevs.com.tripplanner.triplist;
 
 import android.support.annotation.NonNull;
 
+import java.util.List;
+
+import droiddevs.com.tripplanner.model.Trip;
+import droiddevs.com.tripplanner.model.source.DataSource;
 import droiddevs.com.tripplanner.model.source.Repository;
 
 /**
@@ -15,6 +19,8 @@ public class TripsPresenter implements TripsContract.Presenter {
     public TripsPresenter(@NonNull Repository repository, @NonNull TripsContract.View tripsView) {
         mRepository = repository;
         mTripsView = tripsView;
+
+        mTripsView.setPresenter(this);
     }
 
     @Override
@@ -24,6 +30,16 @@ public class TripsPresenter implements TripsContract.Presenter {
 
     @Override
     public void loadTrips() {
-        //mRepository.getTrips()
+        mRepository.loadOpenTrips(new DataSource.LoadTripListCallback() {
+            @Override
+            public void onTripListLoaded(List<Trip> trips) {
+                mTripsView.showTrips(trips);
+            }
+
+            @Override
+            public void onFailure() {
+                // TODO: SHOW FAILURE TO LOAD TRIPS
+            }
+        });
     }
 }
