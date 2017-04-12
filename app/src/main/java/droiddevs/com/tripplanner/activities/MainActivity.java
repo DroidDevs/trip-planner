@@ -2,12 +2,14 @@ package droiddevs.com.tripplanner.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.addedittrip.AddEditTripActivity;
 import droiddevs.com.tripplanner.addedittrip.AddEditTripFragment;
+import droiddevs.com.tripplanner.tripmap.TripMapFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,6 +59,14 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });*/
+
+        String tripId = "cdcefb8e-1e28-4d75-8516-658c03758104";
+
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frameLayout);
+        if (fragment == null) {
+            fragment = TripMapFragment.newInstance(tripId);
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment).commit();
+        }
     }
 
     public void createNewTrip(View view) {
@@ -66,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateTrip(View view) {
         Intent intent = new Intent(this, AddEditTripActivity.class);
-        intent.putExtra(AddEditTripFragment.ARGUMENT_TRIP_ID, "4dea3ae5-4f1a-4502-90d2-099be4c6fe6e");
+        intent.putExtra(AddEditTripFragment.ARGUMENT_TRIP_ID, "cdcefb8e-1e28-4d75-8516-658c03758104");
         startActivity(intent);
     }
 }

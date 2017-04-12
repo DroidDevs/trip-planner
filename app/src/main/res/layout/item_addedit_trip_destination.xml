@@ -29,7 +29,8 @@
         android:layout_below="@+id/tvDest"
         android:textAppearance="@style/Trip.Destination.Text"
         android:drawableLeft="@drawable/ic_place_color_accent"
-        android:drawablePadding="@dimen/margin_medium"/>
+        android:drawablePadding="@dimen/margin_medium"
+        android:gravity="center_vertical"/>
 
      <TextView
         android:id="@+id/tvDuration"
@@ -41,6 +42,7 @@
         android:layout_below="@+id/tvDestinationTitle"
         android:textAppearance="@style/Trip.Destination.Text"
         android:drawableLeft="@drawable/ic_hourglass_empty"
-        android:drawablePadding="@dimen/margin_medium"/>
+        android:drawablePadding="@dimen/margin_medium"
+        android:gravity="center_vertical"/>
 
 </RelativeLayout>
