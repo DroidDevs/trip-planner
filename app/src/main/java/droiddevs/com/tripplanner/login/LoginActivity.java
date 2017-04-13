@@ -19,6 +19,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import droiddevs.com.tripplanner.R;
+import droiddevs.com.tripplanner.triplist.TripsActivity;
 
 public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.btContinueWithFB) Button btContinueWithFB;
@@ -51,10 +52,14 @@ public class LoginActivity extends AppCompatActivity {
                 } else if (user.isNew()) {
                     // TODO: SUCCESS
                     Log.d("DEBUG", "User signed up and logged in through Facebook!");
+                    Intent intent = new Intent(LoginActivity.this, TripsActivity.class);
+                    startActivity(intent);
                     finish();
                 } else {
                     // TODO: SUCCESS
                     Log.d("DEBUG", "User logged in through Facebook!");
+                    Intent intent = new Intent(LoginActivity.this, TripsActivity.class);
+                    startActivity(intent);
                     finish();
                 }
             }

@@ -75,16 +75,16 @@ The following **bonus** features are implemented:
 | FacebookLogin |  | login with facebook account | Jared | 95% done |
 | TripDetails| | summary + destinations tabs | Jared | In Progress |
 | ... | TripSummary? | list of all trip destinations with start/end dates | Jared | In Progress |
-| ... | TripSummaryMap | a map of connected trip destinations | ? | |
+| ... | TripSummaryMap | a map of connected trip destinations | Elmira | In progress |
 | ... | TripDestination | only trip start/edn dates + places group names | Jared | In Progress |
-| ... | FriendsDestinationMap | map with friends related to that destination | Elmira | |
-| SavedPlaces |  | List with saved places: user can switch to list or map view | ? |  |
-| ... | SavedPlacesList | list | ? |  |
-| ... | SavedPlacesMap | map with saved places | ? |  |
-| SuggestedPlaces |  | List with suggested places: user can switch to list or map view. Suggested places are egnerated at runtime from Google Places API | ? |  |
-| ... | SuggestedPlacesList |  | ? |  |
-| ... | SuggestedPlacesMap | map with saved places | ? |  |
-| PlaceDetails | PlaceDetails | details per place: all data we can take from Google Places | ? |  |
+| ... | FriendsDestinationMap | map with friends related to that destination | Elmira | In progress |
+| SavedPlaces |  | List with saved places: user can switch to list or map view | Elmira |  |
+| ... | SavedPlacesList | list | Elmira |  |
+| ... | SavedPlacesMap | map with saved places | Elmira | In progress |
+| SuggestedPlaces |  | List with suggested places: user can switch to list or map view. Suggested places are egnerated at runtime from Google Places API | Jared |  |
+| ... | SuggestedPlacesList |  | Jared |  |
+| ... | SuggestedPlacesMap | map with saved places | Elmira | In progress |
+| PlaceDetails | PlaceDetails | details per place: all data we can take from Google Places | Jared |  |
 | Friends |  | List with FB friends: user can switch to list or map view | Elmira | In progress |
 | ... | FriendsList? |  | Elmira |  |
 | ... | FriendsMap | map with FB friends | Elmira | In progress |

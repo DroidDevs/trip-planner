@@ -1,18 +1,26 @@
 package droiddevs.com.tripplanner.model.source.remote;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
+import org.json.JSONObject;
+
 import java.util.Date;
 import java.util.List;
 
 import droiddevs.com.tripplanner.model.Destination;
+import droiddevs.com.tripplanner.model.FbUser;
 import droiddevs.com.tripplanner.model.Trip;
 import droiddevs.com.tripplanner.model.source.DataSource;
 
@@ -28,13 +36,16 @@ public class RemoteDataSource implements DataSource {
     // app based context
     private Context context;
 
-    private RemoteDataSource(Context context) {
+    private GooglePlacesService mGooglePlacesService;
+
+    private RemoteDataSource(Context context, GooglePlacesService googlePlacesService) {
         this.context = context;
+        this.mGooglePlacesService = googlePlacesService;
     }
 
-    public static RemoteDataSource getInstance(Context context) {
+    public static RemoteDataSource getInstance(Context context, GooglePlacesService googlePlacesService) {
         if (instance == null) {
-            instance = new RemoteDataSource(context);
+            instance = new RemoteDataSource(context, googlePlacesService);
         }
         return instance;
     }
@@ -61,7 +72,7 @@ public class RemoteDataSource implements DataSource {
     @Override
     public void loadTrip(String tripId, final LoadTripCallback callback) {
         ParseQuery<Trip> query = ParseQuery.getQuery(Trip.class);
-        query.whereGreaterThanOrEqualTo(Trip.TRIP_ID_KEY, tripId);
+        query.whereEqualTo(Trip.TRIP_ID_KEY, tripId);
         query.getFirstInBackground(new GetCallback<Trip>() {
             @Override
             public void done(final Trip trip, ParseException e) {
@@ -118,5 +129,52 @@ public class RemoteDataSource implements DataSource {
     @Override
     public void updateTrip(Trip trip) {
         trip.saveEventually();
+    }
+
+    @Override
+    public void loadCurrentFBUser(final LoadFbUserCallback callback) {
+        GraphRequest request = GraphRequest.newMeRequest(
+                AccessToken.getCurrentAccessToken(),
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(
+                            JSONObject object,
+                            GraphResponse response) {
+                        if (response.getError() != null) {
+                            Log.e(LOG_TAG, response.getError().getErrorMessage());
+                            callback.onFailure();
+                        }
+                        else {
+                            try {
+                                FbUser user = FbUser.fromJsonObject(object);
+                                Log.d(LOG_TAG, "Loaded FB user: " + user.toString());
+                                callback.onUserLoaded(user);
+                            } catch (Throwable ex) {
+                                Log.e(LOG_TAG, ex.toString());
+                                callback.onFailure();
+                            }
+                        }
+                    }
+                });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", FbJsonAttributes.User.ID + "," + FbJsonAttributes.User.NAME + "," +
+                FbJsonAttributes.User.COVER + "," + FbJsonAttributes.User.PICTURE);
+        parameters.putString("type", "large");
+        request.setParameters(parameters);
+        request.executeAsync();
+    }
+
+    public void loadFriendsList(String userId) {
+        new GraphRequest(
+                AccessToken.getCurrentAccessToken(),
+                "/" + userId + "/friendlists",
+                null,
+                HttpMethod.GET,
+                new GraphRequest.Callback() {
+                    public void onCompleted(GraphResponse response) {
+
+                    }
+                }
+        ).executeAsync();
     }
 }

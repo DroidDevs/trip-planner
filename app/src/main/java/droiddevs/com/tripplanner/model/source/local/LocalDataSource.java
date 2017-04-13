@@ -29,6 +29,8 @@ public class LocalDataSource implements DataSource {
     // app based context
     private Context context;
 
+    //private static ParseACL acl;
+
     private LocalDataSource(Context context) {
         this.context = context;
     }
@@ -36,6 +38,12 @@ public class LocalDataSource implements DataSource {
     public static LocalDataSource getInstance(Context context) {
         if (instance == null) {
             instance = new LocalDataSource(context);
+
+            /*acl = new ParseACL();
+            acl.setReadAccess(ParseUser.getCurrentUser(), true);
+            ParseUser.getCurrentUser().setACL(acl);
+            ParseUser.getCurrentUser().pinInBackground(); */
+
         }
         return instance;
     }
@@ -62,7 +70,7 @@ public class LocalDataSource implements DataSource {
     @Override
     public void loadTrip(String tripId, final LoadTripCallback callback) {
         ParseQuery<Trip> query = ParseQuery.getQuery(Trip.class).fromLocalDatastore();
-        query.whereGreaterThanOrEqualTo(Trip.TRIP_ID_KEY, tripId);
+        query.whereEqualTo(Trip.TRIP_ID_KEY, tripId);
         query.getFirstInBackground(new GetCallback<Trip>() {
             @Override
             public void done(final Trip trip, ParseException e) {
@@ -83,6 +91,7 @@ public class LocalDataSource implements DataSource {
             callback.onFailure();
             return;
         }
+        //trip.setACL(acl);
         trip.fetchAllInBackground(trip.getDestinations(), new FindCallback<Destination>() {
             @Override
             public void done(List<Destination> objects, ParseException e) {
@@ -100,6 +109,7 @@ public class LocalDataSource implements DataSource {
 
     @Override
     public void updateTrip(final Trip trip, final SaveTripCallback callback) {
+        //trip.setACL(acl);
         trip.pinInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -117,6 +127,12 @@ public class LocalDataSource implements DataSource {
 
     @Override
     public void updateTrip(Trip trip) {
+        //trip.setACL(acl);
         trip.pinInBackground();
+    }
+
+    @Override
+    public void loadCurrentFBUser(LoadFbUserCallback callback) {
+        throw new UnsupportedOperationException("Operation is not supported in local data source");
     }
 }

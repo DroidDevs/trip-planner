@@ -9,4 +9,5 @@
     android:text="@string/trip_addedit_add_destination"
     android:layout_marginLeft="@dimen/margin_medium"
     android:drawablePadding="@dimen/margin_medium"
+    android:gravity="center_vertical"
     />

@@ -30,7 +30,6 @@ public class AddEditTripPresenter implements Contract.Presenter {
 
     private Trip mTrip;
     private String mTripId;
-    //private Place mStartPlace;
 
     private Calendar mCalendar = Calendar.getInstance();
     private static final int DEFAULT_DURATION_IN_DAYS = 2;
@@ -40,7 +39,6 @@ public class AddEditTripPresenter implements Contract.Presenter {
         this.mView = mView;
         this.mTripId = tripId;
         this.mView.setPresenter(this);
-        //this.mStartPlace = place;
     }
 
     @Override
@@ -194,6 +192,7 @@ public class AddEditTripPresenter implements Contract.Presenter {
 
         Destination destination = convertPlaceToDestination(googlePlace);
         destination.setDuration(DEFAULT_DURATION_IN_DAYS);
+        destination.setTripId(trip.getTripId());
         destinations.add(destination);
 
         trip.setStartDate(new Date());

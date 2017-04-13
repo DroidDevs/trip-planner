@@ -5,6 +5,7 @@ import android.util.Log;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import droiddevs.com.tripplanner.model.FbUser;
 import droiddevs.com.tripplanner.model.Trip;
 import droiddevs.com.tripplanner.model.source.local.LocalDataSource;
 import droiddevs.com.tripplanner.model.source.remote.RemoteDataSource;
@@ -24,6 +25,7 @@ public class Repository implements DataSource {
     private static Repository SHARED_INSTANCE;
 
     private boolean canLoadFromRemoteSource = true;
+    private FbUser mCurrentFbUser;
 
     public static Repository getInstance(LocalDataSource localDataSource, RemoteDataSource remoteDataSource) {
         if (SHARED_INSTANCE == null) {
@@ -66,6 +68,9 @@ public class Repository implements DataSource {
                     // sync with local data source
                     if (trips != null && trips.size() > 0) {
                         for (Trip trip : trips) {
+                            trip.unpinInBackground();
+                            trip.pinInBackground();
+
                             remoteDataSource.loadTripDestinations(trip, new LoadTripCallback() {
                                 @Override
                                 public void onTripLoaded(Trip trip) {
@@ -139,13 +144,23 @@ public class Repository implements DataSource {
     }
 
     @Override
-    public void updateTrip(Trip trip, SaveTripCallback callback) {
+    public void updateTrip(final Trip trip, final SaveTripCallback callback) {
         //update memory cache
         mCachedTrips.put(trip.getTripId(), trip);
         //update local database
-        localDataSource.updateTrip(trip, callback);
-        //update remotely
-        remoteDataSource.updateTrip(trip);
+        localDataSource.updateTrip(trip, new SaveTripCallback() {
+            @Override
+            public void onSuccess() {
+                callback.onSuccess();
+                //update remotely
+                remoteDataSource.updateTrip(trip);
+            }
+
+            @Override
+            public void onFailed() {
+                callback.onFailed();
+            }
+        });
     }
 
     @Override
@@ -170,6 +185,21 @@ public class Repository implements DataSource {
         this.canLoadFromRemoteSource = canLoadFromRemoteSource;
     }
 
+    @Override
+    public void loadCurrentFBUser(LoadFbUserCallback callback) {
+        remoteDataSource.loadCurrentFBUser(new LoadFbUserCallback() {
+            @Override
+            public void onUserLoaded(FbUser user) {
+                mCurrentFbUser = user;
+            }
+
+            @Override
+            public void onFailure() {
+                // do nothing
+            }
+        });
+    }
+
     private void addTripsToCache(List<Trip> list) {
         if (list == null || list.size() == 0) return;
 
@@ -177,5 +207,10 @@ public class Repository implements DataSource {
         for (Trip trip : list) {
             mCachedTrips.put(trip.getTripId(), trip);
         }
+    }
+
+    public boolean isCurrentFbUserDefined(){
+        Log.d(LOG_TAG, "current FB user: "+ (mCurrentFbUser==null? "undefined": mCurrentFbUser.toString()));
+        return mCurrentFbUser != null;
     }
 }
