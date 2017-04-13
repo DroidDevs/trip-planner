@@ -30,7 +30,6 @@ public class AddEditTripPresenter implements Contract.Presenter {
 
     private Trip mTrip;
     private String mTripId;
-    //private Place mStartPlace;
 
     private Calendar mCalendar = Calendar.getInstance();
     private static final int DEFAULT_DURATION_IN_DAYS = 2;
@@ -40,7 +39,6 @@ public class AddEditTripPresenter implements Contract.Presenter {
         this.mView = mView;
         this.mTripId = tripId;
         this.mView.setPresenter(this);
-        //this.mStartPlace = place;
     }
 
     @Override
@@ -186,7 +184,7 @@ public class AddEditTripPresenter implements Contract.Presenter {
         if (mView == null || !mView.isActive()) {
             return;
         }
-        Trip trip = Trip.createWithoutData(Trip.class, null);
+        Trip trip = new Trip();
         trip.setTripId(UUID.randomUUID().toString());
 
         List<Destination> destinations = new ArrayList<>();

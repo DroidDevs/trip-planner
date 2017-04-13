@@ -14,6 +14,7 @@ import droiddevs.com.tripplanner.model.Trip;
 import droiddevs.com.tripplanner.model.source.Repository;
 import droiddevs.com.tripplanner.model.source.local.LocalDataSource;
 import droiddevs.com.tripplanner.model.source.remote.RemoteDataSource;
+import droiddevs.com.tripplanner.model.source.remote.RetrofitGooglePlacesService;
 import io.fabric.sdk.android.Fabric;
 
 /**
@@ -43,7 +44,7 @@ public class TripPlannerApplication extends Application {
         //initialize Stetho
         Stetho.initializeWithDefaults(this);
 
-        repository = Repository.getInstance(LocalDataSource.getInstance(this), RemoteDataSource.getInstance(this));
+        repository = Repository.getInstance(LocalDataSource.getInstance(this), RemoteDataSource.getInstance(this, RetrofitGooglePlacesService.newGooglePlacesService()));
     }
 
     public static Repository getRepository() {

@@ -130,4 +130,9 @@ public class LocalDataSource implements DataSource {
         //trip.setACL(acl);
         trip.pinInBackground();
     }
+
+    @Override
+    public void loadCurrentFBUser(LoadFbUserCallback callback) {
+        throw new UnsupportedOperationException("Operation is not supported in local data source");
+    }
 }
