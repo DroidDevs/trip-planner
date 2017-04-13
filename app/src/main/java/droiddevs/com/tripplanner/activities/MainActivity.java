@@ -3,15 +3,15 @@ package droiddevs.com.tripplanner.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.addedittrip.AddEditTripActivity;
 import droiddevs.com.tripplanner.addedittrip.AddEditTripFragment;
+import droiddevs.com.tripplanner.login.OauthActivity;
 import droiddevs.com.tripplanner.tripmap.TripMapFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends OauthActivity{
 
     private static final String LOG_TAG = "MainActivity";
 
