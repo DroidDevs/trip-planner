@@ -20,5 +20,6 @@
         android:drawablePadding="@dimen/margin_medium"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/tvStartDateText"
+        android:gravity="center_vertical"
         />
 </RelativeLayout>

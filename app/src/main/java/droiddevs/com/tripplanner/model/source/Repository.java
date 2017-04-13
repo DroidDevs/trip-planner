@@ -66,6 +66,9 @@ public class Repository implements DataSource {
                     // sync with local data source
                     if (trips != null && trips.size() > 0) {
                         for (Trip trip : trips) {
+                            trip.unpinInBackground();
+                            trip.pinInBackground();
+
                             remoteDataSource.loadTripDestinations(trip, new LoadTripCallback() {
                                 @Override
                                 public void onTripLoaded(Trip trip) {
@@ -139,13 +142,23 @@ public class Repository implements DataSource {
     }
 
     @Override
-    public void updateTrip(Trip trip, SaveTripCallback callback) {
+    public void updateTrip(final Trip trip, final SaveTripCallback callback) {
         //update memory cache
         mCachedTrips.put(trip.getTripId(), trip);
         //update local database
-        localDataSource.updateTrip(trip, callback);
-        //update remotely
-        remoteDataSource.updateTrip(trip);
+        localDataSource.updateTrip(trip, new SaveTripCallback() {
+            @Override
+            public void onSuccess() {
+                callback.onSuccess();
+                //update remotely
+                remoteDataSource.updateTrip(trip);
+            }
+
+            @Override
+            public void onFailed() {
+                callback.onFailed();
+            }
+        });
     }
 
     @Override

@@ -61,7 +61,7 @@ public class RemoteDataSource implements DataSource {
     @Override
     public void loadTrip(String tripId, final LoadTripCallback callback) {
         ParseQuery<Trip> query = ParseQuery.getQuery(Trip.class);
-        query.whereGreaterThanOrEqualTo(Trip.TRIP_ID_KEY, tripId);
+        query.whereEqualTo(Trip.TRIP_ID_KEY, tripId);
         query.getFirstInBackground(new GetCallback<Trip>() {
             @Override
             public void done(final Trip trip, ParseException e) {

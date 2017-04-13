@@ -193,6 +193,7 @@ public class AddEditTripPresenter implements Contract.Presenter {
 
         Destination destination = convertPlaceToDestination(googlePlace);
         destination.setDuration(DEFAULT_DURATION_IN_DAYS);
+        destination.setTripId(trip.getTripId());
         destinations.add(destination);
 
         trip.setStartDate(new Date());
