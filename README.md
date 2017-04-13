@@ -6,19 +6,19 @@
 
 The following **required** functionality is completed:
 
-* [ ] User can log in using their Facebook account
-* [ ] Display a home screen with list of trips
-* [ ] Ability to create a trip
+* [x] User can log in using their Facebook account
+* [x] Display a home screen with list of trips
+* [x] Ability to create a trip
     * [ ] Trip will be nameable
-    * [ ] Trip will have a start date
-    * [ ] Trip can have multiple destinations, user will select them via location search from Google Map API. Destination will have geographical coordinates.
+    * [x] Trip will have a start date
+    * [x] Trip can have multiple destinations, user will select them via location search from Google Map API. Destination will have geographical coordinates.
     * [ ] Trip destinations can be reordered via drag and drop
 * [ ] Trip should be editable
     * [ ] Ability the change trip name/start date
     * [ ] Ability to add/remove destinations
     * [ ] Ability to change the destination(s) order 
     * [ ] Ability to change the duration in days per a single destination. Zero days are allowed.
-* [ ] Trips should be selectable which would then show a trip details screen
+* [x] Trips should be selectable which would then show a trip details screen
     * [ ] Trip details would show all destinations, start times and durations, any other relevant info
     * [ ] Destination details page will be grouped by
       * [ ] Saved places
@@ -37,8 +37,8 @@ The following **required** functionality is completed:
 * [ ] Global map of the planned trip should be shown with a pinned destination(s)
 * [ ] Detailed map per destination should be shown with pinned saved places and FB friends
 * [ ] Global map with pinned all his friends who have specified their location in Facebook
-* [ ] Trips should be persisted to database via Parse
-    * [ ] Logging in should check Parse for any already created user information
+* [x] Trips should be persisted to database via Parse
+    * [x] Logging in should check Parse for any already created user information
 
 The following **optional** features are implemented:
     

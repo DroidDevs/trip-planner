@@ -50,10 +50,6 @@ public class LoginActivity extends AppCompatActivity {
                     // TODO: Error Logging In
                     Log.d("DEBUG", "Uh oh. The user cancelled the Facebook login.");
                 } else if (user.isNew()) {
-                    // This sets the user permissions so that only this user
-                    // can see her created objects
-                    ParseACL.setDefaultACL(new ParseACL(), true);
-
                     // TODO: SUCCESS
                     Log.d("DEBUG", "User signed up and logged in through Facebook!");
                     Intent intent = new Intent(LoginActivity.this, TripsActivity.class);
@@ -68,6 +64,12 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void setACL() {
+        ParseACL acl = new ParseACL(ParseUser.getCurrentUser());
+        acl.setPublicReadAccess(false);
+        ParseACL.setDefaultACL(acl, true);
     }
 
     @Override
