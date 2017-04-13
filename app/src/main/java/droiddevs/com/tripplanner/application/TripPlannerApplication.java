@@ -5,6 +5,7 @@ import android.app.Application;
 import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.Stetho;
 import com.parse.Parse;
+import com.parse.ParseACL;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseObject;
 
@@ -31,14 +32,19 @@ public class TripPlannerApplication extends Application {
 
         // allow Parse to store data in local database
         Parse.enableLocalDatastore(this);
+
+        // allow Parse login integration with facebook
+        Parse.initialize(this);
+        ParseFacebookUtils.initialize(this);
+
+        // set default acl
+        ParseACL defaultACL = new ParseACL();
+        ParseACL.setDefaultACL(defaultACL, true);
+
         //register all model types
         ParseObject.registerSubclass(Trip.class);
         ParseObject.registerSubclass(Destination.class);
         ParseObject.registerSubclass(Point.class);
-        //initialize Parse
-        Parse.initialize(this);
-        // allow Parse login integration with facebook
-        ParseFacebookUtils.initialize(this);
 
         //initialize Stetho
         Stetho.initializeWithDefaults(this);

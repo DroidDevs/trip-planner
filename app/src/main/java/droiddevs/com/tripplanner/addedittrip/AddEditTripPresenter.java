@@ -186,7 +186,8 @@ public class AddEditTripPresenter implements Contract.Presenter {
         if (mView == null || !mView.isActive()) {
             return;
         }
-        Trip trip = Trip.createWithoutData(Trip.class, null);
+
+        Trip trip = new Trip();
         trip.setTripId(UUID.randomUUID().toString());
 
         List<Destination> destinations = new ArrayList<>();
