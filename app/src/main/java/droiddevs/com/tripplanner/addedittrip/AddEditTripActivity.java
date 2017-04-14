@@ -1,5 +1,6 @@
 package droiddevs.com.tripplanner.addedittrip;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.application.TripPlannerApplication;
+
+import static droiddevs.com.tripplanner.addedittrip.AddEditTripFragment.ARGUMENT_TRIP_ID;
+import static droiddevs.com.tripplanner.triplist.TripsActivity.ADD_TRIP_RESULT_TYPE;
+import static droiddevs.com.tripplanner.triplist.TripsActivity.ARGUMENT_TRIP_RESULT_TYPE;
+import static droiddevs.com.tripplanner.triplist.TripsActivity.EDIT_TRIP_RESULT_TYPE;
 
 public class AddEditTripActivity extends AppCompatActivity implements AddEditTripFragment.OnFragmentDoneListener {
 
@@ -33,7 +39,7 @@ public class AddEditTripActivity extends AppCompatActivity implements AddEditTri
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        String tripId = getIntent().getStringExtra(AddEditTripFragment.ARGUMENT_TRIP_ID);
+        String tripId = getIntent().getStringExtra(ARGUMENT_TRIP_ID);
 
         AddEditTripFragment addEditTripFragment = (AddEditTripFragment) getSupportFragmentManager().findFragmentById(R.id.content_frame);
         if (addEditTripFragment == null) {
@@ -59,8 +65,30 @@ public class AddEditTripActivity extends AppCompatActivity implements AddEditTri
     }
 
     @Override
-    public void onDoneEdit() {
-        setResult(RESULT_OK);
+    public void onDoneEdit(String tripId) {
+        Intent resultIntent;
+        if (tripId != null) {
+            resultIntent = new Intent();
+            resultIntent.putExtra(ARGUMENT_TRIP_RESULT_TYPE, EDIT_TRIP_RESULT_TYPE);
+            resultIntent.putExtra(ARGUMENT_TRIP_ID, tripId);
+            setResult(RESULT_OK, resultIntent);
+        } else {
+            setResult(RESULT_CANCELED);
+        }
+        finish();
+    }
+
+    @Override
+    public void onTripAdded(String tripId) {
+        Intent resultIntent;
+        if (tripId != null) {
+            resultIntent = new Intent();
+            resultIntent.putExtra(ARGUMENT_TRIP_RESULT_TYPE, ADD_TRIP_RESULT_TYPE);
+            resultIntent.putExtra(ARGUMENT_TRIP_ID, tripId);
+            setResult(RESULT_OK, resultIntent);
+        } else {
+            setResult(RESULT_CANCELED);
+        }
         finish();
     }
 

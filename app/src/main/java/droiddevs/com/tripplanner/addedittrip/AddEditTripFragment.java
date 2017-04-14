@@ -60,7 +60,8 @@ public class AddEditTripFragment extends Fragment implements Contract.View, AddE
     private OnFragmentDoneListener mFragmentDoneListener;
 
     public interface OnFragmentDoneListener {
-        void onDoneEdit();
+        void onDoneEdit(String tripId);
+        void onTripAdded(String tripId);
     }
 
     public AddEditTripFragment() {
@@ -129,17 +130,21 @@ public class AddEditTripFragment extends Fragment implements Contract.View, AddE
     public void onTripLoadFailure() {
         Toast.makeText(this.getContext(), R.string.trip_addedit_load_failed, Toast.LENGTH_SHORT).show();
         if (mFragmentDoneListener != null) {
-            mFragmentDoneListener.onDoneEdit();
+            mFragmentDoneListener.onDoneEdit(null);
         }
     }
 
     @Override
-    public void onTripSaved() {
+    public void onTripSaved(Trip trip) {
         Toast.makeText(this.getContext(), newTrip ? R.string.trip_addedit_save_success :
                 R.string.trip_addedit_update_success, Toast.LENGTH_SHORT).show();
 
         if (mFragmentDoneListener != null) {
-            mFragmentDoneListener.onDoneEdit();
+            if (newTrip) {
+                mFragmentDoneListener.onTripAdded(trip.getTripId());
+            } else {
+                mFragmentDoneListener.onDoneEdit(trip.getTripId());
+            }
         }
     }
 
@@ -147,7 +152,7 @@ public class AddEditTripFragment extends Fragment implements Contract.View, AddE
     public void onTripSaveFailure() {
         Toast.makeText(this.getContext(), R.string.trip_addedit_save_failed, Toast.LENGTH_SHORT).show();
         if (mFragmentDoneListener != null) {
-            mFragmentDoneListener.onDoneEdit();
+            mFragmentDoneListener.onDoneEdit(null);
         }
     }
 

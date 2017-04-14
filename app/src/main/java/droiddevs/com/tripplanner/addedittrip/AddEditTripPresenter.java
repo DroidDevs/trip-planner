@@ -166,7 +166,7 @@ public class AddEditTripPresenter implements Contract.Presenter {
             @Override
             public void onSuccess() {
                 if (mView != null && mView.isActive()) {
-                    mView.onTripSaved();
+                    mView.onTripSaved(mTrip);
                 }
             }
 

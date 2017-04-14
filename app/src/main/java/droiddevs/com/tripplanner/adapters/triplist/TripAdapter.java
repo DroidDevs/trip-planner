@@ -95,4 +95,15 @@ public class TripAdapter extends RecyclerView.Adapter<TripViewHolder> implements
         mTrips.remove(position);
         notifyItemRemoved(position);
     }
+
+    public void addTrip(Trip trip) {
+        mTrips.add(trip);
+        notifyItemInserted(mTrips.size() - 1);
+    }
+
+    public void reloadTrip(Trip trip) {
+        int tripIndex = mTrips.indexOf(trip);
+        mTrips.set(tripIndex, trip);
+        notifyItemChanged(tripIndex);
+    }
 }
