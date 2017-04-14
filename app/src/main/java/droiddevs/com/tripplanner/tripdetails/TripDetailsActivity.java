@@ -25,10 +25,10 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
     ImageView toolbarImage;
 
     @BindView(R.id.tabs)
-    private TabLayout mTabLayout;
+    TabLayout mTabLayout;
 
     @BindView(R.id.viewPager)
-    private ViewPager mViewPager;
+    ViewPager mViewPager;
 
     private TripDetailsContract.Presenter mPresenter;
     private TripDetailsFragmentPagerAdapter mPagerAdapter;

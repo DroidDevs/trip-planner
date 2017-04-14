@@ -7,6 +7,7 @@ import android.util.SparseArray;
 import android.view.ViewGroup;
 
 import droiddevs.com.tripplanner.model.Trip;
+import droiddevs.com.tripplanner.tripdestination.TripDestinationFragment;
 import droiddevs.com.tripplanner.tripmap.TripMapFragment;
 
 /**
@@ -51,7 +52,7 @@ public class TripDetailsFragmentPagerAdapter extends FragmentPagerAdapter {
             return TripMapFragment.newInstance(mTrip.getTripId());
         }
         else {
-            return null;
+            return TripDestinationFragment.newInstance(mTrip.getDestinations().get(position - 1).getDestinationId());
         }
     }
 

@@ -50,12 +50,6 @@ public interface DataSource {
         void onFailure();
     }
 
-    interface LoadPlaceCallback {
-        void onPlaceLoaded(Point place);
-
-        void onFailure();
-    }
-
     interface DeleteTripCallback {
         void onTripDeleted();
     }
@@ -78,5 +72,4 @@ public interface DataSource {
 
     void updateDestination(Destination destination);
 
-    void updateDestination(Destination destination);
 }
