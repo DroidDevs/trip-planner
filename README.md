@@ -73,8 +73,8 @@ The following **bonus** features are implemented:
 | AddEditTrip | AddEditTrip | ability to add/edit trip | Elmira | 80% done |
 | Trips | Trips | list of open trips | Jared | In Progress |
 | FacebookLogin |  | login with facebook account | Jared | 95% done |
-| TripDetails| | summary + destinations tabs | Jared | In Progress |
-| ... | TripSummary? | list of all trip destinations with start/end dates | Jared | In Progress |
+| TripDetails| | summary + destinations tabs | Elmira | In Progress |
+| ... | TripSummary? | list of all trip destinations with start/end dates | Elmira | In Progress |
 | ... | TripSummaryMap | a map of connected trip destinations | Elmira | In progress |
 | ... | TripDestination | only trip start/edn dates + places group names | Jared | In Progress |
 | ... | FriendsDestinationMap | map with friends related to that destination | Elmira | In progress |
