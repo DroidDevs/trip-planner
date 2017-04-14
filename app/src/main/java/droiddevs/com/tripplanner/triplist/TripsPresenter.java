@@ -52,4 +52,36 @@ public class TripsPresenter implements TripsContract.Presenter {
             }
         });
     }
+
+    @Override
+    public void addTrip(String tripId) {
+        mRepository.loadTrip(tripId, new DataSource.LoadTripCallback() {
+            @Override
+            public void onTripLoaded(Trip trip) {
+                mTripsView.onTripAdded(trip);
+            }
+
+            @Override
+            public void onFailure() {
+                // TODO: add something here, maybe alert of add trip failure?
+                // it wouldnt have failed though if we got here, so not sure how to handle
+            }
+        });
+    }
+
+    @Override
+    public void reloadTripAfterEdit(String tripId) {
+        mRepository.loadTrip(tripId, new DataSource.LoadTripCallback() {
+            @Override
+            public void onTripLoaded(Trip trip) {
+                mTripsView.onTripEdited(trip);
+            }
+
+            @Override
+            public void onFailure() {
+                // TODO: add something here, maybe alert of edit trip failure?
+                // it wouldnt have failed though if we got here, so not sure how to handle
+            }
+        });
+    }
 }

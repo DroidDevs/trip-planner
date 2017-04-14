@@ -22,7 +22,7 @@ public interface Contract {
 
         void setTripDetails(Trip trip);
 
-        void onTripSaved();
+        void onTripSaved(Trip trip);
 
         void onTripSaveFailure();
 
