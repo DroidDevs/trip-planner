@@ -10,9 +10,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.facebook.AccessToken;
+import com.facebook.Profile;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,7 +53,13 @@ public class TripsActivity extends AppCompatActivity implements TripsFragment.Tr
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         mDrawerToggle = setupDrawerToggle();
         mDrawerLayout.addDrawerListener(mDrawerToggle);
+        setupDrawerHeader(nvDrawer.getHeaderView(0));
         setupDrawerContent(nvDrawer);
+
+        View headerLayout = nvDrawer.getHeaderView(0);
+        TextView tvUsername = (TextView) headerLayout.findViewById(R.id.tvUsername);
+        Profile currentUser = Profile.getCurrentProfile();
+        tvUsername.setText(currentUser.getName());
 
         // Change toolbar title
         TextView tvTitle = (TextView)
@@ -148,5 +158,18 @@ public class TripsActivity extends AppCompatActivity implements TripsFragment.Tr
     @Override
     public void OnTripEditRequest(String tripId) {
         showAddEditTrip(tripId);
+    }
+
+    private void setupDrawerHeader(View headerLayout) {
+        TextView tvUsername = (TextView) headerLayout.findViewById(R.id.tvUsername);
+        TextView tvUserEmail = (TextView) headerLayout.findViewById(R.id.tvUserEmail);
+        ImageView ivUserImage = (ImageView) headerLayout.findViewById(R.id.ivUserImage);
+
+        Profile currentUser = Profile.getCurrentProfile();
+        tvUsername.setText(currentUser.getName());
+
+        Glide.with(TripsActivity.this)
+                .load(currentUser.getProfilePictureUri(100, 0))
+                .into(ivUserImage);
     }
 }
