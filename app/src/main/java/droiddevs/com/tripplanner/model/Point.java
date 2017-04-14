@@ -86,7 +86,7 @@ public class Point extends ParseObject {
     public String getPhotoUrl() {
         String photoReference = getPhotoReference();
         if (photoReference == null || "".equals(photoReference.trim())) return null;
-        return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=" + photoReference + "&key=" + TripPlannerApplication.getGooglePlacesApiKey();
+        return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=" + photoReference + "&key=" + TripPlannerApplication.getGooglePlacesApiKey();
     }
 
     public String getPhotoReference() {

@@ -5,7 +5,10 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +35,8 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
 
     private TripDetailsContract.Presenter mPresenter;
     private TripDetailsFragmentPagerAdapter mPagerAdapter;
+
+    private Trip mTrip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +66,9 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
 
     @Override
     public void onTripLoaded(Trip trip) {
+        mTrip = trip;
         mPagerAdapter.setTrip(trip);
+        loadImagePerTabPosition(1);
     }
 
     @Override
@@ -79,9 +86,48 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
         this.mPresenter = presenter;
     }
 
-    private void setupTabs(){
+    private void setupTabs() {
         mPagerAdapter = new TripDetailsFragmentPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mPagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                loadImagePerTabPosition(position - 1);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void loadImagePerTabPosition(int position) {
+        if (position < 0) return;
+        if (mTrip.getDestinations() != null && position < mTrip.getDestinations().size()) {
+            String photoUrl = mTrip.getDestinations().get(position).getPhotoUrl();
+            if (photoUrl != null) {
+                Glide.with(TripDetailsActivity.this)
+                        .load(photoUrl)
+                        //.centerCrop()
+                        .into(toolbarImage);
+            }
+        }
     }
 }
