@@ -7,23 +7,20 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
-
-import com.facebook.AccessToken;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.addedittrip.AddEditTripActivity;
 import droiddevs.com.tripplanner.application.TripPlannerApplication;
-import droiddevs.com.tripplanner.login.LoginActivity;
+import droiddevs.com.tripplanner.login.OauthActivity;
 
 import static droiddevs.com.tripplanner.addedittrip.AddEditTripFragment.ARGUMENT_TRIP_ID;
 
-public class TripsActivity extends AppCompatActivity implements TripsFragment.TripFragmentCallbackListener {
+public class TripsActivity extends OauthActivity implements TripsFragment.TripFragmentCallbackListener {
     public static final int ADD_EDIT_TRIP_REQUEST = 1;
 
     public static final int ADD_TRIP_RESULT_TYPE = 2;
@@ -31,9 +28,12 @@ public class TripsActivity extends AppCompatActivity implements TripsFragment.Tr
 
     public static final String ARGUMENT_TRIP_RESULT_TYPE = "result_type";
 
-    @BindView(R.id.include_toolbar) Toolbar toolbar;
-    @BindView(R.id.nvView) NavigationView nvDrawer;
-    @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
+    @BindView(R.id.include_toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.nvView)
+    NavigationView nvDrawer;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
 
     TripsPresenter mTripsPresenter;
     ActionBarDrawerToggle mDrawerToggle;
@@ -52,32 +52,24 @@ public class TripsActivity extends AppCompatActivity implements TripsFragment.Tr
         setupDrawerContent(nvDrawer);
 
         // Change toolbar title
-        TextView tvTitle = (TextView)
-                ButterKnife.findById(toolbar, R.id.toolbar_title);
+        TextView tvTitle = (TextView) ButterKnife.findById(toolbar, R.id.toolbar_title);
         tvTitle.setText("Trips");
 
-        // Check for user authentication
-        if (AccessToken.getCurrentAccessToken() == null) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-        }
-
         // Add fragment to content frame
-        if (savedInstanceState == null) {
-            TripsFragment tripsFragment =
-                    (TripsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
-            if (tripsFragment == null) {
-                tripsFragment = TripsFragment.newInstance();
-                tripsFragment.setTripFragmentCallbackListener(this);
+        TripsFragment tripsFragment =
+                (TripsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
 
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.add(R.id.contentFrame, tripsFragment);
-                transaction.commit();
-            }
+        if (tripsFragment == null) {
+            tripsFragment = TripsFragment.newInstance();
+            tripsFragment.setTripFragmentCallbackListener(this);
 
-            // Create the presenter
-            mTripsPresenter = new TripsPresenter(TripPlannerApplication.getRepository(), tripsFragment);
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.contentFrame, tripsFragment);
+            transaction.commit();
         }
+
+        // Create the presenter
+        mTripsPresenter = new TripsPresenter(TripPlannerApplication.getRepository(), tripsFragment);
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {
@@ -101,13 +93,13 @@ public class TripsActivity extends AppCompatActivity implements TripsFragment.Tr
 
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
-            new NavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(MenuItem menuItem) {
-                    selectDrawerItem(menuItem);
-                    return true;
-                }
-            });
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        selectDrawerItem(menuItem);
+                        return true;
+                    }
+                });
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
