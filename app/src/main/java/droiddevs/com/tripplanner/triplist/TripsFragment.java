@@ -5,10 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +28,7 @@ import droiddevs.com.tripplanner.tripdetails.TripDetailsActivity;
  * Created by jared.manfredi on 4/5/17.
  */
 
-public class TripsFragment extends Fragment implements TripsContract.View, TripAdapter.TripClickedListener {
+public class TripsFragment extends Fragment implements TripsContract.View, TripAdapter.TripInteractionListener {
 
     private List<Trip> mTrips;
     private TripsContract.Presenter mPresenter;
@@ -93,9 +96,40 @@ public class TripsFragment extends Fragment implements TripsContract.View, TripA
     }
 
     @Override
+    public void onTripDeleted(int position) {
+        mAdapter.deleteTrip(position);
+    }
+
+    @Override
     public void OnTripClicked(Trip trip) {
         Intent detailsIntent = new Intent(getContext(), TripDetailsActivity.class);
         detailsIntent.putExtra("trip_id", trip.getTripId());
         startActivity(detailsIntent);
+    }
+
+    @Override
+    public void OnTripMenuClicked(Trip trip, View anchorView) {
+        showTripMenuPopup(trip, anchorView);
+    }
+
+    private void showTripMenuPopup(final Trip trip, View anchorView) {
+        PopupMenu popup = new PopupMenu(anchorView.getContext(), anchorView);
+        popup.getMenuInflater().inflate(R.menu.popup_trip_menu, popup.getMenu());
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.menu_delete:
+                        int position = mTrips.indexOf(trip);
+                        mPresenter.deleteTrip(trip, position);
+                        return true;
+                    case R.id.menu_edit:
+                        Toast.makeText(getActivity(), "Edit!", Toast.LENGTH_SHORT).show();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+        popup.show();
     }
 }

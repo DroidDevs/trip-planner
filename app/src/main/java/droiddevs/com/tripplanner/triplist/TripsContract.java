@@ -13,9 +13,11 @@ import droiddevs.com.tripplanner.mvp.BaseView;
 public interface TripsContract {
     interface View extends BaseView<Presenter> {
         void showTrips(List<Trip> trips);
+        void onTripDeleted(int position);
     }
 
     interface Presenter extends BasePresenter {
         void loadTrips();
+        void deleteTrip(Trip trip, final int position);
     }
 }

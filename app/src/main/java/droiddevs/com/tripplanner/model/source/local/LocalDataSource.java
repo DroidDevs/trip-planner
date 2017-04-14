@@ -3,6 +3,7 @@ package droiddevs.com.tripplanner.model.source.local;
 import android.content.Context;
 import android.util.Log;
 
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -134,5 +135,15 @@ public class LocalDataSource implements DataSource {
     @Override
     public void loadCurrentFBUser(LoadFbUserCallback callback) {
         throw new UnsupportedOperationException("Operation is not supported in local data source");
+    }
+
+    @Override
+    public void deleteTrip(Trip trip, final DeleteTripCallback callback) {
+        trip.unpinInBackground(new DeleteCallback() {
+            @Override
+            public void done(ParseException e) {
+                callback.onTripDeleted();
+            }
+        });
     }
 }

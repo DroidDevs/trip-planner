@@ -60,6 +60,7 @@ public class AddEditTripActivity extends AppCompatActivity implements AddEditTri
 
     @Override
     public void onDoneEdit() {
+        setResult(RESULT_OK);
         finish();
     }
 

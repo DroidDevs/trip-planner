@@ -21,7 +21,11 @@ import droiddevs.com.tripplanner.addedittrip.AddEditTripActivity;
 import droiddevs.com.tripplanner.application.TripPlannerApplication;
 import droiddevs.com.tripplanner.login.LoginActivity;
 
+import static java.lang.Thread.sleep;
+
 public class TripsActivity extends AppCompatActivity {
+    static final int ADD_EDIT_TRIP_REQUEST = 1;
+
     @BindView(R.id.include_toolbar) Toolbar toolbar;
     @BindView(R.id.nvView) NavigationView nvDrawer;
     @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
@@ -69,7 +73,8 @@ public class TripsActivity extends AppCompatActivity {
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {
-        return new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
+        return toggle;
     }
 
     @Override
@@ -101,7 +106,26 @@ public class TripsActivity extends AppCompatActivity {
         switch (menuItem.getItemId()) {
             case R.id.nav_create_trip:
                 Intent intent = new Intent(this, AddEditTripActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, ADD_EDIT_TRIP_REQUEST);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ADD_EDIT_TRIP_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                // Trip Added
+                // TODO: THIS PROBALBY SHOULDNT RELOAD THE ENTIRE LIST
+                // FIXME: Why does this need a delay to reload?
+                // We need to send the created trip back and load directly anyways
+                try {
+                    sleep(5);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                mTripsPresenter.start();
+            }
         }
     }
 }

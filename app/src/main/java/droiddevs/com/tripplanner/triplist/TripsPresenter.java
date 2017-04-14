@@ -42,4 +42,14 @@ public class TripsPresenter implements TripsContract.Presenter {
             }
         });
     }
+
+    @Override
+    public void deleteTrip(Trip trip, final int position) {
+        mRepository.deleteTrip(trip, new Repository.DeleteTripCallback() {
+            @Override
+            public void onTripDeleted() {
+                mTripsView.onTripDeleted(position);
+            }
+        });
+    }
 }
