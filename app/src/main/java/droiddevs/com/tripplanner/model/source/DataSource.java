@@ -40,6 +40,13 @@ public interface DataSource {
     interface LoadFbUserCallback {
         void onUserLoaded(FbUser user);
 
+
+        void onFailure();
+    }
+
+    interface LoadPlaceCallback {
+        void onPlaceLoaded(Point place);
+
         void onFailure();
     }
 
@@ -68,6 +75,8 @@ public interface DataSource {
     void loadPlace(String placeId, LoadPlaceCallback callback);
 
     void deleteTrip(Trip trip, final DeleteTripCallback callback);
+
+    void updateDestination(Destination destination);
 
     void updateDestination(Destination destination);
 }
