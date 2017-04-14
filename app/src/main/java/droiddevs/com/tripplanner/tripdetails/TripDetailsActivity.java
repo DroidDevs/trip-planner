@@ -48,10 +48,10 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        setupTabs();
+
         mPresenter = new TripDetailsPresenter(this, TripPlannerApplication.getRepository(), mTripId);
         mPresenter.start();
-
-        setupTabs();
     }
 
     @Override
