@@ -1,6 +1,7 @@
 package droiddevs.com.tripplanner.adapters.map;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import java.util.List;
 
@@ -12,6 +13,8 @@ import droiddevs.com.tripplanner.model.map.BaseMapItem;
  */
 
 public abstract class BaseMapAdapter<T extends BaseMapItem> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    private static final String LOG_TAG = "BaseMapAdapter";
 
     private List<T> mapData;
 
@@ -28,6 +31,8 @@ public abstract class BaseMapAdapter<T extends BaseMapItem> extends RecyclerView
     }
 
     public void setMapData(List<T> data) {
+        Log.d(LOG_TAG, "setMapData() data count: "+ (data==null? 0: data.size()));
+
         this.mapData = data;
         notifyDataSetChanged();
     }

@@ -56,7 +56,13 @@ public abstract class BaseMapFragment extends Fragment implements OnMapReadyCall
     private HashMap<Integer, Marker> hashMarkers;
     private int currentMarkerPosition = -1;
 
-    private boolean isMapMarkersCreated = false;
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Log.d(LOG_TAG, "onCreate()");
+        Log.d(LOG_TAG, "mAdapter: " + mAdapter + ", mAdapter.getItemCount(): " + (mAdapter == null ? 0 : mAdapter.getItemCount()));
+    }
 
     @Nullable
     @Override
@@ -71,7 +77,6 @@ public abstract class BaseMapFragment extends Fragment implements OnMapReadyCall
         super.onViewCreated(view, savedInstanceState);
 
         hashMarkers = new HashMap<>();
-        isMapMarkersCreated = false;
 
         mAdapter = getMapAdapter();
         mAdapter.setListener(this);
@@ -85,47 +90,70 @@ public abstract class BaseMapFragment extends Fragment implements OnMapReadyCall
     public void onStart() {
         super.onStart();
         mMapView.onStart();
+
+        Log.d(LOG_TAG, "onStart()");
+        Log.d(LOG_TAG, "mAdapter: " + mAdapter + ", mAdapter.getItemCount(): " + (mAdapter == null ? 0 : mAdapter.getItemCount()));
     }
 
     @Override
     public void onResume() {
         super.onResume();
         mMapView.onResume();
+
+        Log.d(LOG_TAG, "onResume()");
+        Log.d(LOG_TAG, "mAdapter: " + mAdapter + ", mAdapter.getItemCount(): " + (mAdapter == null ? 0 : mAdapter.getItemCount()));
     }
 
     @Override
     public void onPause() {
         super.onPause();
         mMapView.onPause();
+
+        Log.d(LOG_TAG, "onPause()");
+        Log.d(LOG_TAG, "mAdapter: " + mAdapter + ", mAdapter.getItemCount(): " + (mAdapter == null ? 0 : mAdapter.getItemCount()));
     }
 
     @Override
     public void onStop() {
         super.onStop();
         mMapView.onStop();
+
+        Log.d(LOG_TAG, "onStop()");
+        Log.d(LOG_TAG, "mAdapter: " + mAdapter + ", mAdapter.getItemCount(): " + (mAdapter == null ? 0 : mAdapter.getItemCount()));
+
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
         mMapView.onLowMemory();
+
+        Log.d(LOG_TAG, "onLowMemory()");
+        Log.d(LOG_TAG, "mAdapter: " + mAdapter + ", mAdapter.getItemCount(): " + (mAdapter == null ? 0 : mAdapter.getItemCount()));
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mMapView!=null) {
+        if (mMapView != null) {
             mMapView.onDestroy();
         }
+
+        Log.d(LOG_TAG, "onDestroy()");
+        Log.d(LOG_TAG, "mAdapter: " + mAdapter + ", mAdapter.getItemCount(): " + (mAdapter == null ? 0 : mAdapter.getItemCount()));
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
+        Log.d(LOG_TAG, "onDestroyView()");
+        Log.d(LOG_TAG, "mAdapter: " + mAdapter + ", mAdapter.getItemCount(): " + (mAdapter == null ? 0 : mAdapter.getItemCount()));
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        Log.d(LOG_TAG, "onMapReady()");
         this.mGoogleMap = googleMap;
 
         // Hide the zoom controls, compass and map toolbar as the bottom panel will cover it.
@@ -139,8 +167,9 @@ public abstract class BaseMapFragment extends Fragment implements OnMapReadyCall
 
     @Override
     public void setMapData(List<BaseMapItem> data) {
+        Log.d(LOG_TAG, "setMapData() count: " + (data == null ? 0 : data.size()));
         mAdapter.setMapData(data);
-        createMapMarkers();
+        //createMapMarkers();
     }
 
     private void setupRecyclerView() {
@@ -164,11 +193,12 @@ public abstract class BaseMapFragment extends Fragment implements OnMapReadyCall
     }
 
     private void createMapMarkers() {
-        if (isMapMarkersCreated || mGoogleMap == null || mAdapter == null || mAdapter.getItemCount() == 0)
-            return;
-        Log.d(LOG_TAG, "createMapMarkers()");
+        Log.d(LOG_TAG, "createMapMarkers(), mGoogleMap: " + mGoogleMap + "" +
+                ", mAdapter: " + mAdapter + ", mAdapter.getItemCount(): " + (mAdapter == null ? 0 : mAdapter.getItemCount()));
 
-        isMapMarkersCreated = true;
+        if (mGoogleMap == null || mAdapter == null || mAdapter.getItemCount() == 0) {
+            return;
+        }
         resetMapMarkers();
 
         List<BaseMapItem> mapMarkers = mAdapter.getMapData();
@@ -194,7 +224,7 @@ public abstract class BaseMapFragment extends Fragment implements OnMapReadyCall
         int height = getResources().getDisplayMetrics().heightPixels;
         int padding = (int) (width * 0.12); // offset from edges of the map 12% of screen
 
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height , padding);
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
         mGoogleMap.animateCamera(cu);
     }
 

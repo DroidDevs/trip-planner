@@ -22,6 +22,6 @@ public interface MapContract<T extends BaseMapItem> {
     }
 
     interface Presenter extends BasePresenter{
-
+        void reloadData();
     }
 }

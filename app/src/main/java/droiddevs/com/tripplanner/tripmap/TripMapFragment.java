@@ -35,6 +35,8 @@ public class TripMapFragment extends BaseMapFragment {
         mTripId = getArguments().getString(ARGUMENT_TRIP_ID);
 
         mPresenter = new TripMapPresenter(this, TripPlannerApplication.getRepository(), mTripId);
+
+        mPresenter.start();
     }
 
     @Override
@@ -45,7 +47,7 @@ public class TripMapFragment extends BaseMapFragment {
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.start();
+        mPresenter.reloadData();
     }
 
     @Override

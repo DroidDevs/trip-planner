@@ -19,6 +19,7 @@ public class TripMapPresenter implements MapContract.Presenter {
     private MapContract.View mView;
     private Repository mRepository;
     private String mTripId;
+    private List<TripDestinationMapItem> mMapData;
 
     public TripMapPresenter(MapContract.View mView, Repository repository, String tripId) {
         this.mView = mView;
@@ -38,6 +39,7 @@ public class TripMapPresenter implements MapContract.Presenter {
                         Destination destination = trip.getDestinations().get(i);
                         mapData.add(new TripDestinationMapItem(destination, i));
                     }
+                    mMapData = mapData;
                     if (mView != null && mView.isActive()) {
                         mView.setMapData(mapData);
                     }
@@ -51,5 +53,12 @@ public class TripMapPresenter implements MapContract.Presenter {
                 }
             }
         });
+    }
+
+    @Override
+    public void reloadData() {
+        if (mView != null && mView.isActive()) {
+            mView.setMapData(mMapData);
+        }
     }
 }
