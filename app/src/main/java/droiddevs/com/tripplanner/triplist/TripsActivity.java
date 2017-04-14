@@ -21,10 +21,15 @@ import droiddevs.com.tripplanner.addedittrip.AddEditTripActivity;
 import droiddevs.com.tripplanner.application.TripPlannerApplication;
 import droiddevs.com.tripplanner.login.LoginActivity;
 
-import static java.lang.Thread.sleep;
+import static droiddevs.com.tripplanner.addedittrip.AddEditTripFragment.ARGUMENT_TRIP_ID;
 
-public class TripsActivity extends AppCompatActivity {
-    static final int ADD_EDIT_TRIP_REQUEST = 1;
+public class TripsActivity extends AppCompatActivity implements TripsFragment.TripFragmentCallbackListener {
+    public static final int ADD_EDIT_TRIP_REQUEST = 1;
+
+    public static final int ADD_TRIP_RESULT_TYPE = 2;
+    public static final int EDIT_TRIP_RESULT_TYPE = 3;
+
+    public static final String ARGUMENT_TRIP_RESULT_TYPE = "result_type";
 
     @BindView(R.id.include_toolbar) Toolbar toolbar;
     @BindView(R.id.nvView) NavigationView nvDrawer;
@@ -58,18 +63,21 @@ public class TripsActivity extends AppCompatActivity {
         }
 
         // Add fragment to content frame
-        TripsFragment tripsFragment =
-                (TripsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
-        if (tripsFragment == null) {
-            tripsFragment = TripsFragment.newInstance();
+        if (savedInstanceState == null) {
+            TripsFragment tripsFragment =
+                    (TripsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+            if (tripsFragment == null) {
+                tripsFragment = TripsFragment.newInstance();
+                tripsFragment.setTripFragmentCallbackListener(this);
 
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(R.id.contentFrame, tripsFragment);
-            transaction.commit();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.add(R.id.contentFrame, tripsFragment);
+                transaction.commit();
+            }
+
+            // Create the presenter
+            mTripsPresenter = new TripsPresenter(TripPlannerApplication.getRepository(), tripsFragment);
         }
-
-        // Create the presenter
-        mTripsPresenter = new TripsPresenter(TripPlannerApplication.getRepository(), tripsFragment);
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {
@@ -105,8 +113,7 @@ public class TripsActivity extends AppCompatActivity {
     public void selectDrawerItem(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.nav_create_trip:
-                Intent intent = new Intent(this, AddEditTripActivity.class);
-                startActivityForResult(intent, ADD_EDIT_TRIP_REQUEST);
+                showAddEditTrip(null); // Create trip
         }
     }
 
@@ -114,18 +121,32 @@ public class TripsActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ADD_EDIT_TRIP_REQUEST) {
             if (resultCode == RESULT_OK) {
-                // Trip Added
-                // TODO: THIS PROBALBY SHOULDNT RELOAD THE ENTIRE LIST
-                // FIXME: Why does this need a delay to reload?
-                // We need to send the created trip back and load directly anyways
-                try {
-                    sleep(5);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                String tripId = data.getStringExtra(ARGUMENT_TRIP_ID);
+                int resultType = data.getIntExtra(ARGUMENT_TRIP_RESULT_TYPE, 0);
+                switch (resultType) {
+                    case ADD_TRIP_RESULT_TYPE:
+                        mTripsPresenter.addTrip(tripId);
+                        break;
+                    case EDIT_TRIP_RESULT_TYPE:
+                        mTripsPresenter.reloadTripAfterEdit(tripId);
+                        break;
                 }
-
-                mTripsPresenter.start();
             }
         }
+    }
+
+    private void showAddEditTrip(@Nullable String tripId) {
+        // Create trip
+        Intent intent = new Intent(this, AddEditTripActivity.class);
+        if (tripId != null) {
+            // Editing trip
+            intent.putExtra(ARGUMENT_TRIP_ID, tripId);
+        }
+        startActivityForResult(intent, ADD_EDIT_TRIP_REQUEST);
+    }
+
+    @Override
+    public void OnTripEditRequest(String tripId) {
+        showAddEditTrip(tripId);
     }
 }

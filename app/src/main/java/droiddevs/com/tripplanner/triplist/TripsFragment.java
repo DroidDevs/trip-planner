@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +28,11 @@ import droiddevs.com.tripplanner.tripdetails.TripDetailsActivity;
  */
 
 public class TripsFragment extends Fragment implements TripsContract.View, TripAdapter.TripInteractionListener {
+    public interface TripFragmentCallbackListener {
+        void OnTripEditRequest(String tripId);
+    }
+
+    private TripFragmentCallbackListener mListener;
 
     private List<Trip> mTrips;
     private TripsContract.Presenter mPresenter;
@@ -36,6 +40,7 @@ public class TripsFragment extends Fragment implements TripsContract.View, TripA
 
     @BindView(R.id.rvTrips) RecyclerView rvTrips;
     private Unbinder unbinder;
+    private boolean onResumeFromAddEdit = false;
 
     public static TripsFragment newInstance() {
         return new TripsFragment();
@@ -49,7 +54,11 @@ public class TripsFragment extends Fragment implements TripsContract.View, TripA
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.start();
+
+        if (!onResumeFromAddEdit) {
+            mPresenter.start();
+        }
+        onResumeFromAddEdit = false;
     }
 
     @Override
@@ -101,6 +110,18 @@ public class TripsFragment extends Fragment implements TripsContract.View, TripA
     }
 
     @Override
+    public void onTripAdded(Trip trip) {
+        onResumeFromAddEdit = true;
+        mAdapter.addTrip(trip);
+    }
+
+    @Override
+    public void onTripEdited(Trip trip) {
+        onResumeFromAddEdit = true;
+        mAdapter.reloadTrip(trip);
+    }
+
+    @Override
     public void OnTripClicked(Trip trip) {
         Intent detailsIntent = new Intent(getContext(), TripDetailsActivity.class);
         detailsIntent.putExtra(TripDetailsActivity.ARGUMENT_TRIP_ID, trip.getTripId());
@@ -123,7 +144,7 @@ public class TripsFragment extends Fragment implements TripsContract.View, TripA
                         mPresenter.deleteTrip(trip, position);
                         return true;
                     case R.id.menu_edit:
-                        Toast.makeText(getActivity(), "Edit!", Toast.LENGTH_SHORT).show();
+                        mListener.OnTripEditRequest(trip.getTripId());
                         return true;
                     default:
                         return false;
@@ -131,5 +152,9 @@ public class TripsFragment extends Fragment implements TripsContract.View, TripA
             }
         });
         popup.show();
+    }
+
+    public void setTripFragmentCallbackListener(TripFragmentCallbackListener listener) {
+        mListener = listener;
     }
 }
