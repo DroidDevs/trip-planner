@@ -8,6 +8,7 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -162,6 +163,16 @@ public class RemoteDataSource implements DataSource {
         parameters.putString("type", "large");
         request.setParameters(parameters);
         request.executeAsync();
+    }
+
+    @Override
+    public void deleteTrip(Trip trip, final DeleteTripCallback callback) {
+        trip.deleteInBackground(new DeleteCallback() {
+            @Override
+            public void done(ParseException e) {
+                callback.onTripDeleted();
+            }
+        });
     }
 
     public void loadFriendsList(String userId) {

@@ -213,4 +213,14 @@ public class Repository implements DataSource {
         Log.d(LOG_TAG, "current FB user: "+ (mCurrentFbUser==null? "undefined": mCurrentFbUser.toString()));
         return mCurrentFbUser != null;
     }
+
+    @Override
+    public void deleteTrip(final Trip trip, final DeleteTripCallback callback) {
+        localDataSource.deleteTrip(trip, new DeleteTripCallback() {
+            @Override
+            public void onTripDeleted() {
+                remoteDataSource.deleteTrip(trip, callback);
+            }
+        });
+    }
 }

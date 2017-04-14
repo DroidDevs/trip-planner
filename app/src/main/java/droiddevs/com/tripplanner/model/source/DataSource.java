@@ -41,6 +41,10 @@ public interface DataSource {
         void onFailure();
     }
 
+    interface DeleteTripCallback {
+        void onTripDeleted();
+    }
+
     void loadOpenTrips(LoadTripListCallback callback);
 
     void loadTrip(String tripId, LoadTripCallback callback);
@@ -53,4 +57,5 @@ public interface DataSource {
 
     void loadCurrentFBUser(LoadFbUserCallback callback);
 
+    void deleteTrip(Trip trip, final DeleteTripCallback callback);
 }

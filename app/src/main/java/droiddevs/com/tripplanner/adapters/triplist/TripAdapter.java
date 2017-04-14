@@ -18,13 +18,14 @@ import droiddevs.com.tripplanner.model.Trip;
  */
 
 public class TripAdapter extends RecyclerView.Adapter<TripViewHolder> implements TripViewHolder.TripViewHolderListener {
-    public interface TripClickedListener {
+    public interface TripInteractionListener {
         void OnTripClicked(Trip trip);
+        void OnTripMenuClicked(Trip trip, View anchorView);
     }
 
     private List<Trip> mTrips;
     private Context mContext;
-    private TripClickedListener mTripClickListener;
+    private TripInteractionListener mTripInteractionListener;
 
     public TripAdapter(Context context, List<Trip> trips) {
         mContext = context;
@@ -35,8 +36,8 @@ public class TripAdapter extends RecyclerView.Adapter<TripViewHolder> implements
         return mContext;
     }
 
-    public void setOnTripClickListener(TripClickedListener listener) {
-        mTripClickListener = listener;
+    public void setOnTripClickListener(TripInteractionListener listener) {
+        mTripInteractionListener = listener;
     }
 
     @Override
@@ -50,7 +51,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripViewHolder> implements
 
     @Override
     public void onBindViewHolder(TripViewHolder holder, int position) {
-        Trip trip = mTrips.get(position);
+        final Trip trip = mTrips.get(position);
         holder.tvTripTitle.setText(trip.getName());
         //holder.ivTripImage.setImageBitmap();
 
@@ -61,7 +62,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripViewHolder> implements
         holder.ibTripMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: SHOW MENU OPTIONS TO DELETE TRIP
+                mTripInteractionListener.OnTripMenuClicked(trip, v);
             }
         });
     }
@@ -79,8 +80,8 @@ public class TripAdapter extends RecyclerView.Adapter<TripViewHolder> implements
     @Override
     public void OnTripClicked(int position) {
         Trip trip = mTrips.get(position);
-        if (mTripClickListener != null) {
-            mTripClickListener.OnTripClicked(trip);
+        if (mTripInteractionListener != null) {
+            mTripInteractionListener.OnTripClicked(trip);
         }
     }
 
@@ -90,7 +91,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripViewHolder> implements
         notifyDataSetChanged();
     }
 
-    private void removeTrip(int position) {
+    public void deleteTrip(int position) {
         mTrips.remove(position);
         notifyItemRemoved(position);
     }
