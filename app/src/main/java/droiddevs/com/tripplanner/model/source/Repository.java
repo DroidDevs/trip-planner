@@ -5,7 +5,9 @@ import android.util.Log;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import droiddevs.com.tripplanner.model.Destination;
 import droiddevs.com.tripplanner.model.FbUser;
+import droiddevs.com.tripplanner.model.Point;
 import droiddevs.com.tripplanner.model.Trip;
 import droiddevs.com.tripplanner.model.source.local.LocalDataSource;
 import droiddevs.com.tripplanner.model.source.remote.RemoteDataSource;
@@ -103,7 +105,6 @@ public class Repository implements DataSource {
             Log.d(LOG_TAG, "Found trip in memory cache");
             callback.onTripLoaded(mCachedTrips.get(tripId));
         }
-
         // try to load trip from local source
         localDataSource.loadTrip(tripId, new LoadTripCallback() {
             @Override
@@ -115,13 +116,6 @@ public class Repository implements DataSource {
 
             @Override
             public void onFailure() {
-                callback.onFailure();
-            }
-        });
-
-        //todo as we already sync all data on openTasks list load (if successfully), most likely we don't need this call
-        if (canLoadFromRemoteSource) {
-            {
                 // try to load trip from remote source
                 remoteDataSource.loadTrip(tripId, new LoadTripCallback() {
                     @Override
@@ -136,11 +130,11 @@ public class Repository implements DataSource {
 
                     @Override
                     public void onFailure() {
-                        //callback.onFailure();
+                        callback.onFailure();
                     }
                 });
             }
-        }
+        });
     }
 
     @Override
@@ -154,6 +148,9 @@ public class Repository implements DataSource {
                 callback.onSuccess();
                 //update remotely
                 remoteDataSource.updateTrip(trip);
+
+                //load and save trip photos
+                loadAndSaveTripPhotos(trip);
             }
 
             @Override
@@ -171,6 +168,25 @@ public class Repository implements DataSource {
         localDataSource.updateTrip(trip);
         //update remotely
         remoteDataSource.updateTrip(trip);
+    }
+
+    public void loadAndSaveTripPhotos(Trip trip) {
+        if (trip == null || trip.getDestinations() == null) return;
+
+        for (final Destination destination : trip.getDestinations()) {
+            remoteDataSource.loadPlace(destination.getPointId(), new LoadPlaceCallback() {
+                @Override
+                public void onPlaceLoaded(Point place) {
+                    destination.setPhotoReference(place.getPhotoReference());
+                    updateDestination(destination);
+                }
+
+                @Override
+                public void onFailure() {
+                    // do nothing
+                }
+            });
+        }
     }
 
     @Override
@@ -209,8 +225,36 @@ public class Repository implements DataSource {
         }
     }
 
-    public boolean isCurrentFbUserDefined(){
-        Log.d(LOG_TAG, "current FB user: "+ (mCurrentFbUser==null? "undefined": mCurrentFbUser.toString()));
+    public boolean isCurrentFbUserDefined() {
+        Log.d(LOG_TAG, "current FB user: " + (mCurrentFbUser == null ? "undefined" : mCurrentFbUser.toString()));
         return mCurrentFbUser != null;
+    }
+
+    @Override
+    public void loadPlace(final String placeId, final LoadPlaceCallback callback) {
+        localDataSource.loadPlace(placeId, new LoadPlaceCallback() {
+            @Override
+            public void onPlaceLoaded(Point place) {
+                if (place != null) {
+                    callback.onPlaceLoaded(place);
+                }
+                else {
+                    remoteDataSource.loadPlace(placeId, callback);
+                }
+            }
+
+            @Override
+            public void onFailure() {
+                remoteDataSource.loadPlace(placeId, callback);
+            }
+        });
+    }
+
+    @Override
+    public void updateDestination(Destination destination) {
+        //update local database
+        localDataSource.updateDestination(destination);
+        //update remotely
+        remoteDataSource.updateDestination(destination);
     }
 }

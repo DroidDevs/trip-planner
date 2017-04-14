@@ -19,4 +19,9 @@ public interface GooglePlacesService {
                                     @Query("radius") int radius,
                                     @Query("type") String type,
                                     @Query("key") String apiKey);
+
+
+    @GET("details/json")
+    Call<PlaceDetailsResponse> getPlaceDetails(@Query("placeid") String placeId,
+                                               @Query("key") String apiKey);
 }

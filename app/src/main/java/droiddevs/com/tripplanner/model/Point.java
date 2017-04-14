@@ -5,6 +5,8 @@ import com.parse.ParseObject;
 
 import java.util.List;
 
+import droiddevs.com.tripplanner.application.TripPlannerApplication;
+
 /**
  * Created by elmira on 4/4/17.
  */
@@ -19,8 +21,9 @@ public class Point extends ParseObject {
     public static final String RATING_KEY = "rating";
     public static final String PHONE_KEY = "phoneNumber";
     public static final String TYPES_KEY = "types";
+    public static final String PHOTO_REFERENCE_KEY = "photoReference";
 
-    public Point(){
+    public Point() {
         super();
     }
 
@@ -80,6 +83,20 @@ public class Point extends ParseObject {
         put(TYPES_KEY, types);
     }
 
+    public String getPhotoUrl() {
+        String photoReference = getPhotoReference();
+        if (photoReference == null || "".equals(photoReference.trim())) return null;
+        return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=" + photoReference + "&key=" + TripPlannerApplication.getGooglePlacesApiKey();
+    }
+
+    public String getPhotoReference() {
+        return getString(PHOTO_REFERENCE_KEY);
+    }
+
+    public void setPhotoReference(String photoReference) {
+        put(PHOTO_REFERENCE_KEY, photoReference);
+    }
+
     @Override
     public String toString() {
         return "Point{" +
@@ -89,6 +106,7 @@ public class Point extends ParseObject {
                 ", longitude=" + getLongitude() +
                 ", rating=" + getRating() +
                 ", phoneNumber='" + getPhoneNumber() + '\'' +
+                ", photoUrl='" + getPhotoUrl() + '\'' +
                 ", types=" + getTypes() +
                 '}';
     }

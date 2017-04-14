@@ -19,10 +19,16 @@ import org.json.JSONObject;
 import java.util.Date;
 import java.util.List;
 
+import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.model.Destination;
 import droiddevs.com.tripplanner.model.FbUser;
+import droiddevs.com.tripplanner.model.util.PlacePointConverter;
+import droiddevs.com.tripplanner.model.Point;
 import droiddevs.com.tripplanner.model.Trip;
 import droiddevs.com.tripplanner.model.source.DataSource;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by elmira on 4/3/17.
@@ -128,7 +134,14 @@ public class RemoteDataSource implements DataSource {
 
     @Override
     public void updateTrip(Trip trip) {
+        if (trip == null) return;
         trip.saveEventually();
+    }
+
+    @Override
+    public void updateDestination(Destination destination) {
+        if (destination == null) return;
+        destination.saveEventually();
     }
 
     @Override
@@ -176,5 +189,25 @@ public class RemoteDataSource implements DataSource {
                     }
                 }
         ).executeAsync();
+    }
+
+    @Override
+    public void loadPlace(final String placeId, final LoadPlaceCallback callback) {
+        Call<PlaceDetailsResponse> call = mGooglePlacesService.getPlaceDetails(placeId, context.getString(R.string.google_places_api_key));
+        call.enqueue(new Callback<PlaceDetailsResponse>() {
+            @Override
+            public void onResponse(Call<PlaceDetailsResponse> call, Response<PlaceDetailsResponse> response) {
+                Log.d(LOG_TAG, "Loaded place from web-api, place id: " + placeId);
+                Point place = PlacePointConverter.convertToPoint(response.body());
+                Log.d(LOG_TAG, place.toString());
+                callback.onPlaceLoaded(place);
+            }
+
+            @Override
+            public void onFailure(Call<PlaceDetailsResponse> call, Throwable t) {
+                Log.e(LOG_TAG, t.toString());
+                callback.onFailure();
+            }
+        });
     }
 }

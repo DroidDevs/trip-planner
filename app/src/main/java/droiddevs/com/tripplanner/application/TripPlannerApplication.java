@@ -1,6 +1,7 @@
 package droiddevs.com.tripplanner.application;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.Stetho;
@@ -9,6 +10,7 @@ import com.parse.ParseACL;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseObject;
 
+import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.model.Destination;
 import droiddevs.com.tripplanner.model.Point;
 import droiddevs.com.tripplanner.model.Trip;
@@ -25,11 +27,14 @@ import io.fabric.sdk.android.Fabric;
 public class TripPlannerApplication extends Application {
 
     private static Repository repository;
+    private static Context mContext;
 
     @Override
     public void onCreate() {
         Fabric.with(this, new Crashlytics());
         super.onCreate();
+
+        mContext = this;
 
         // allow Parse to store data in local database
         Parse.enableLocalDatastore(this);
@@ -55,5 +60,10 @@ public class TripPlannerApplication extends Application {
 
     public static Repository getRepository() {
         return repository;
+    }
+
+    public static String getGooglePlacesApiKey(){
+        if (mContext==null) return null;
+        return mContext.getString(R.string.google_places_api_key);
     }
 }

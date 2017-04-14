@@ -95,7 +95,7 @@ public class TripsFragment extends Fragment implements TripsContract.View, TripA
     @Override
     public void OnTripClicked(Trip trip) {
         Intent detailsIntent = new Intent(getContext(), TripDetailsActivity.class);
-        detailsIntent.putExtra("trip_id", trip.getTripId());
+        detailsIntent.putExtra(TripDetailsActivity.ARGUMENT_TRIP_ID, trip.getTripId());
         startActivity(detailsIntent);
     }
 }
