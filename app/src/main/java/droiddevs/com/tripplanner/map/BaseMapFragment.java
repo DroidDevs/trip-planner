@@ -114,7 +114,9 @@ public abstract class BaseMapFragment extends Fragment implements OnMapReadyCall
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mMapView.onDestroy();
+        if (mMapView!=null) {
+            mMapView.onDestroy();
+        }
     }
 
     @Override

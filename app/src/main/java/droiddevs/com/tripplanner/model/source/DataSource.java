@@ -4,6 +4,7 @@ import java.util.List;
 
 import droiddevs.com.tripplanner.model.Destination;
 import droiddevs.com.tripplanner.model.FbUser;
+import droiddevs.com.tripplanner.model.Point;
 import droiddevs.com.tripplanner.model.Trip;
 
 /**
@@ -38,6 +39,13 @@ public interface DataSource {
 
     interface LoadFbUserCallback {
         void onUserLoaded(FbUser user);
+
+        void onFailure();
+    }
+
+    interface LoadPlaceCallback {
+        void onPlaceLoaded(Point place);
+
         void onFailure();
     }
 
@@ -57,5 +65,9 @@ public interface DataSource {
 
     void loadCurrentFBUser(LoadFbUserCallback callback);
 
+    void loadPlace(String placeId, LoadPlaceCallback callback);
+
     void deleteTrip(Trip trip, final DeleteTripCallback callback);
+
+    void updateDestination(Destination destination);
 }

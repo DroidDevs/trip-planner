@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 import droiddevs.com.tripplanner.model.Destination;
+import droiddevs.com.tripplanner.model.Point;
 import droiddevs.com.tripplanner.model.Trip;
 import droiddevs.com.tripplanner.model.source.DataSource;
 
@@ -30,8 +31,6 @@ public class LocalDataSource implements DataSource {
     // app based context
     private Context context;
 
-    //private static ParseACL acl;
-
     private LocalDataSource(Context context) {
         this.context = context;
     }
@@ -39,12 +38,6 @@ public class LocalDataSource implements DataSource {
     public static LocalDataSource getInstance(Context context) {
         if (instance == null) {
             instance = new LocalDataSource(context);
-
-            /*acl = new ParseACL();
-            acl.setReadAccess(ParseUser.getCurrentUser(), true);
-            ParseUser.getCurrentUser().setACL(acl);
-            ParseUser.getCurrentUser().pinInBackground(); */
-
         }
         return instance;
     }
@@ -92,7 +85,6 @@ public class LocalDataSource implements DataSource {
             callback.onFailure();
             return;
         }
-        //trip.setACL(acl);
         trip.fetchAllInBackground(trip.getDestinations(), new FindCallback<Destination>() {
             @Override
             public void done(List<Destination> objects, ParseException e) {
@@ -110,7 +102,6 @@ public class LocalDataSource implements DataSource {
 
     @Override
     public void updateTrip(final Trip trip, final SaveTripCallback callback) {
-        //trip.setACL(acl);
         trip.pinInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -128,13 +119,37 @@ public class LocalDataSource implements DataSource {
 
     @Override
     public void updateTrip(Trip trip) {
-        //trip.setACL(acl);
+        if (trip==null) return;
         trip.pinInBackground();
     }
 
     @Override
     public void loadCurrentFBUser(LoadFbUserCallback callback) {
         throw new UnsupportedOperationException("Operation is not supported in local data source");
+    }
+
+    @Override
+    public void loadPlace(String placeId, final LoadPlaceCallback callback) {
+        ParseQuery<Point> query = ParseQuery.getQuery(Point.class).fromLocalDatastore();
+        query.whereEqualTo(Point.POINT_ID_KEY, placeId);
+        query.getFirstInBackground(new GetCallback<Point>() {
+            @Override
+            public void done(final Point place, ParseException e) {
+                if (e != null) {
+                    Log.e(LOG_TAG, e.toString());
+                    callback.onFailure();
+                }
+                else {
+                    callback.onPlaceLoaded(place);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void updateDestination(Destination destination) {
+        if (destination==null) return;
+        destination.pinInBackground();
     }
 
     @Override
