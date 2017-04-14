@@ -1,10 +1,12 @@
 package droiddevs.com.tripplanner.tripdetails;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
@@ -13,6 +15,8 @@ import com.bumptech.glide.Glide;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import droiddevs.com.tripplanner.R;
+import droiddevs.com.tripplanner.addedittrip.AddEditTripActivity;
+import droiddevs.com.tripplanner.addedittrip.AddEditTripFragment;
 import droiddevs.com.tripplanner.application.TripPlannerApplication;
 import droiddevs.com.tripplanner.model.Trip;
 
@@ -86,6 +90,26 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
         this.mPresenter = presenter;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_trip_details, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        else if (item.getItemId() == R.id.action_edit){
+            Intent editIntent = new Intent(this, AddEditTripActivity.class);
+            editIntent.putExtra(AddEditTripFragment.ARGUMENT_TRIP_ID, mTripId);
+            startActivity(editIntent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void setupTabs() {
         mPagerAdapter = new TripDetailsFragmentPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mPagerAdapter);
@@ -107,15 +131,6 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
 
             }
         });
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void loadImagePerTabPosition(int position) {
