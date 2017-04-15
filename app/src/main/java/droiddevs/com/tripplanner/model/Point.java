@@ -1,6 +1,7 @@
 package droiddevs.com.tripplanner.model;
 
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 
 import java.util.List;
@@ -90,7 +91,11 @@ public class Point extends ParseObject {
     }
 
     public String getPhotoReference() {
-        return getString(PHOTO_REFERENCE_KEY);
+        try {
+            return fetchIfNeeded().getString(PHOTO_REFERENCE_KEY);
+        } catch (ParseException e) {
+            return null;
+        }
     }
 
     public void setPhotoReference(String photoReference) {

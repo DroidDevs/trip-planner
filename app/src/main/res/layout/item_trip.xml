@@ -38,7 +38,13 @@
             android:layout_marginEnd="20dp"
             android:layout_marginTop="20dp"
             android:layout_toLeftOf="@+id/ibTripMenu"
-            android:layout_toStartOf="@+id/ibTripMenu" />
+            android:layout_toStartOf="@+id/ibTripMenu"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:shadowColor="@android:color/black"
+            android:shadowRadius="2"
+            android:shadowDx="-1" />
 
         <TextView
             android:id="@+id/tvTripDates"
@@ -48,7 +54,13 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/tvTripTitle"
             android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp" />
+            android:layout_marginStart="20dp"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:shadowColor="@android:color/black"
+            android:shadowRadius="2"
+            android:shadowDx="-1" />
 
         <ImageButton
             android:id="@+id/ibTripMenu"

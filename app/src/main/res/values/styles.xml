@@ -12,6 +12,24 @@
 
         <item name="colorControlNormal">@android:color/white</item>
         <item name="android:textColorPrimary">@android:color/white</item>
+
+        <!--Set popup menu style (edit/delete trip) text style-->
+        <item name="popupMenuStyle">@style/AppTheme.PopupMenu</item>
+        <item name="android:popupMenuStyle">@style/AppTheme.PopupMenu</item>
+        <item name="android:textAppearanceSmallPopupMenu">@style/AppTheme.PopupMenuTextSmall</item>
+        <item name="android:textAppearanceLargePopupMenu">@style/AppTheme.PopupMenuTextLarge</item>
+    </style>
+
+    <style name="AppTheme.PopupMenu" parent="@android:style/Widget.PopupMenu">
+        <item name="android:popupBackground">@android:color/white</item>
+    </style>
+
+    <style name="AppTheme.PopupMenuTextSmall" parent="Base.TextAppearance.AppCompat.Widget.PopupMenu.Small">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="AppTheme.PopupMenuTextLarge" parent="Base.TextAppearance.AppCompat.Widget.PopupMenu.Large">
+        <item name="android:textColor">@android:color/black</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">

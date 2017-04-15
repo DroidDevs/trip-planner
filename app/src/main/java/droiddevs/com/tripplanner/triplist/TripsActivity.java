@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.facebook.Profile;
+import com.parse.ParseUser;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -109,6 +110,7 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
+        mDrawerLayout.closeDrawers(); // Close drawer
         switch (menuItem.getItemId()) {
             case R.id.nav_create_trip:
                 showAddEditTrip(null); // Create trip
@@ -149,6 +151,7 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
     }
 
     private void setupDrawerHeader(View headerLayout) {
+        ParseUser currentParseUser = ParseUser.getCurrentUser();
         Profile currentUser = Profile.getCurrentProfile();
         if (currentUser != null) {
             TextView tvUsername = (TextView) headerLayout.findViewById(R.id.tvUsername);
@@ -157,9 +160,15 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
 
             tvUsername.setText(currentUser.getName());
 
+            String email = currentParseUser.getEmail();
+            if (email != null && email.length() > 0) {
+                tvUserEmail.setText(email);
+            }
+
             Glide.with(TripsActivity.this)
-                    .load(currentUser.getProfilePictureUri(100, 0))
+                    .load(currentUser.getProfilePictureUri(400, 0))
                     .into(ivUserImage);
+            //.transform(new BorderedCircleTransform(this))
         }
     }
 }
