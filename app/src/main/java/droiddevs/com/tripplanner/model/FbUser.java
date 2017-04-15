@@ -12,8 +12,11 @@ import droiddevs.com.tripplanner.model.source.remote.FbJsonAttributes;
 public class FbUser {
 
     private String id;
+
     private String name;
+
     private String coverPhotoUrl;
+
     private String pictureUrl;
 
     public static FbUser fromJsonObject(JSONObject jsonObject) throws JSONException {
@@ -50,8 +53,8 @@ public class FbUser {
         return "FbUser{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", pictureUrl='" + pictureUrl + "\'" +
-                ", coverPhotoUrl='" + coverPhotoUrl + '\'' +
+                ", pictureUrl='" + getPictureUrl() + "\'" +
+                ", coverPhotoUrl='" + getCoverPhotoUrl() + '\'' +
                 '}';
     }
 }

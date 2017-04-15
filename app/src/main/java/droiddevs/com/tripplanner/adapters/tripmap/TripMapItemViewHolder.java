@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import droiddevs.com.tripplanner.R;
@@ -42,11 +44,18 @@ public class TripMapItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(final TripDestinationMapItem destination, final int position, final BaseMapAdapter.OnMapItemClickListener listener) {
+        if (destination.getPhotoUrl()!=null) {
+            Glide.with(imageView.getContext())
+                    .load(destination.getPhotoUrl())
+                    .centerCrop()
+                    .into(imageView);
+        }
+
         nameTextView.setText(destination.getName());
 
-        //startDateTextView.setText(destination.getStartDate());
-        //endDateTextView.setText(destination.getEndDate());
-        //durationTextView.setText(destination.getDuration());
+        startDateTextView.setText(destination.getStartDate());
+        endDateTextView.setText(destination.getEndDate());
+        durationTextView.setText(destination.getDuration());
 
         if (listener != null) {
             cardView.setOnClickListener(new View.OnClickListener() {

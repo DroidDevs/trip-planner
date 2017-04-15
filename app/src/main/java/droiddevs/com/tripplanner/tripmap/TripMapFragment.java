@@ -31,9 +31,7 @@ public class TripMapFragment extends BaseMapFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mTripId = getArguments().getString(ARGUMENT_TRIP_ID);
-
         mPresenter = new TripMapPresenter(this, TripPlannerApplication.getRepository(), mTripId);
     }
 
@@ -45,7 +43,7 @@ public class TripMapFragment extends BaseMapFragment {
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.start();
+        mPresenter.reloadData();
     }
 
     @Override

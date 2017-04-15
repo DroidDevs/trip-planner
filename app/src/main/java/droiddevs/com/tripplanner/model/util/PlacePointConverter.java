@@ -24,9 +24,30 @@ public class PlacePointConverter {
         point.setLongitude(placeDetails.getGeometry().getLocation().getLongitude());
 
         if (placeDetails.getPhotos() != null && placeDetails.getPhotos().size() > 0) {
-            point.setPhotoReference(placeDetails.getPhotos().get(0).getPhotoReference());
-        }
+            int targetWidth = 1600;
+            int targetHeight = 1000;
+            int maxWidth = 0;
+            PlaceDetailsResponse.PlacePhoto maxWidthPhoto = null, targetPhoto = null;
 
+            for (PlaceDetailsResponse.PlacePhoto photo : placeDetails.getPhotos()) {
+                if (photo.getWidth() > targetWidth && photo.getWidth() > targetHeight) {
+                    targetPhoto = photo;
+                }
+                else if (photo.getWidth() > maxWidth && photo.getHeight() > targetHeight) {
+                    maxWidth = photo.getWidth();
+                    maxWidthPhoto = photo;
+                }
+            }
+            if (maxWidthPhoto != null) {
+                point.setPhotoReference(maxWidthPhoto.getPhotoReference());
+            }
+            else if (targetPhoto != null) {
+                point.setPhotoReference(targetPhoto.getPhotoReference());
+            }
+            else {
+                point.setPhotoReference(placeDetails.getPhotos().get(0).getPhotoReference());
+            }
+        }
         return point;
     }
 }

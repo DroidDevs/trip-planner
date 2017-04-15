@@ -1,8 +1,11 @@
 package droiddevs.com.tripplanner.model.source;
 
+import android.location.Location;
+
 import java.util.List;
 
 import droiddevs.com.tripplanner.model.Destination;
+import droiddevs.com.tripplanner.model.FbPlace;
 import droiddevs.com.tripplanner.model.FbUser;
 import droiddevs.com.tripplanner.model.Point;
 import droiddevs.com.tripplanner.model.Trip;
@@ -54,6 +57,12 @@ public interface DataSource {
         void onTripDeleted();
     }
 
+    interface SearchFbPlacesCallback {
+        void onPlacesFound(List<FbPlace> places);
+
+        void onFailure();
+    }
+
     void loadOpenTrips(LoadTripListCallback callback);
 
     void loadTrip(String tripId, LoadTripCallback callback);
@@ -72,4 +81,5 @@ public interface DataSource {
 
     void updateDestination(Destination destination);
 
+    void searchFbPlaces(Location location, int radiusInMeters, int resultsLimit, String searchText, SearchFbPlacesCallback callback);
 }

@@ -13,6 +13,8 @@ public interface FbJsonAttributes {
         String ID = "id";
         String COVER = "cover";
         String PICTURE = "picture";
+        String HOMETOWN = "hometown";
+        String LOCATION = "location";
     }
 
     interface CoverPhoto {
@@ -20,7 +22,7 @@ public interface FbJsonAttributes {
         String ID = "id";
     }
 
-    interface ProfilePictureSource{
+    interface ProfilePictureSource {
         String URL = "url";
         String WIDTH = "width";
         String HEIGHT = "height";

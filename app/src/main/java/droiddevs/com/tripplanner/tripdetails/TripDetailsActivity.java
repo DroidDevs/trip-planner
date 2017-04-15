@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -72,7 +73,9 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
     public void onTripLoaded(Trip trip) {
         mTrip = trip;
         mPagerAdapter.setTrip(trip);
-        loadImagePerTabPosition(1);
+
+        toolbar.setTitle(trip.getName());
+        toolbarImage.setVisibility(View.GONE);
     }
 
     @Override
@@ -102,7 +105,7 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
             finish();
             return true;
         }
-        else if (item.getItemId() == R.id.action_edit){
+        else if (item.getItemId() == R.id.action_edit) {
             Intent editIntent = new Intent(this, AddEditTripActivity.class);
             editIntent.putExtra(AddEditTripFragment.ARGUMENT_TRIP_ID, mTripId);
             startActivity(editIntent);
@@ -123,7 +126,13 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
 
             @Override
             public void onPageSelected(int position) {
-                loadImagePerTabPosition(position - 1);
+                if (position == 0) {
+                    toolbarImage.setVisibility(View.GONE);
+                }
+                else {
+                    toolbarImage.setVisibility(View.VISIBLE);
+                    loadImagePerTabPosition(position - 1);
+                }
             }
 
             @Override
@@ -140,7 +149,7 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
             if (photoUrl != null) {
                 Glide.with(TripDetailsActivity.this)
                         .load(photoUrl)
-                        //.centerCrop()
+                        .centerCrop()
                         .into(toolbarImage);
             }
         }

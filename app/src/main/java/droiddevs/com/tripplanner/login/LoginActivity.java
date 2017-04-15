@@ -22,7 +22,8 @@ import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.triplist.TripsActivity;
 
 public class LoginActivity extends AppCompatActivity {
-    @BindView(R.id.btContinueWithFB) Button btContinueWithFB;
+    @BindView(R.id.btContinueWithFB)
+    Button btContinueWithFB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,19 +44,22 @@ public class LoginActivity extends AppCompatActivity {
         // Facebook permissions requested
         // TODO: We need to add permissions we want here
         final List<String> permissions = Arrays.asList("email");
+        //final List<String> permissions = Arrays.asList("email", "user_hometown", "user_location");
         ParseFacebookUtils.logInWithReadPermissionsInBackground(this, permissions, new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException err) {
                 if (user == null) {
                     // TODO: Error Logging In
                     Log.d("DEBUG", "Uh oh. The user cancelled the Facebook login.");
-                } else if (user.isNew()) {
+                }
+                else if (user.isNew()) {
                     // TODO: SUCCESS
                     Log.d("DEBUG", "User signed up and logged in through Facebook!");
                     Intent intent = new Intent(LoginActivity.this, TripsActivity.class);
                     startActivity(intent);
                     finish();
-                } else {
+                }
+                else {
                     // TODO: SUCCESS
                     Log.d("DEBUG", "User logged in through Facebook!");
                     Intent intent = new Intent(LoginActivity.this, TripsActivity.class);
