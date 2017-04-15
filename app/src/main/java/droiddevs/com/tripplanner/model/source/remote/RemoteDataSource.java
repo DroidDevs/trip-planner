@@ -189,8 +189,7 @@ public class RemoteDataSource implements DataSource {
                 });
         Bundle parameters = new Bundle();
         parameters.putString("fields", FbJsonAttributes.User.ID + "," + FbJsonAttributes.User.NAME + "," +
-                FbJsonAttributes.User.COVER + "," + FbJsonAttributes.User.PICTURE + "," +
-                FbJsonAttributes.User.HOMETOWN + ", " + FbJsonAttributes.User.LOCATION);
+                FbJsonAttributes.User.COVER + "," + FbJsonAttributes.User.PICTURE);
         request.setParameters(parameters);
         request.executeAsync();
     }
