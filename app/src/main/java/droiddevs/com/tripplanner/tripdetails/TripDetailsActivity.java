@@ -149,7 +149,7 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
             if (photoUrl != null) {
                 Glide.with(TripDetailsActivity.this)
                         .load(photoUrl)
-                        //.centerCrop()
+                        .centerCrop()
                         .into(toolbarImage);
             }
         }

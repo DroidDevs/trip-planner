@@ -19,7 +19,9 @@ public class TripMapPresenter implements MapContract.Presenter {
     private MapContract.View mView;
     private Repository mRepository;
     private String mTripId;
+
     private List<TripDestinationMapItem> mMapData;
+    private boolean isLoading = false;
 
     public TripMapPresenter(MapContract.View mView, Repository repository, String tripId) {
         this.mView = mView;
@@ -30,6 +32,7 @@ public class TripMapPresenter implements MapContract.Presenter {
 
     @Override
     public void start() {
+        isLoading = true;
         mRepository.loadTrip(mTripId, new DataSource.LoadTripCallback() {
             @Override
             public void onTripLoaded(Trip trip) {
@@ -44,10 +47,12 @@ public class TripMapPresenter implements MapContract.Presenter {
                         mView.setMapData(mapData);
                     }
                 }
+                isLoading = false;
             }
 
             @Override
             public void onFailure() {
+                isLoading = false;
                 if (mView != null && mView.isActive()) {
                     mView.onLoadFailure();
                 }
@@ -57,8 +62,15 @@ public class TripMapPresenter implements MapContract.Presenter {
 
     @Override
     public void reloadData() {
-        if (mView != null && mView.isActive()) {
-            mView.setMapData(mMapData);
+        if (isLoading) return;
+
+        if (mMapData == null) {
+            start();
+        }
+        else {
+            if (mView != null && mView.isActive()) {
+                mView.setMapData(mMapData);
+            }
         }
     }
 }
