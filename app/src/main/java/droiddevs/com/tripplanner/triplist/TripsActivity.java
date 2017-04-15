@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.facebook.AccessToken;
 import com.facebook.Profile;
 
 import butterknife.BindView;
@@ -57,11 +56,6 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
         mDrawerLayout.addDrawerListener(mDrawerToggle);
         setupDrawerHeader(nvDrawer.getHeaderView(0));
         setupDrawerContent(nvDrawer);
-
-        View headerLayout = nvDrawer.getHeaderView(0);
-        TextView tvUsername = (TextView) headerLayout.findViewById(R.id.tvUsername);
-        Profile currentUser = Profile.getCurrentProfile();
-        tvUsername.setText(currentUser.getName());
 
         // Change toolbar title
         TextView tvTitle = (TextView) ButterKnife.findById(toolbar, R.id.toolbar_title);
@@ -155,15 +149,17 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
     }
 
     private void setupDrawerHeader(View headerLayout) {
-        TextView tvUsername = (TextView) headerLayout.findViewById(R.id.tvUsername);
-        TextView tvUserEmail = (TextView) headerLayout.findViewById(R.id.tvUserEmail);
-        ImageView ivUserImage = (ImageView) headerLayout.findViewById(R.id.ivUserImage);
-
         Profile currentUser = Profile.getCurrentProfile();
-        tvUsername.setText(currentUser.getName());
+        if (currentUser != null) {
+            TextView tvUsername = (TextView) headerLayout.findViewById(R.id.tvUsername);
+            TextView tvUserEmail = (TextView) headerLayout.findViewById(R.id.tvUserEmail);
+            ImageView ivUserImage = (ImageView) headerLayout.findViewById(R.id.ivUserImage);
 
-        Glide.with(TripsActivity.this)
-                .load(currentUser.getProfilePictureUri(100, 0))
-                .into(ivUserImage);
+            tvUsername.setText(currentUser.getName());
+
+            Glide.with(TripsActivity.this)
+                    .load(currentUser.getProfilePictureUri(100, 0))
+                    .into(ivUserImage);
+        }
     }
 }

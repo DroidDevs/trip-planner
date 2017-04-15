@@ -13,7 +13,7 @@
 
         <include
             android:id="@+id/include_toolbar"
-            layout="@layout/toolbar_trips"
+            layout="@layout/toolbar_with_title"
             android:layout_height="wrap_content"
             android:layout_width="match_parent" />
 

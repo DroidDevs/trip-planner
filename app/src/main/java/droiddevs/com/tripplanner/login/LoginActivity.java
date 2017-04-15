@@ -52,22 +52,22 @@ public class LoginActivity extends AppCompatActivity {
                     // TODO: Error Logging In
                     Log.d("DEBUG", "Uh oh. The user cancelled the Facebook login.");
                 }
-                else if (user.isNew()) {
-                    // TODO: SUCCESS
-                    Log.d("DEBUG", "User signed up and logged in through Facebook!");
-                    Intent intent = new Intent(LoginActivity.this, TripsActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
                 else {
                     // TODO: SUCCESS
-                    Log.d("DEBUG", "User logged in through Facebook!");
-                    Intent intent = new Intent(LoginActivity.this, TripsActivity.class);
-                    startActivity(intent);
-                    finish();
+                    // This would tell us if its a new user, incase we want to do any kind
+                    // of extra setup or a tutorial or something
+                    // user.isNew()
+                    Log.d("DEBUG", "User signed up and logged in through Facebook!");
+                    showTrips();
                 }
             }
         });
+    }
+
+    private void showTrips() {
+        Intent intent = new Intent(LoginActivity.this, TripsActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void setACL() {

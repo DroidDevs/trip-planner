@@ -73,6 +73,8 @@ public interface DataSource {
 
     void loadTripDestinations(Trip trip, LoadTripCallback callback);
 
+    void loadDestination(String destinationId, LoadDestinationCallback callback);
+
     void loadCurrentFBUser(LoadFbUserCallback callback);
 
     void loadPlace(String placeId, LoadPlaceCallback callback);

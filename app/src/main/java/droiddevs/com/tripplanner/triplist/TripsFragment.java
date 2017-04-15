@@ -37,10 +37,11 @@ public class TripsFragment extends Fragment implements TripsContract.View, TripA
     private List<Trip> mTrips;
     private TripsContract.Presenter mPresenter;
     private TripAdapter mAdapter;
-
-    @BindView(R.id.rvTrips) RecyclerView rvTrips;
     private Unbinder unbinder;
     private boolean onResumeFromAddEdit = false;
+
+    @BindView(R.id.rvTrips)
+    RecyclerView rvTrips;
 
     public static TripsFragment newInstance() {
         return new TripsFragment();

@@ -2,7 +2,7 @@ package droiddevs.com.tripplanner.tripdestination;
 
 import java.util.List;
 
-import droiddevs.com.tripplanner.model.DestinationOption;
+import droiddevs.com.tripplanner.model.PlaceOption;
 import droiddevs.com.tripplanner.mvp.BasePresenter;
 import droiddevs.com.tripplanner.mvp.BaseView;
 
@@ -12,10 +12,10 @@ import droiddevs.com.tripplanner.mvp.BaseView;
 
 public interface TripDestinationContract {
     interface View extends BaseView<Presenter> {
-        void showDestinationOptions(List<DestinationOption> options);
+        void showDestinationPlaceOptions(List<PlaceOption> options);
     }
 
     interface Presenter extends BasePresenter {
-        void loadDestinationOptions();
+        void loadDestinationPlaceOptions();
     }
 }

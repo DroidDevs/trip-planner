@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import droiddevs.com.tripplanner.R;
-import droiddevs.com.tripplanner.model.DestinationOption;
+import droiddevs.com.tripplanner.model.PlaceOption;
 
 /**
  * Created by Jared12 on 4/13/17.
@@ -17,15 +17,15 @@ import droiddevs.com.tripplanner.model.DestinationOption;
 
 public class TripDestinationAdapter extends RecyclerView.Adapter<TripDestinationViewHolder> implements TripDestinationViewHolder.TripDestinationViewHolderListener {
     public interface DestinationOptionClickedListener {
-        void OnOptionClicked(DestinationOption option);
+        void OnOptionClicked(PlaceOption option);
     }
 
     private Context mContext;
-    private List<DestinationOption> mDestinationOptions;
+    private List<PlaceOption> mPlaceOptions;
     private DestinationOptionClickedListener mListener;
 
-    public TripDestinationAdapter(Context context, List<DestinationOption> destinationOptions) {
-        mDestinationOptions = destinationOptions;
+    public TripDestinationAdapter(Context context, List<PlaceOption> destinationOptions) {
+        mPlaceOptions = destinationOptions;
         mContext = context;
     }
 
@@ -44,24 +44,24 @@ public class TripDestinationAdapter extends RecyclerView.Adapter<TripDestination
 
     @Override
     public void onBindViewHolder(TripDestinationViewHolder holder, int position) {
-        DestinationOption option = mDestinationOptions.get(position);
+        PlaceOption option = mPlaceOptions.get(position);
         holder.ivDestinationOptionImage.setImageDrawable(option.getOptionImageDrawable());
         holder.tvDesinationOptionTitle.setText(option.getOptionTitle());
     }
 
     @Override
     public int getItemCount() {
-        return mDestinationOptions.size();
+        return mPlaceOptions.size();
     }
 
-    public void setOptions(List<DestinationOption> options) {
-        mDestinationOptions.clear();
-        mDestinationOptions.addAll(options);
+    public void setOptions(List<PlaceOption> options) {
+        mPlaceOptions.clear();
+        mPlaceOptions.addAll(options);
     }
 
     @Override
     public void OnOptionClicked(int position) {
-        DestinationOption option = mDestinationOptions.get(position);
+        PlaceOption option = mPlaceOptions.get(position);
         mListener.OnOptionClicked(option);
     }
 

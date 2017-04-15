@@ -102,6 +102,29 @@ public class LocalDataSource implements DataSource {
     }
 
     @Override
+    public void loadDestination(String destinationId, final LoadDestinationCallback callback) {
+        if (destinationId == null) {
+            callback.onFailure();
+            return;
+        }
+
+        ParseQuery<Destination> query = ParseQuery.getQuery(Destination.class).fromLocalDatastore();
+        query.whereEqualTo(Destination.DESTINATION_ID_KEY, destinationId);
+        query.getFirstInBackground(new GetCallback<Destination>() {
+            @Override
+            public void done(Destination object, ParseException e) {
+                if (e != null) {
+                    Log.e(LOG_TAG, e.toString());
+                    callback.onFailure();
+                } else {
+                    Log.e(LOG_TAG, "loaded destination locally");
+                    callback.onDestinationLoaded(object);
+                }
+            }
+        });
+    }
+
+    @Override
     public void updateTrip(final Trip trip, final SaveTripCallback callback) {
         trip.pinInBackground(new SaveCallback() {
             @Override
