@@ -42,7 +42,8 @@
             android:name=".addedittrip.AddEditTripActivity"
             android:label="@string/title_activity_add_edit_trip"/>
 
-        <activity android:name=".tripdetails.TripDetailsActivity"/>
+        <activity android:name=".tripdetails.TripDetailsActivity"
+                  android:theme="@style/NoStatusBarTheme"/>
 
         <meta-data
             android:name="io.fabric.ApiKey"

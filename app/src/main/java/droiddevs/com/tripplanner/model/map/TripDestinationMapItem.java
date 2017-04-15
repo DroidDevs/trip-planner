@@ -19,7 +19,7 @@ public class TripDestinationMapItem extends BaseMapItem {
     private String duration;
 
     public TripDestinationMapItem(Destination destination, int position) {
-        super(new LatLng(destination.getLatitude(), destination.getLongitude()), destination.getName(), position);
+        super(new LatLng(destination.getLatitude(), destination.getLongitude()), destination.getName(), position, destination.getPhotoUrl());
 
         startDate = sdf.format(destination.getStartDate());
         endDate = sdf.format(destination.getEndDate());

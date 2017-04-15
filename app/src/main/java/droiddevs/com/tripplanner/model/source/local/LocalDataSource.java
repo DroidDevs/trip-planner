@@ -1,6 +1,7 @@
 package droiddevs.com.tripplanner.model.source.local;
 
 import android.content.Context;
+import android.location.Location;
 import android.util.Log;
 
 import com.parse.DeleteCallback;
@@ -119,12 +120,17 @@ public class LocalDataSource implements DataSource {
 
     @Override
     public void updateTrip(Trip trip) {
-        if (trip==null) return;
+        if (trip == null) return;
         trip.pinInBackground();
     }
 
     @Override
     public void loadCurrentFBUser(LoadFbUserCallback callback) {
+        throw new UnsupportedOperationException("Operation is not supported in local data source");
+    }
+
+    @Override
+    public void searchFbPlaces(Location location, int radiusInMeters, int resultsLimit, String searchText, SearchFbPlacesCallback callback) {
         throw new UnsupportedOperationException("Operation is not supported in local data source");
     }
 
@@ -148,7 +154,7 @@ public class LocalDataSource implements DataSource {
 
     @Override
     public void updateDestination(Destination destination) {
-        if (destination==null) return;
+        if (destination == null) return;
         destination.pinInBackground();
     }
 

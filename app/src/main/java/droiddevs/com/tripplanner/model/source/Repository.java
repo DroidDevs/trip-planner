@@ -1,5 +1,6 @@
 package droiddevs.com.tripplanner.model.source;
 
+import android.location.Location;
 import android.util.Log;
 
 import java.util.LinkedHashMap;
@@ -27,7 +28,9 @@ public class Repository implements DataSource {
     private static Repository SHARED_INSTANCE;
 
     private boolean canLoadFromRemoteSource = true;
+
     private FbUser mCurrentFbUser;
+    private List<FbUser> mFbFriends;
 
     public static Repository getInstance(LocalDataSource localDataSource, RemoteDataSource remoteDataSource) {
         if (SHARED_INSTANCE == null) {
@@ -216,6 +219,11 @@ public class Repository implements DataSource {
         });
     }
 
+    @Override
+    public void searchFbPlaces(Location location, int radiusInMeters, int resultsLimit, String searchText, SearchFbPlacesCallback callback) {
+        remoteDataSource.searchFbPlaces(location, radiusInMeters, resultsLimit, searchText, callback);
+    }
+
     private void addTripsToCache(List<Trip> list) {
         if (list == null || list.size() == 0) return;
 
@@ -228,6 +236,11 @@ public class Repository implements DataSource {
     public boolean isCurrentFbUserDefined() {
         Log.d(LOG_TAG, "current FB user: " + (mCurrentFbUser == null ? "undefined" : mCurrentFbUser.toString()));
         return mCurrentFbUser != null;
+    }
+
+    public boolean isFbFriendsLoaded() {
+        Log.d(LOG_TAG, "FB friends list: " + (mFbFriends == null ? "undefined" : mFbFriends.size()));
+        return mFbFriends != null;
     }
 
     @Override

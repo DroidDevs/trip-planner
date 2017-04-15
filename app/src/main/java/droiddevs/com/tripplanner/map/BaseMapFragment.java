@@ -3,6 +3,7 @@ package droiddevs.com.tripplanner.map;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
@@ -22,6 +23,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.HashMap;
 import java.util.List;
@@ -55,6 +58,8 @@ public abstract class BaseMapFragment extends Fragment implements OnMapReadyCall
 
     private HashMap<Integer, Marker> hashMarkers;
     private int currentMarkerPosition = -1;
+
+    private static final int INITIAL_STROKE_WIDTH_PX = 10;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -204,6 +209,10 @@ public abstract class BaseMapFragment extends Fragment implements OnMapReadyCall
         List<BaseMapItem> mapMarkers = mAdapter.getMapData();
         LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
 
+        PolylineOptions polylineOptions = null;
+        if (mAdapter.isDrawPolylines()) {
+            polylineOptions = new PolylineOptions();
+        }
         for (BaseMapItem mapItem : mapMarkers) {
             Marker marker = null;
             if (currentMarkerPosition == -1) {
@@ -215,6 +224,17 @@ public abstract class BaseMapFragment extends Fragment implements OnMapReadyCall
             }
             hashMarkers.put(mapItem.getPosition(), marker);
             boundsBuilder.include(marker.getPosition());
+
+            if (polylineOptions != null) {
+                polylineOptions.add(marker.getPosition());
+            }
+        }
+        if (polylineOptions != null) {
+            Polyline polyline = mGoogleMap.addPolyline(polylineOptions
+                    .width(mAdapter.getPolylineWidth() <= 0 ? INITIAL_STROKE_WIDTH_PX : mAdapter.getPolylineWidth())
+                    .color(ContextCompat.getColor(getContext(), mAdapter.getPolylineColor()))
+                    .pattern(mAdapter.getPolylinePattern())
+                    .geodesic(mAdapter.isPolylineGeodesic()));
         }
 
         LatLngBounds bounds = boundsBuilder.build();

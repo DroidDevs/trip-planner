@@ -3,6 +3,8 @@ package droiddevs.com.tripplanner.adapters.map;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.PatternItem;
+
 import java.util.List;
 
 import droiddevs.com.tripplanner.R;
@@ -61,4 +63,14 @@ public abstract class BaseMapAdapter<T extends BaseMapItem> extends RecyclerView
     public void setSelectedIconResId(int selectedIconResId) {
         this.selectedIconResId = selectedIconResId;
     }
+
+    public abstract boolean isDrawPolylines();
+
+    public abstract List<PatternItem> getPolylinePattern();
+
+    public abstract int getPolylineColor();
+
+    public abstract int getPolylineWidth();
+
+    public abstract boolean isPolylineGeodesic();
 }

@@ -1,13 +1,16 @@
 package droiddevs.com.tripplanner.model.source.remote;
 
 import android.content.Context;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.HttpMethod;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -15,18 +18,22 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.model.Destination;
+import droiddevs.com.tripplanner.model.FbPlace;
 import droiddevs.com.tripplanner.model.FbUser;
-import droiddevs.com.tripplanner.model.util.PlacePointConverter;
 import droiddevs.com.tripplanner.model.Point;
 import droiddevs.com.tripplanner.model.Trip;
 import droiddevs.com.tripplanner.model.source.DataSource;
+import droiddevs.com.tripplanner.model.util.PlacePointConverter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,9 +52,16 @@ public class RemoteDataSource implements DataSource {
 
     private GooglePlacesService mGooglePlacesService;
 
+    public String ISO_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
+    Gson gson = null;
+
     private RemoteDataSource(Context context, GooglePlacesService googlePlacesService) {
         this.context = context;
         this.mGooglePlacesService = googlePlacesService;
+
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.setDateFormat(ISO_FORMAT);
+        gson = gsonBuilder.create();
     }
 
     public static RemoteDataSource getInstance(Context context, GooglePlacesService googlePlacesService) {
@@ -160,10 +174,13 @@ public class RemoteDataSource implements DataSource {
                         }
                         else {
                             try {
-                                FbUser user = FbUser.fromJsonObject(object);
+                                //FbUser user = FbUser.fromJsonObject(object);
+                                Log.d(LOG_TAG, "FB raw response: " + response.getRawResponse());
+                                FbUser user = gson.fromJson(response.getRawResponse(), FbUser.class);
                                 Log.d(LOG_TAG, "Loaded FB user: " + user.toString());
                                 callback.onUserLoaded(user);
                             } catch (Throwable ex) {
+                                ex.printStackTrace();
                                 Log.e(LOG_TAG, ex.toString());
                                 callback.onFailure();
                             }
@@ -172,8 +189,8 @@ public class RemoteDataSource implements DataSource {
                 });
         Bundle parameters = new Bundle();
         parameters.putString("fields", FbJsonAttributes.User.ID + "," + FbJsonAttributes.User.NAME + "," +
-                FbJsonAttributes.User.COVER + "," + FbJsonAttributes.User.PICTURE);
-        parameters.putString("type", "large");
+                FbJsonAttributes.User.COVER + "," + FbJsonAttributes.User.PICTURE + "," +
+                FbJsonAttributes.User.HOMETOWN + ", " + FbJsonAttributes.User.LOCATION);
         request.setParameters(parameters);
         request.executeAsync();
     }
@@ -186,20 +203,6 @@ public class RemoteDataSource implements DataSource {
                 callback.onTripDeleted();
             }
         });
-    }
-
-    public void loadFriendsList(String userId) {
-        new GraphRequest(
-                AccessToken.getCurrentAccessToken(),
-                "/" + userId + "/friendlists",
-                null,
-                HttpMethod.GET,
-                new GraphRequest.Callback() {
-                    public void onCompleted(GraphResponse response) {
-
-                    }
-                }
-        ).executeAsync();
     }
 
     @Override
@@ -220,5 +223,34 @@ public class RemoteDataSource implements DataSource {
                 callback.onFailure();
             }
         });
+    }
+
+    @Override
+    public void searchFbPlaces(Location location, int radiusInMeters, int resultsLimit, String searchText, final SearchFbPlacesCallback callback) {
+        GraphRequest.newPlacesSearchRequest(
+                AccessToken.getCurrentAccessToken(),
+                location, radiusInMeters, resultsLimit, searchText,
+                new GraphRequest.GraphJSONArrayCallback() {
+                    @Override
+                    public void onCompleted(JSONArray objects, GraphResponse response) {
+                        if (response.getError() != null) {
+                            Log.e(LOG_TAG, response.getError().getErrorMessage());
+                            callback.onFailure();
+                        }
+                        else {
+                            try {
+                                Log.d(LOG_TAG, "FB raw response: " + response.getRawResponse());
+                                Type collectionType = new TypeToken<Collection<FbPlace>>() {
+                                }.getType();
+                                List<FbPlace> places = gson.fromJson(response.getRawResponse(), collectionType);
+                                callback.onPlacesFound(places);
+                            } catch (Throwable ex) {
+                                ex.printStackTrace();
+                                Log.e(LOG_TAG, ex.toString());
+                                callback.onFailure();
+                            }
+                        }
+                    }
+                });
     }
 }
