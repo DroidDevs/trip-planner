@@ -18,12 +18,12 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.adapters.suggestedplaces.SuggestedPlacesAdapter;
-import droiddevs.com.tripplanner.model.FbPlace;
+import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
 import droiddevs.com.tripplanner.suggestedplacedetails.SuggestedPlaceDetailsActivity;
 
 public class SuggestedPlacesFragment extends Fragment implements SuggestedPlacesContract.View, SuggestedPlacesAdapter.SuggestedPlaceInteractionListener {
 
-    private List<FbPlace> mPlaces;
+    private List<GooglePlace> mPlaces;
     private SuggestedPlacesContract.Presenter mPresenter;
     private SuggestedPlacesAdapter mAdapter;
     private Unbinder unbinder;
@@ -76,7 +76,7 @@ public class SuggestedPlacesFragment extends Fragment implements SuggestedPlaces
     }
 
     @Override
-    public void showSuggestedPlaces(List<FbPlace> places) {
+    public void showSuggestedPlaces(List<GooglePlace> places) {
         mAdapter.setPlaces(places);
     }
 
@@ -86,7 +86,7 @@ public class SuggestedPlacesFragment extends Fragment implements SuggestedPlaces
     }
 
     @Override
-    public void OnPlaceClicked(FbPlace place) {
+    public void OnPlaceClicked(GooglePlace place) {
         Intent intent = new Intent(getContext(), SuggestedPlaceDetailsActivity.class);
         startActivity(intent);
     }

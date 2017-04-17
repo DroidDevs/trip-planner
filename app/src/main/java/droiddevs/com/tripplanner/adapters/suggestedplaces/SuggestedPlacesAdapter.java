@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import droiddevs.com.tripplanner.R;
-import droiddevs.com.tripplanner.model.FbPlace;
+import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
 
 /**
  * Created by Jared12 on 4/15/17.
@@ -17,17 +17,17 @@ import droiddevs.com.tripplanner.model.FbPlace;
 
 public class SuggestedPlacesAdapter extends RecyclerView.Adapter<SuggestedPlacesViewHolder> implements SuggestedPlacesViewHolder.SuggestedPlacesViewHolderListener {
     public interface SuggestedPlaceInteractionListener {
-        void OnPlaceClicked(FbPlace place);
+        void OnPlaceClicked(GooglePlace place);
     }
 
-    private List<FbPlace> mFbPlaces;
+    private List<GooglePlace> mPlaces;
     private Context mContext;
 
     private SuggestedPlaceInteractionListener mPlaceInteractionListener;
 
-    public SuggestedPlacesAdapter(Context context, List<FbPlace> places) {
+    public SuggestedPlacesAdapter(Context context, List<GooglePlace> places) {
         mContext = context;
-        mFbPlaces = places;
+        mPlaces = places;
     }
 
     public void setSuggestedPlaceInteractionListener(SuggestedPlaceInteractionListener listener) {
@@ -45,27 +45,27 @@ public class SuggestedPlacesAdapter extends RecyclerView.Adapter<SuggestedPlaces
 
     @Override
     public void onBindViewHolder(SuggestedPlacesViewHolder holder, int position) {
-        FbPlace fbPlace = mFbPlaces.get(position);
-        holder.tvPlaceTitle.setText(fbPlace.getName());
+        GooglePlace googlePlace = mPlaces.get(position);
+        holder.tvPlaceTitle.setText(googlePlace.getName());
     }
 
     @Override
     public int getItemCount() {
-        return mFbPlaces.size();
+        return mPlaces.size();
     }
 
-    public void setPlaces(List<FbPlace> places) {
-        mFbPlaces.clear();
+    public void setPlaces(List<GooglePlace> places) {
+        mPlaces.clear();
         if (places != null
                 && places.size() > 0) {
-            mFbPlaces.addAll(places);
+            mPlaces.addAll(places);
         }
         notifyDataSetChanged();
     }
 
     @Override
     public void OnPlaceClicked(int position) {
-        FbPlace place = mFbPlaces.get(position);
+        GooglePlace place = mPlaces.get(position);
         if (place != null) {
             mPlaceInteractionListener.OnPlaceClicked(place);
         }
