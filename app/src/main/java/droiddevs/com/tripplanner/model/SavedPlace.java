@@ -12,19 +12,22 @@ import droiddevs.com.tripplanner.application.TripPlannerApplication;
  * Created by elmira on 4/4/17.
  */
 
-@ParseClassName("Point")
-public class Point extends ParseObject {
+@ParseClassName("SavedPlace")
+public class SavedPlace extends ParseObject {
 
     public static final String NAME_KEY = "name";
-    public static final String POINT_ID_KEY = "pointId";
+    public static final String PLACE_ID_KEY = "placeId";
+    public static final String DESTINATION_ID_KEY = "destinationId";
     public static final String LATITUDE_KEY = "latitude";
     public static final String LONGITUDE_KEY = "longitude";
     public static final String RATING_KEY = "rating";
     public static final String PHONE_KEY = "phoneNumber";
     public static final String TYPES_KEY = "types";
     public static final String PHOTO_REFERENCE_KEY = "photoReference";
+    public static final String OPEN_NOW_KEY = "openNow";
+    public static final String OPEN_NOW_WEEKDAY_TEXT_KEY = "openNowWeekdayText";
 
-    public Point() {
+    public SavedPlace() {
         super();
     }
 
@@ -36,12 +39,12 @@ public class Point extends ParseObject {
         put(NAME_KEY, name);
     }
 
-    public String getPointId() {
-        return getString(POINT_ID_KEY);
+    public String getPlaceId() {
+        return getString(PLACE_ID_KEY);
     }
 
-    public void setPointId(String pointId) {
-        put(POINT_ID_KEY, pointId);
+    public void setPlaceId(String pointId) {
+        put(PLACE_ID_KEY, pointId);
     }
 
     public double getLatitude() {
@@ -76,12 +79,36 @@ public class Point extends ParseObject {
         put(PHONE_KEY, phoneNumber);
     }
 
-    public List<Integer> getTypes() {
+    public List<String> getTypes() {
         return getList(TYPES_KEY);
     }
 
-    public void setTypes(List<Integer> types) {
+    public void setTypes(List<String> types) {
         put(TYPES_KEY, types);
+    }
+
+    public String getDestinationId() {
+        return getString(DESTINATION_ID_KEY);
+    }
+
+    public void setDestinationId(String destinationId) {
+        put(DESTINATION_ID_KEY, destinationId);
+    }
+
+    public List<Object> getOpenNowWeekdayText() {
+        return getList(OPEN_NOW_WEEKDAY_TEXT_KEY);
+    }
+
+    public void setOpenNowWeekdayText(List<Object> weekdayText) {
+        put(OPEN_NOW_WEEKDAY_TEXT_KEY, weekdayText);
+    }
+
+    public boolean getOpenNow() {
+        return getBoolean(OPEN_NOW_KEY);
+    }
+
+    public void setOpenNow(boolean openNow) {
+        put(OPEN_NOW_KEY, openNow);
     }
 
     public String getPhotoUrl() {
@@ -104,9 +131,9 @@ public class Point extends ParseObject {
 
     @Override
     public String toString() {
-        return "Point{" +
+        return "SavedPlace{" +
                 "name='" + getName() + '\'' +
-                ", pointId='" + getPointId() + '\'' +
+                ", pointId='" + getPlaceId() + '\'' +
                 ", latitude=" + getLatitude() +
                 ", longitude=" + getLongitude() +
                 ", rating=" + getRating() +

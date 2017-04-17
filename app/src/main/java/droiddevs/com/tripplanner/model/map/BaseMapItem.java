@@ -58,4 +58,16 @@ public class BaseMapItem {
     public String getPhotoUrl() {
         return photoUrl;
     }
+
+    public void setIconResId(int iconResId) {
+        this.iconResId = iconResId;
+    }
+
+    public void setSelectedIconResId(int selectedIconResId) {
+        this.selectedIconResId = selectedIconResId;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
 }

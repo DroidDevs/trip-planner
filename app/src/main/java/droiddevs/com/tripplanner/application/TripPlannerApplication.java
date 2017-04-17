@@ -12,7 +12,7 @@ import com.parse.ParseObject;
 
 import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.model.Destination;
-import droiddevs.com.tripplanner.model.Point;
+import droiddevs.com.tripplanner.model.SavedPlace;
 import droiddevs.com.tripplanner.model.Trip;
 import droiddevs.com.tripplanner.model.source.Repository;
 import droiddevs.com.tripplanner.model.source.local.LocalDataSource;
@@ -50,7 +50,7 @@ public class TripPlannerApplication extends Application {
         //register all model types
         ParseObject.registerSubclass(Trip.class);
         ParseObject.registerSubclass(Destination.class);
-        ParseObject.registerSubclass(Point.class);
+        ParseObject.registerSubclass(SavedPlace.class);
 
         //initialize Stetho
         Stetho.initializeWithDefaults(this);

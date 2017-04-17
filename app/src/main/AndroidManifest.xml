@@ -44,6 +44,8 @@
             android:name=".tripdetails.TripDetailsActivity"
             android:theme="@style/NoStatusBarTheme" />
 
+        <activity android:name=".savedplaces.SavedPlacesActivity"/>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="ecca4edc49db77a33ce2e400abc8c57694555857" />

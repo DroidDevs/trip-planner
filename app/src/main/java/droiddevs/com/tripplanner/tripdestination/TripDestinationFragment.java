@@ -19,6 +19,7 @@ import butterknife.Unbinder;
 import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.adapters.tripdestination.TripDestinationAdapter;
 import droiddevs.com.tripplanner.model.PlaceOption;
+import droiddevs.com.tripplanner.savedplaces.SavedPlacesActivity;
 import droiddevs.com.tripplanner.suggestedplaces.SuggestedPlacesActivity;
 import droiddevs.com.tripplanner.util.SpacesItemDecoration;
 
@@ -34,10 +35,11 @@ public class TripDestinationFragment extends Fragment implements TripDestination
     RecyclerView rvDestinationOptions;
     private Unbinder unbinder;
 
-    private String mDesinationId;
+    private String mDestinationId;
     private TripDestinationContract.Presenter mPresenter;
 
-    public TripDestinationFragment() {}
+    public TripDestinationFragment() {
+    }
 
     public static TripDestinationFragment newInstance(String destinationId) {
         TripDestinationFragment fragment = new TripDestinationFragment();
@@ -52,7 +54,7 @@ public class TripDestinationFragment extends Fragment implements TripDestination
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mDesinationId = getArguments().getString(ARG_DESTINATION_ID);
+            mDestinationId = getArguments().getString(ARG_DESTINATION_ID);
         }
         mPresenter = new TripDestinationPresenter(getContext(), this);
     }
@@ -103,10 +105,17 @@ public class TripDestinationFragment extends Fragment implements TripDestination
 
     @Override
     public void OnOptionClicked(PlaceOption option) {
-        Intent intent = new Intent(getContext(), SuggestedPlacesActivity.class);
-        intent.putExtra(ARG_DESTINATION_ID, mDesinationId);
-        intent.putExtra(ARG_PLACE_TYPE_SEARCH_STRING, option.getOptionType().typeSearchString());
-        intent.putExtra(ARG_PLACE_TYPE_TITLE, option.getOptionTitle());
-        startActivity(intent);
+        if (option.getOptionType() == PlaceOption.PlaceOptionType.TYPE_SAVED_PLACES) {
+            Intent intent = new Intent(getContext(), SavedPlacesActivity.class);
+            intent.putExtra(SavedPlacesActivity.ARGUMENT_DESTINATION_ID, mDestinationId);
+            startActivity(intent);
+        }
+        else {
+            Intent intent = new Intent(getContext(), SuggestedPlacesActivity.class);
+            intent.putExtra(ARG_DESTINATION_ID, mDestinationId);
+            intent.putExtra(ARG_PLACE_TYPE_SEARCH_STRING, option.getOptionType().typeSearchString());
+            intent.putExtra(ARG_PLACE_TYPE_TITLE, option.getOptionTitle());
+            startActivity(intent);
+        }
     }
 }

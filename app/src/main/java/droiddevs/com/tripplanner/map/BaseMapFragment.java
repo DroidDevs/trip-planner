@@ -31,6 +31,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.adapters.map.BaseMapAdapter;
 import droiddevs.com.tripplanner.model.map.BaseMapItem;
@@ -42,8 +43,8 @@ import static droiddevs.com.tripplanner.viewutil.BitmapUtils.getBitmapFromDrawab
  * Created by elmira on 4/09/17.
  */
 
-public abstract class BaseMapFragment extends Fragment implements OnMapReadyCallback, MapContract.View<BaseMapItem>, GoogleMap.OnMarkerClickListener,
-        BaseMapAdapter.OnMapItemClickListener<BaseMapItem> {
+public abstract class BaseMapFragment<T extends BaseMapItem> extends Fragment implements OnMapReadyCallback, MapContract.View<T>, GoogleMap.OnMarkerClickListener,
+        BaseMapAdapter.OnMapItemClickListener<T> {
 
     private static final String LOG_TAG = "BaseMapFragment";
 
@@ -54,12 +55,13 @@ public abstract class BaseMapFragment extends Fragment implements OnMapReadyCall
     RecyclerView mRecyclerView;
 
     private GoogleMap mGoogleMap;
-    private BaseMapAdapter<BaseMapItem> mAdapter;
+    private BaseMapAdapter<T> mAdapter;
 
     private HashMap<Integer, Marker> hashMarkers;
     private int currentMarkerPosition = -1;
 
     private static final int INITIAL_STROKE_WIDTH_PX = 10;
+    private Unbinder unbinder;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,7 +75,7 @@ public abstract class BaseMapFragment extends Fragment implements OnMapReadyCall
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_base_map, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -151,7 +153,9 @@ public abstract class BaseMapFragment extends Fragment implements OnMapReadyCall
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
+        if (unbinder != null) {
+            unbinder.unbind();
+        }
         Log.d(LOG_TAG, "onDestroyView()");
         Log.d(LOG_TAG, "mAdapter: " + mAdapter + ", mAdapter.getItemCount(): " + (mAdapter == null ? 0 : mAdapter.getItemCount()));
     }
@@ -171,7 +175,7 @@ public abstract class BaseMapFragment extends Fragment implements OnMapReadyCall
     }
 
     @Override
-    public void setMapData(List<BaseMapItem> data) {
+    public void setMapData(List<T> data) {
         Log.d(LOG_TAG, "setMapData() count: " + (data == null ? 0 : data.size()));
         mAdapter.setMapData(data);
         //createMapMarkers();
@@ -206,7 +210,7 @@ public abstract class BaseMapFragment extends Fragment implements OnMapReadyCall
         }
         resetMapMarkers();
 
-        List<BaseMapItem> mapMarkers = mAdapter.getMapData();
+        List<T> mapMarkers = mAdapter.getMapData();
         LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
 
         PolylineOptions polylineOptions = null;
@@ -269,8 +273,8 @@ public abstract class BaseMapFragment extends Fragment implements OnMapReadyCall
     public abstract BaseMapAdapter getMapAdapter();
 
     @Override
-    public void onMapItemClick(BaseMapItem data, int position) {
-        //navigateToMapItemMarker(position);
+    public void onMapItemClick(T data, int position) {
+
     }
 
     private void navigateToMapItemMarker(int newPosition) {

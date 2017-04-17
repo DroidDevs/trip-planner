@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 import droiddevs.com.tripplanner.model.Destination;
-import droiddevs.com.tripplanner.model.Point;
+import droiddevs.com.tripplanner.model.SavedPlace;
 import droiddevs.com.tripplanner.model.Trip;
 import droiddevs.com.tripplanner.model.source.DataSource;
 
@@ -116,7 +116,8 @@ public class LocalDataSource implements DataSource {
                 if (e != null) {
                     Log.e(LOG_TAG, e.toString());
                     callback.onFailure();
-                } else {
+                }
+                else {
                     Log.e(LOG_TAG, "loaded destination locally");
                     callback.onDestinationLoaded(object);
                 }
@@ -164,11 +165,11 @@ public class LocalDataSource implements DataSource {
 
     @Override
     public void loadPlace(String placeId, final LoadPlaceCallback callback) {
-        ParseQuery<Point> query = ParseQuery.getQuery(Point.class).fromLocalDatastore();
-        query.whereEqualTo(Point.POINT_ID_KEY, placeId);
-        query.getFirstInBackground(new GetCallback<Point>() {
+        ParseQuery<SavedPlace> query = ParseQuery.getQuery(SavedPlace.class).fromLocalDatastore();
+        query.whereEqualTo(SavedPlace.PLACE_ID_KEY, placeId);
+        query.getFirstInBackground(new GetCallback<SavedPlace>() {
             @Override
-            public void done(final Point place, ParseException e) {
+            public void done(final SavedPlace place, ParseException e) {
                 if (e != null) {
                     Log.e(LOG_TAG, e.toString());
                     callback.onFailure();
@@ -192,6 +193,57 @@ public class LocalDataSource implements DataSource {
             @Override
             public void done(ParseException e) {
                 callback.onTripDeleted();
+            }
+        });
+    }
+
+    @Override
+    public void loadSavedPlaces(String destinationId, final LoadSavedPlacesCallback callback) {
+        ParseQuery<SavedPlace> query = ParseQuery.getQuery(SavedPlace.class).fromLocalDatastore();
+        query.whereEqualTo(SavedPlace.DESTINATION_ID_KEY, destinationId);
+
+        query.findInBackground(new FindCallback<SavedPlace>() {
+            @Override
+            public void done(List<SavedPlace> objects, ParseException e) {
+                if (e != null) {
+                    Log.e(LOG_TAG, e.toString());
+                    callback.onFailure();
+                }
+                else {
+                    callback.onSavedPlacesLoaded(objects);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void deleteSavedPlace(SavedPlace savedPlace, final DeleteSavedPlaceCallback callback) {
+        savedPlace.unpinInBackground(new DeleteCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(LOG_TAG, e.toString());
+                    callback.onFailed();
+                }
+                else {
+                    callback.onSuccess();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void createSavedPlace(SavedPlace savedPlace, final CreateSavedPlaceCallback callback) {
+        savedPlace.pinInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(LOG_TAG, e.toString());
+                    callback.onFailed();
+                }
+                else {
+                    callback.onSuccess();
+                }
             }
         });
     }

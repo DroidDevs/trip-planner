@@ -181,7 +181,7 @@ public class AddEditTripFragment extends Fragment implements Contract.View, AddE
         if (requestCode == UPDATE_TRIP_PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(getActivity(), data);
-                Log.i(LOG_TAG, "Point: " + place.getName());
+                Log.i(LOG_TAG, "SavedPlace: " + place.getName());
                 Log.i(LOG_TAG, "Last destination id: " + lastDestinationId);
                 if (lastDestinationId == null) {
                     mPresenter.addNewDestinationPlace(place);
@@ -201,7 +201,7 @@ public class AddEditTripFragment extends Fragment implements Contract.View, AddE
         else if (requestCode == CREATE_TRIP_PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(getActivity(), data);
-                Log.i(LOG_TAG, "Point: " + place.getName());
+                Log.i(LOG_TAG, "SavedPlace: " + place.getName());
                 mPresenter.createTripFromPlace(place);
             }
             else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {

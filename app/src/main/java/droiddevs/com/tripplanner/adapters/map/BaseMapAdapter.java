@@ -64,13 +64,23 @@ public abstract class BaseMapAdapter<T extends BaseMapItem> extends RecyclerView
         this.selectedIconResId = selectedIconResId;
     }
 
-    public abstract boolean isDrawPolylines();
+    public boolean isDrawPolylines() {
+        return false;
+    }
 
-    public abstract List<PatternItem> getPolylinePattern();
+    public List<PatternItem> getPolylinePattern() {
+        return null;
+    }
 
-    public abstract int getPolylineColor();
+    public int getPolylineColor() {
+        return 0;
+    }
 
-    public abstract int getPolylineWidth();
+    public int getPolylineWidth() {
+        return 0;
+    }
 
-    public abstract boolean isPolylineGeodesic();
+    public boolean isPolylineGeodesic() {
+        return false;
+    }
 }

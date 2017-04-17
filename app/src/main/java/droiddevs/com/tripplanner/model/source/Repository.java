@@ -7,8 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import droiddevs.com.tripplanner.model.Destination;
-import droiddevs.com.tripplanner.model.FbUser;
-import droiddevs.com.tripplanner.model.Point;
+import droiddevs.com.tripplanner.model.SavedPlace;
+import droiddevs.com.tripplanner.model.fb.FbUser;
 import droiddevs.com.tripplanner.model.Trip;
 import droiddevs.com.tripplanner.model.source.local.LocalDataSource;
 import droiddevs.com.tripplanner.model.source.remote.RemoteDataSource;
@@ -97,7 +97,7 @@ public class Repository implements DataSource {
 
                 @Override
                 public void onFailure() {
-                    callback.onFailure();
+                    //callback.onFailure();
                 }
             });
         }
@@ -186,11 +186,13 @@ public class Repository implements DataSource {
         }
 
         for (final Destination destination : trip.getDestinations()) {
-            remoteDataSource.loadPlace(destination.getPointId(), new LoadPlaceCallback() {
+            remoteDataSource.loadPlace(destination.getPlaceId(), new LoadPlaceCallback() {
                 @Override
-                public void onPlaceLoaded(Point place) {
-                    destination.setPhotoReference(place.getPhotoReference());
-                    updateDestination(destination);
+                public void onPlaceLoaded(SavedPlace place) {
+                    if (place.getPhotoReference() != null) {
+                        destination.setPhotoReference(place.getPhotoReference());
+                        updateDestination(destination);
+                    }
                     listener.OnTripPhotosLoaded();
                 }
 
@@ -282,7 +284,7 @@ public class Repository implements DataSource {
     public void loadPlace(final String placeId, final LoadPlaceCallback callback) {
         localDataSource.loadPlace(placeId, new LoadPlaceCallback() {
             @Override
-            public void onPlaceLoaded(Point place) {
+            public void onPlaceLoaded(SavedPlace place) {
                 if (place != null) {
                     callback.onPlaceLoaded(place);
                 }
@@ -312,6 +314,75 @@ public class Repository implements DataSource {
             @Override
             public void onTripDeleted() {
                 remoteDataSource.deleteTrip(trip, callback);
+            }
+        });
+    }
+
+    @Override
+    public void loadSavedPlaces(String destinationId, final LoadSavedPlacesCallback callback) {
+        //load data from local data source
+        localDataSource.loadSavedPlaces(destinationId, new LoadSavedPlacesCallback() {
+            @Override
+            public void onSavedPlacesLoaded(List<SavedPlace> places) {
+                callback.onSavedPlacesLoaded(places);
+            }
+
+            @Override
+            public void onFailure() {
+                callback.onFailure();
+            }
+        });
+        if (canLoadFromRemoteSource) {
+            //load data from remote data source
+            remoteDataSource.loadSavedPlaces(destinationId, new LoadSavedPlacesCallback() {
+                @Override
+                public void onSavedPlacesLoaded(List<SavedPlace> places) {
+                    callback.onSavedPlacesLoaded(places);
+                    if (places != null && places.size() > 0) {
+                        for (SavedPlace place : places) {
+                            place.unpinInBackground();
+                            place.pinInBackground();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure() {
+                    // do nothing
+                }
+            });
+        }
+    }
+
+    @Override
+    public void deleteSavedPlace(final SavedPlace savedPlace, final DeleteSavedPlaceCallback callback) {
+        localDataSource.deleteSavedPlace(savedPlace, new DeleteSavedPlaceCallback() {
+            @Override
+            public void onSuccess() {
+                callback.onSuccess();
+                remoteDataSource.deleteSavedPlace(savedPlace, null);
+            }
+
+            @Override
+            public void onFailed() {
+                callback.onFailed();
+            }
+        });
+
+    }
+
+    @Override
+    public void createSavedPlace(final SavedPlace savedPlace, final CreateSavedPlaceCallback callback) {
+        localDataSource.createSavedPlace(savedPlace, new CreateSavedPlaceCallback() {
+            @Override
+            public void onSuccess() {
+                callback.onSuccess();
+                remoteDataSource.createSavedPlace(savedPlace, null);
+            }
+
+            @Override
+            public void onFailed() {
+                callback.onFailed();
             }
         });
     }
