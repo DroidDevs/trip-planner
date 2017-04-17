@@ -1,6 +1,9 @@
 package droiddevs.com.tripplanner.model.source;
 
 import android.location.Location;
+import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import java.util.LinkedHashMap;
@@ -8,8 +11,8 @@ import java.util.List;
 
 import droiddevs.com.tripplanner.model.Destination;
 import droiddevs.com.tripplanner.model.SavedPlace;
-import droiddevs.com.tripplanner.model.fb.FbUser;
 import droiddevs.com.tripplanner.model.Trip;
+import droiddevs.com.tripplanner.model.fb.FbUser;
 import droiddevs.com.tripplanner.model.source.local.LocalDataSource;
 import droiddevs.com.tripplanner.model.source.remote.RemoteDataSource;
 
@@ -151,12 +154,13 @@ public class Repository implements DataSource {
         localDataSource.updateTrip(trip, new SaveTripCallback() {
             @Override
             public void onSuccess() {
+                remoteDataSource.updateTrip(trip);
+
                 //load and save trip photos
                 loadAndSaveTripPhotos(trip, new LoadAndSaveTripPhotosListener() {
                     @Override
                     public void OnTripPhotosLoaded() {
                         //update remotely
-                        remoteDataSource.updateTrip(trip);
                         callback.onSuccess();
                     }
                 });
@@ -179,30 +183,38 @@ public class Repository implements DataSource {
         remoteDataSource.updateTrip(trip);
     }
 
-    public void loadAndSaveTripPhotos(Trip trip, final LoadAndSaveTripPhotosListener listener) {
-        if (trip == null || trip.getDestinations() == null) {
+    private void loadAndSaveTripPhotos(final Trip trip, final LoadAndSaveTripPhotosListener listener) {
+        if (trip == null
+                || trip.getDestinations() == null) {
             listener.OnTripPhotosLoaded();
             return;
         }
 
-        for (final Destination destination : trip.getDestinations()) {
-            remoteDataSource.loadPlace(destination.getPlaceId(), new LoadPlaceCallback() {
-                @Override
-                public void onPlaceLoaded(SavedPlace place) {
-                    if (place.getPhotoReference() != null) {
+        // Download all destinations in background before call back
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                List<Destination> destinations = trip.getDestinations();
+                for (final Destination destination : destinations) {
+                    SavedPlace place = remoteDataSource.loadPlaceSynchronously(destination.getPlaceId());
+                    if (place != null
+                            && place.getPhotoReference() != null) {
                         destination.setPhotoReference(place.getPhotoReference());
                         updateDestination(destination);
                     }
-                    listener.OnTripPhotosLoaded();
                 }
 
-                @Override
-                public void onFailure() {
-                    // do nothing
-                    listener.OnTripPhotosLoaded();
-                }
-            });
-        }
+                // Execute callback on main thread
+                Handler mainHandler = new Handler(Looper.getMainLooper());
+                Runnable mainRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        listener.OnTripPhotosLoaded();
+                    }
+                };
+                mainHandler.post(mainRunnable);
+            }
+        });
     }
 
     @Override
@@ -301,6 +313,11 @@ public class Repository implements DataSource {
     }
 
     @Override
+    public SavedPlace loadPlaceSynchronously(String placeId) {
+        throw new UnsupportedOperationException("Operation is only supported in remote data source");
+    }
+
+    @Override
     public void updateDestination(Destination destination) {
         //update local database
         localDataSource.updateDestination(destination);
@@ -352,6 +369,25 @@ public class Repository implements DataSource {
                 }
             });
         }
+    }
+
+    @Override
+    public void loadSavedPlace(final String googlePlaceId, final String destinationId, final LoadSavedPlaceCallback callback) {
+        remoteDataSource.loadSavedPlace(googlePlaceId, destinationId, new LoadSavedPlaceCallback() {
+            @Override
+            public void onSavedPlaceLoaded(SavedPlace place) {
+                if (place != null) {
+                    place.unpinInBackground();
+                    place.pinInBackground();
+                }
+                callback.onSavedPlaceLoaded(place);
+            }
+
+            @Override
+            public void onFailure() {
+                localDataSource.loadSavedPlace(googlePlaceId, destinationId, callback);
+            }
+        });
     }
 
     @Override

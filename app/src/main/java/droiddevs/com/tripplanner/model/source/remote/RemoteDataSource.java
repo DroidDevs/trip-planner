@@ -21,16 +21,17 @@ import com.parse.SaveCallback;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.model.Destination;
-import droiddevs.com.tripplanner.model.fb.FbPlace;
-import droiddevs.com.tripplanner.model.fb.FbUser;
 import droiddevs.com.tripplanner.model.SavedPlace;
 import droiddevs.com.tripplanner.model.Trip;
+import droiddevs.com.tripplanner.model.fb.FbPlace;
+import droiddevs.com.tripplanner.model.fb.FbUser;
 import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
 import droiddevs.com.tripplanner.model.source.DataSource;
 import droiddevs.com.tripplanner.model.util.PlaceConverter;
@@ -249,6 +250,25 @@ public class RemoteDataSource implements DataSource {
     }
 
     @Override
+    public SavedPlace loadPlaceSynchronously(final String placeId) {
+        Call<PlaceDetailsResponse> call =
+                mGooglePlacesService.getPlaceDetails(placeId, context.getString(R.string.google_places_api_key));
+        try {
+            Response<PlaceDetailsResponse> response = call.execute();
+            if (response.isSuccessful()) {
+                Log.d(LOG_TAG, "Loaded place from web-api, place id: " + placeId);
+                SavedPlace place = PlaceConverter.convertToSavedPlace(response.body());
+                return place;
+            } else {
+                return null;
+            }
+        } catch (IOException e) {
+            Log.e(LOG_TAG, e.getLocalizedMessage());
+            return null;
+        }
+    }
+
+    @Override
     public void searchFbPlaces(Location location, int radiusInMeters, int resultsLimit, String searchText, final SearchFbPlacesCallback callback) {
         GraphRequest searchRequest = GraphRequest.newPlacesSearchRequest(
                 AccessToken.getCurrentAccessToken(),
@@ -317,6 +337,25 @@ public class RemoteDataSource implements DataSource {
                 }
                 else {
                     callback.onSavedPlacesLoaded(objects);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void loadSavedPlace(String googlePlaceId, String destinationId, final LoadSavedPlaceCallback callback) {
+        ParseQuery<SavedPlace> query = ParseQuery.getQuery(SavedPlace.class);
+        query.whereEqualTo(SavedPlace.PLACE_ID_KEY, googlePlaceId);
+        query.whereEqualTo(SavedPlace.DESTINATION_ID_KEY, destinationId);
+
+        query.getFirstInBackground(new GetCallback<SavedPlace>() {
+            @Override
+            public void done(SavedPlace object, ParseException e) {
+                if (e != null) {
+                    Log.e(LOG_TAG, e.toString());
+                    callback.onFailure();
+                } else {
+                    callback.onSavedPlaceLoaded(object);
                 }
             }
         });

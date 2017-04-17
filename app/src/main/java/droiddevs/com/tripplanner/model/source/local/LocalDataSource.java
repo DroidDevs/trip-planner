@@ -181,6 +181,10 @@ public class LocalDataSource implements DataSource {
         });
     }
 
+    public SavedPlace loadPlaceSynchronously(final String placeId) {
+        throw new UnsupportedOperationException("Operation is not supported in local data source");
+    }
+
     @Override
     public void updateDestination(Destination destination) {
         if (destination == null) return;
@@ -211,6 +215,25 @@ public class LocalDataSource implements DataSource {
                 }
                 else {
                     callback.onSavedPlacesLoaded(objects);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void loadSavedPlace(String googlePlaceId, String destinationId, final LoadSavedPlaceCallback callback) {
+        ParseQuery<SavedPlace> query = ParseQuery.getQuery(SavedPlace.class).fromLocalDatastore();
+        query.whereEqualTo(SavedPlace.PLACE_ID_KEY, googlePlaceId);
+        query.whereEqualTo(SavedPlace.DESTINATION_ID_KEY, destinationId);
+
+        query.getFirstInBackground(new GetCallback<SavedPlace>() {
+            @Override
+            public void done(SavedPlace object, ParseException e) {
+                if (e != null) {
+                    Log.e(LOG_TAG, e.toString());
+                    callback.onFailure();
+                } else {
+                    callback.onSavedPlaceLoaded(object);
                 }
             }
         });

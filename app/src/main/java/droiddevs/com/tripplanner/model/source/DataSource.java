@@ -76,6 +76,12 @@ public interface DataSource {
         void onFailure();
     }
 
+    interface LoadSavedPlaceCallback {
+        void onSavedPlaceLoaded(SavedPlace place);
+
+        void onFailure();
+    }
+
     interface DeleteSavedPlaceCallback {
         void onSuccess();
 
@@ -104,6 +110,8 @@ public interface DataSource {
 
     void loadPlace(String placeId, LoadPlaceCallback callback);
 
+    SavedPlace loadPlaceSynchronously(final String placeId);
+
     void deleteTrip(Trip trip, final DeleteTripCallback callback);
 
     void updateDestination(Destination destination);
@@ -113,6 +121,8 @@ public interface DataSource {
     void searchGooglePlaces(String location, int radiusInMeters, String searchText, String apiKey, SearchGooglePlacesCallback callback);
 
     void loadSavedPlaces(String destinationId, LoadSavedPlacesCallback callback);
+
+    void loadSavedPlace(String googlePlaceId, String destinationId, final LoadSavedPlaceCallback callback);
 
     void deleteSavedPlace(SavedPlace savedPlace, DeleteSavedPlaceCallback callback);
 
