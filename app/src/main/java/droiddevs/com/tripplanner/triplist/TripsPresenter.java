@@ -15,10 +15,12 @@ import droiddevs.com.tripplanner.model.source.Repository;
 public class TripsPresenter implements TripsContract.Presenter {
     private final Repository mRepository;
     private final TripsContract.View mTripsView;
+    private boolean mPastEvents = false;
 
-    public TripsPresenter(@NonNull Repository repository, @NonNull TripsContract.View tripsView) {
+    public TripsPresenter(@NonNull Repository repository, @NonNull TripsContract.View tripsView, boolean pastEvents) {
         mRepository = repository;
         mTripsView = tripsView;
+        mPastEvents = pastEvents;
 
         mTripsView.setPresenter(this);
     }
@@ -30,17 +32,11 @@ public class TripsPresenter implements TripsContract.Presenter {
 
     @Override
     public void loadTrips() {
-        mRepository.loadOpenTrips(new DataSource.LoadTripListCallback() {
-            @Override
-            public void onTripListLoaded(List<Trip> trips) {
-                mTripsView.showTrips(trips);
-            }
-
-            @Override
-            public void onFailure() {
-                // TODO: SHOW FAILURE TO LOAD TRIPS
-            }
-        });
+        if (!mPastEvents) {
+            loadUpcomingTrips();
+            return;
+        }
+        loadPastTrips();
     }
 
     @Override
@@ -81,6 +77,34 @@ public class TripsPresenter implements TripsContract.Presenter {
             public void onFailure() {
                 // TODO: add something here, maybe alert of edit trip failure?
                 // it wouldnt have failed though if we got here, so not sure how to handle
+            }
+        });
+    }
+
+    private void loadUpcomingTrips() {
+        mRepository.loadOpenTrips(new DataSource.LoadTripListCallback() {
+            @Override
+            public void onTripListLoaded(List<Trip> trips) {
+                mTripsView.showTrips(trips);
+            }
+
+            @Override
+            public void onFailure() {
+                // TODO: SHOW FAILURE TO LOAD TRIPS
+            }
+        });
+    }
+
+    private void loadPastTrips() {
+        mRepository.loadPastTrips(new DataSource.LoadTripListCallback() {
+            @Override
+            public void onTripListLoaded(List<Trip> trips) {
+                mTripsView.showTrips(trips);
+            }
+
+            @Override
+            public void onFailure() {
+                // TODO: SHOW FAILURE TO LOAD TRIPS
             }
         });
     }

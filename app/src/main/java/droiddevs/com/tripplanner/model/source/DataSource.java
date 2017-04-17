@@ -72,6 +72,8 @@ public interface DataSource {
 
     void loadOpenTrips(LoadTripListCallback callback);
 
+    void loadPastTrips(LoadTripListCallback callback);
+
     void loadTrip(String tripId, LoadTripCallback callback);
 
     void updateTrip(Trip trip, SaveTripCallback callback);

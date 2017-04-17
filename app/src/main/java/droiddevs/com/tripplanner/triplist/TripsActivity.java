@@ -28,11 +28,11 @@ import static droiddevs.com.tripplanner.addedittrip.AddEditTripFragment.ARGUMENT
 
 public class TripsActivity extends OauthActivity implements TripsFragment.TripFragmentCallbackListener {
     public static final int ADD_EDIT_TRIP_REQUEST = 1;
-
     public static final int ADD_TRIP_RESULT_TYPE = 2;
     public static final int EDIT_TRIP_RESULT_TYPE = 3;
 
-    public static final String ARGUMENT_TRIP_RESULT_TYPE = "result_type";
+    public static final String ARG_TRIP_RESULT_TYPE = "result_type";
+    public static final String ARG_PAST_EVENTS = "past_events";
 
     @BindView(R.id.include_toolbar)
     Toolbar toolbar;
@@ -52,15 +52,23 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
 
         // Setup toolbar
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        mDrawerToggle = setupDrawerToggle();
-        mDrawerLayout.addDrawerListener(mDrawerToggle);
-        setupDrawerHeader(nvDrawer.getHeaderView(0));
-        setupDrawerContent(nvDrawer);
 
-        // Change toolbar title
-        TextView tvTitle = (TextView) ButterKnife.findById(toolbar, R.id.toolbar_title);
-        tvTitle.setText("Trips");
+        boolean pastEvents = getIntent().getBooleanExtra(ARG_PAST_EVENTS, false);
+        if (!pastEvents) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+            mDrawerToggle = setupDrawerToggle();
+            mDrawerLayout.addDrawerListener(mDrawerToggle);
+            setupDrawerHeader(nvDrawer.getHeaderView(0));
+            setupDrawerContent(nvDrawer);
+
+            // Change toolbar title
+            TextView tvTitle = (TextView) ButterKnife.findById(toolbar, R.id.toolbar_title);
+            tvTitle.setText("Trips");
+        } else {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            setTitle("Past Trips");
+        }
 
         // Add fragment to content frame
         TripsFragment tripsFragment =
@@ -76,7 +84,7 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
         }
 
         // Create the presenter
-        mTripsPresenter = new TripsPresenter(TripPlannerApplication.getRepository(), tripsFragment);
+        mTripsPresenter = new TripsPresenter(TripPlannerApplication.getRepository(), tripsFragment, pastEvents);
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {
@@ -86,8 +94,15 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
+        if (mDrawerToggle != null
+                && mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
+        } else {
+            switch (item.getItemId()) {
+                case android.R.id.home:
+                    onBackPressed();
+                    return true;
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -95,7 +110,9 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
+        if (mDrawerToggle != null) {
+            mDrawerToggle.syncState();
+        }
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
@@ -114,6 +131,10 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
         switch (menuItem.getItemId()) {
             case R.id.nav_create_trip:
                 showAddEditTrip(null); // Create trip
+                break;
+            case R.id.nav_view_past_trips:
+                showPastTrips();
+                break;
         }
     }
 
@@ -122,7 +143,7 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
         if (requestCode == ADD_EDIT_TRIP_REQUEST) {
             if (resultCode == RESULT_OK) {
                 String tripId = data.getStringExtra(ARGUMENT_TRIP_ID);
-                int resultType = data.getIntExtra(ARGUMENT_TRIP_RESULT_TYPE, 0);
+                int resultType = data.getIntExtra(ARG_TRIP_RESULT_TYPE, 0);
                 switch (resultType) {
                     case ADD_TRIP_RESULT_TYPE:
                         mTripsPresenter.addTrip(tripId);
@@ -170,5 +191,11 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
                     .into(ivUserImage);
             //.transform(new BorderedCircleTransform(this))
         }
+    }
+
+    private void showPastTrips() {
+        Intent intent = new Intent(this, TripsActivity.class);
+        intent.putExtra(ARG_PAST_EVENTS, true);
+        startActivity(intent);
     }
 }
