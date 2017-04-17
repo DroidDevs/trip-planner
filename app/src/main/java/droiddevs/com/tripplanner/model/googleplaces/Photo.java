@@ -1,12 +1,15 @@
 
 package droiddevs.com.tripplanner.model.googleplaces;
 
-import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
+import droiddevs.com.tripplanner.application.TripPlannerApplication;
 
 public class Photo implements Parcelable
 {
@@ -63,6 +66,10 @@ public class Photo implements Parcelable
 
     public String getPhotoReference() {
         return photoReference;
+    }
+
+    public String getFullPhotoURLReference() {
+        return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photoreference=" + photoReference + "&key=" + TripPlannerApplication.getGooglePlacesApiKey();
     }
 
     public void setPhotoReference(String photoReference) {
