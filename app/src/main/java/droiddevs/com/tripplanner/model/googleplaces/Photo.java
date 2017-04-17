@@ -1,12 +1,16 @@
 
 package droiddevs.com.tripplanner.model.googleplaces;
 
-import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import droiddevs.com.tripplanner.application.TripPlannerApplication;
 
 public class Photo implements Parcelable
 {
@@ -16,25 +20,23 @@ public class Photo implements Parcelable
     private Long height;
     @SerializedName("html_attributions")
     @Expose
-    private List<String> htmlAttributions = null;
+    private List<String> htmlAttributions = new ArrayList<>();
     @SerializedName("photo_reference")
     @Expose
     private String photoReference;
     @SerializedName("width")
     @Expose
     private Long width;
+
     public final static Parcelable.Creator<Photo> CREATOR = new Creator<Photo>() {
-
-
         @SuppressWarnings({
             "unchecked"
         })
         public Photo createFromParcel(Parcel in) {
             Photo instance = new Photo();
-            instance.height = ((Long) in.readValue((Long.class.getClassLoader())));
-            in.readList(instance.htmlAttributions, (java.lang.String.class.getClassLoader()));
-            instance.photoReference = ((String) in.readValue((String.class.getClassLoader())));
-            instance.width = ((Long) in.readValue((Long.class.getClassLoader())));
+            instance.height = in.readLong();
+            instance.photoReference = in.readString();
+            instance.width = in.readLong();
             return instance;
         }
 
@@ -42,8 +44,7 @@ public class Photo implements Parcelable
             return (new Photo[size]);
         }
 
-    }
-    ;
+    };
 
     public Long getHeight() {
         return height;
@@ -65,6 +66,10 @@ public class Photo implements Parcelable
         return photoReference;
     }
 
+    public String getFullPhotoURLReference() {
+        return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photoreference=" + photoReference + "&key=" + TripPlannerApplication.getGooglePlacesApiKey();
+    }
+
     public void setPhotoReference(String photoReference) {
         this.photoReference = photoReference;
     }
@@ -78,10 +83,9 @@ public class Photo implements Parcelable
     }
 
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(height);
-        dest.writeList(htmlAttributions);
-        dest.writeValue(photoReference);
-        dest.writeValue(width);
+        dest.writeLong(height);
+        dest.writeString(photoReference);
+        dest.writeLong(width);
     }
 
     public int describeContents() {

@@ -2,6 +2,8 @@ package droiddevs.com.tripplanner.adapters.suggestedplaces;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -21,6 +23,10 @@ public class SuggestedPlacesViewHolder extends RecyclerView.ViewHolder implement
 
     @BindView(R.id.tvPlaceTitle)
     TextView tvPlaceTitle;
+    @BindView(R.id.ivPlaceImage)
+    ImageView ivPlaceImage;
+    @BindView(R.id.rbPlaceRating)
+    RatingBar rbPlaceRating;
 
     public SuggestedPlacesViewHolder(View itemView, SuggestedPlacesViewHolderListener listener) {
         super(itemView);

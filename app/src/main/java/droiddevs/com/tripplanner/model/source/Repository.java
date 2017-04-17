@@ -18,6 +18,9 @@ import droiddevs.com.tripplanner.model.source.remote.RemoteDataSource;
  */
 
 public class Repository implements DataSource {
+    private interface LoadAndSaveTripPhotosListener {
+        void OnTripPhotosLoaded();
+    }
 
     private static final String LOG_TAG = "Repository";
 
@@ -148,12 +151,15 @@ public class Repository implements DataSource {
         localDataSource.updateTrip(trip, new SaveTripCallback() {
             @Override
             public void onSuccess() {
-                callback.onSuccess();
-                //update remotely
-                remoteDataSource.updateTrip(trip);
-
                 //load and save trip photos
-                loadAndSaveTripPhotos(trip);
+                loadAndSaveTripPhotos(trip, new LoadAndSaveTripPhotosListener() {
+                    @Override
+                    public void OnTripPhotosLoaded() {
+                        //update remotely
+                        remoteDataSource.updateTrip(trip);
+                        callback.onSuccess();
+                    }
+                });
             }
 
             @Override
@@ -173,8 +179,11 @@ public class Repository implements DataSource {
         remoteDataSource.updateTrip(trip);
     }
 
-    public void loadAndSaveTripPhotos(Trip trip) {
-        if (trip == null || trip.getDestinations() == null) return;
+    public void loadAndSaveTripPhotos(Trip trip, final LoadAndSaveTripPhotosListener listener) {
+        if (trip == null || trip.getDestinations() == null) {
+            listener.OnTripPhotosLoaded();
+            return;
+        }
 
         for (final Destination destination : trip.getDestinations()) {
             remoteDataSource.loadPlace(destination.getPlaceId(), new LoadPlaceCallback() {
@@ -184,11 +193,13 @@ public class Repository implements DataSource {
                         destination.setPhotoReference(place.getPhotoReference());
                         updateDestination(destination);
                     }
+                    listener.OnTripPhotosLoaded();
                 }
 
                 @Override
                 public void onFailure() {
                     // do nothing
+                    listener.OnTripPhotosLoaded();
                 }
             });
         }

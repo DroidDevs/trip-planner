@@ -22,6 +22,7 @@ import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
 import droiddevs.com.tripplanner.suggestedplacedetails.SuggestedPlaceDetailsActivity;
 
 public class SuggestedPlacesFragment extends Fragment implements SuggestedPlacesContract.View, SuggestedPlacesAdapter.SuggestedPlaceInteractionListener {
+    public static final String ARG_PLACE_OBJ = "placeObj";
 
     private List<GooglePlace> mPlaces;
     private SuggestedPlacesContract.Presenter mPresenter;
@@ -88,6 +89,7 @@ public class SuggestedPlacesFragment extends Fragment implements SuggestedPlaces
     @Override
     public void OnPlaceClicked(GooglePlace place) {
         Intent intent = new Intent(getContext(), SuggestedPlaceDetailsActivity.class);
+        intent.putExtra(ARG_PLACE_OBJ, place);
         startActivity(intent);
     }
 }
