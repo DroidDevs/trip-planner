@@ -107,6 +107,21 @@ public class Repository implements DataSource {
     }
 
     @Override
+    public void loadPastTrips(final LoadTripListCallback callback) {
+        remoteDataSource.loadPastTrips(new LoadTripListCallback() {
+            @Override
+            public void onTripListLoaded(List<Trip> trips) {
+                callback.onTripListLoaded(trips);
+            }
+
+            @Override
+            public void onFailure() {
+                localDataSource.loadPastTrips(callback);
+            }
+        });
+    }
+
+    @Override
     public void loadTrip(final String tripId, final LoadTripCallback callback) {
         Log.d(LOG_TAG, "Loading trip: " + tripId);
         //return Trip immediately if it stores in the cache

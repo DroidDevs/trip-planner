@@ -92,6 +92,25 @@ public class RemoteDataSource implements DataSource {
     }
 
     @Override
+    public void loadPastTrips(final LoadTripListCallback callback) {
+        ParseQuery<Trip> query = ParseQuery.getQuery(Trip.class);
+        query.whereLessThanOrEqualTo(Trip.END_DATE_KEY, new Date());
+
+        query.findInBackground(new FindCallback<Trip>() {
+            @Override
+            public void done(List<Trip> objects, ParseException e) {
+                if (e != null) {
+                    Log.e(LOG_TAG, e.toString());
+                    callback.onFailure();
+                }
+                else {
+                    callback.onTripListLoaded(objects);
+                }
+            }
+        });
+    }
+
+    @Override
     public void loadTrip(String tripId, final LoadTripCallback callback) {
         ParseQuery<Trip> query = ParseQuery.getQuery(Trip.class);
         query.whereEqualTo(Trip.TRIP_ID_KEY, tripId);
