@@ -21,6 +21,8 @@
     <string name="trip_addedit_save_failed">Can\'t save trip</string>
     <string name="trip_addedit_error_message_empty_name">Please select a name</string>
     <string name="trip_addedit_error_message_empty_destination">Please select a destination</string>
+    <string name="trip_create">Create trip</string>
+    <string name="trip_edit">Edit trip</string>
 
     <string name="trip_menu_accessibility">Trip Menu</string>
     <string name="trip_image_accessibility">Trip Image</string>
