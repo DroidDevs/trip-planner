@@ -40,6 +40,7 @@ public class AddEditTripAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private OnChangeDestinationListener destinationChangeListener;
     private OnDeleteDestinationListener destinationDeleteListener;
     private StartDateViewHolder.OnStartDateChangeListener startDateChangeListener;
+    private OnSelectDurationListener onSelectDurationListener;
 
     public interface OnChangeDestinationListener {
         void onChangeDestination(String destId);
@@ -51,6 +52,10 @@ public class AddEditTripAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public interface OnDeleteDestinationListener {
         void onDeleteDestination(String destId);
+    }
+
+    public interface OnSelectDurationListener {
+        void onSelectDuration(String destId);
     }
 
     @Override
@@ -81,7 +86,7 @@ public class AddEditTripAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if ((holder instanceof DestinationViewHolder)) {
             Destination destination = mDestinations.get(position - ITEMS_OFFSET);
-            ((DestinationViewHolder) holder).bind(destination, destinationChangeListener, destinationDeleteListener);
+            ((DestinationViewHolder) holder).bind(destination, destinationChangeListener, destinationDeleteListener, onSelectDurationListener);
         }
         else if (holder instanceof NameViewHolder) {
             ((NameViewHolder) holder).setTitle(mName);
@@ -187,6 +192,10 @@ public class AddEditTripAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public void setStartDateChangeListener(StartDateViewHolder.OnStartDateChangeListener startDateChangeListener) {
         this.startDateChangeListener = startDateChangeListener;
+    }
+
+    public void setOnSelectDurationListener(OnSelectDurationListener onSelectDurationListener) {
+        this.onSelectDurationListener = onSelectDurationListener;
     }
 
     public void changeDestination(String oldDestId, Destination destination) {

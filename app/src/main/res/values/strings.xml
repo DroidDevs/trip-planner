@@ -41,4 +41,11 @@
     <string name="saved_places_empty_hint">Tap a suggested place icon to add it to your Saved places</string>
     <string name="saved_places">Saved Places</string>
 
+    <string name="one_day">1\nday</string>
+    <string name="two_days">2\ndays</string>
+    <string name="three_days">3\ndays</string>
+    <string name="one_week">1\nweek</string>
+    <string name="two_weeks">2\nweeks</string>
+    <string name="pick_days">peek\ndays</string>
+
 </resources>

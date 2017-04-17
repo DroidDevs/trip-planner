@@ -58,5 +58,7 @@ public interface Contract {
         void saveTrip(String name, Date startDate, List<String> destinationOrder);
 
         void createTripFromPlace(Place googlePlace);
+
+        void onDurationSelected(String destinationId, int durationIdDays);
     }
 }

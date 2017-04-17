@@ -31,11 +31,20 @@ public class DestinationViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(final Destination destination, final AddEditTripAdapter.OnChangeDestinationListener destinationChangeListener,
-                     final AddEditTripAdapter.OnDeleteDestinationListener destinationDeleteListener) {
+                     final AddEditTripAdapter.OnDeleteDestinationListener destinationDeleteListener,
+                     final AddEditTripAdapter.OnSelectDurationListener onSelectDurationListener) {
 
         titleTextView.setText(destination.getName());
-        durationTextView.setText(destination.getDuration()+" days");
+        durationTextView.setText(destination.getDuration() + " days");
 
+        if (onSelectDurationListener != null) {
+            durationTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onSelectDurationListener.onSelectDuration(destination.getDestinationId());
+                }
+            });
+        }
         if (destinationChangeListener != null) {
             titleTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -44,7 +53,7 @@ public class DestinationViewHolder extends RecyclerView.ViewHolder {
                 }
             });
         }
-        if (destinationDeleteListener!=null){
+        if (destinationDeleteListener != null) {
             closeImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

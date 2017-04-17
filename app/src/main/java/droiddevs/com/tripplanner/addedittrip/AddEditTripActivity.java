@@ -40,7 +40,7 @@ public class AddEditTripActivity extends AppCompatActivity implements AddEditTri
         setupToolbar();
 
         String tripId = getIntent().getStringExtra(ARGUMENT_TRIP_ID);
-        isNewTrip = tripId == null;
+        isNewTrip = (tripId == null || "".equalsIgnoreCase(tripId));
 
         AddEditTripFragment addEditTripFragment = (AddEditTripFragment) getSupportFragmentManager().findFragmentById(R.id.content_frame);
         if (addEditTripFragment == null) {
