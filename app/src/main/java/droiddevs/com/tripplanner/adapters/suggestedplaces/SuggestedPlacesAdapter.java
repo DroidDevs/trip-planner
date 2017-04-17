@@ -6,10 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
+import droiddevs.com.tripplanner.model.googleplaces.Photo;
 
 /**
  * Created by Jared12 on 4/15/17.
@@ -47,6 +50,16 @@ public class SuggestedPlacesAdapter extends RecyclerView.Adapter<SuggestedPlaces
     public void onBindViewHolder(SuggestedPlacesViewHolder holder, int position) {
         GooglePlace googlePlace = mPlaces.get(position);
         holder.tvPlaceTitle.setText(googlePlace.getName());
+        holder.rbPlaceRating.setRating(googlePlace.getRating());
+
+        List<Photo> photos = googlePlace.getPhotos();
+        if (photos.size() > 0) {
+            Photo placePhoto = photos.get(0);
+            Glide.with(getContext())
+                    .load(placePhoto.getFullPhotoURLReference())
+                    .centerCrop()
+                    .into(holder.ivPlaceImage);
+        }
     }
 
     @Override
@@ -69,5 +82,9 @@ public class SuggestedPlacesAdapter extends RecyclerView.Adapter<SuggestedPlaces
         if (place != null) {
             mPlaceInteractionListener.OnPlaceClicked(place);
         }
+    }
+
+    public Context getContext() {
+        return mContext;
     }
 }

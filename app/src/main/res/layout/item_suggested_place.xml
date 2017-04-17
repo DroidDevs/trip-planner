@@ -12,15 +12,32 @@
     <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="260dp">
+
+        <ImageView
+            android:id="@+id/ivPlaceImage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_alignParentTop="true"/>
 
         <TextView
             android:id="@+id/tvPlaceTitle"
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:layout_centerInParent="true"
+            android:textAlignment="textStart"
+            android:layout_below="@+id/ivPlaceImage"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"/>
+
+        <RatingBar
+            android:id="@+id/rbPlaceRating"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:textAlignment="textStart" />
+            android:layout_below="@+id/tvPlaceTitle"
+            android:layout_marginStart="20dp"
+            style="@style/Base.Widget.AppCompat.RatingBar.Small" />
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

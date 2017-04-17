@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GooglePlace implements Parcelable
@@ -29,7 +30,7 @@ public class GooglePlace implements Parcelable
     private OpeningHours openingHours;
     @SerializedName("photos")
     @Expose
-    private List<Photo> photos = null;
+    private List<Photo> photos = new ArrayList<>();
     @SerializedName("place_id")
     @Expose
     private String placeId;
@@ -44,7 +45,7 @@ public class GooglePlace implements Parcelable
     private String scope;
     @SerializedName("types")
     @Expose
-    private List<String> types = null;
+    private List<String> types = new ArrayList<>();
     @SerializedName("vicinity")
     @Expose
     private String vicinity;

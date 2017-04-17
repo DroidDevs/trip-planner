@@ -35,10 +35,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripViewHolder> implements
         mTrips = trips;
     }
 
-    private Context getContext() {
-        return mContext;
-    }
-
     public void setOnTripClickListener(TripInteractionListener listener) {
         mTripInteractionListener = listener;
     }
@@ -121,5 +117,9 @@ public class TripAdapter extends RecyclerView.Adapter<TripViewHolder> implements
         int tripIndex = mTrips.indexOf(trip);
         mTrips.set(tripIndex, trip);
         notifyItemChanged(tripIndex);
+    }
+
+    private Context getContext() {
+        return mContext;
     }
 }
