@@ -189,7 +189,7 @@ public class Repository implements DataSource {
             remoteDataSource.loadPlace(destination.getPlaceId(), new LoadPlaceCallback() {
                 @Override
                 public void onPlaceLoaded(SavedPlace place) {
-                    if (place.getPhotoReference()!=null) {
+                    if (place.getPhotoReference() != null) {
                         destination.setPhotoReference(place.getPhotoReference());
                         updateDestination(destination);
                     }
