@@ -8,12 +8,13 @@ import droiddevs.com.tripplanner.adapters.tripmap.TripMapAdapter;
 import droiddevs.com.tripplanner.application.TripPlannerApplication;
 import droiddevs.com.tripplanner.map.BaseMapFragment;
 import droiddevs.com.tripplanner.map.MapContract;
+import droiddevs.com.tripplanner.model.map.TripDestinationMapItem;
 
 /**
  * Created by elmira on 4/11/17.
  */
 
-public class TripMapFragment extends BaseMapFragment {
+public class TripMapFragment extends BaseMapFragment<TripDestinationMapItem> {
 
     public static final String ARGUMENT_TRIP_ID = "tripId";
     private MapContract.Presenter mPresenter;

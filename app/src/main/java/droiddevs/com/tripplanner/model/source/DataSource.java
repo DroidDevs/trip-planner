@@ -5,9 +5,9 @@ import android.location.Location;
 import java.util.List;
 
 import droiddevs.com.tripplanner.model.Destination;
-import droiddevs.com.tripplanner.model.FbPlace;
-import droiddevs.com.tripplanner.model.FbUser;
-import droiddevs.com.tripplanner.model.Point;
+import droiddevs.com.tripplanner.model.fb.FbPlace;
+import droiddevs.com.tripplanner.model.fb.FbUser;
+import droiddevs.com.tripplanner.model.SavedPlace;
 import droiddevs.com.tripplanner.model.Trip;
 import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
 
@@ -49,7 +49,7 @@ public interface DataSource {
     }
 
     interface LoadPlaceCallback {
-        void onPlaceLoaded(Point place);
+        void onPlaceLoaded(SavedPlace place);
 
         void onFailure();
     }
@@ -68,6 +68,24 @@ public interface DataSource {
         void onPlacesFound(List<GooglePlace> places);
 
         void onFailure();
+    }
+
+    interface LoadSavedPlacesCallback {
+        void onSavedPlacesLoaded(List<SavedPlace> places);
+
+        void onFailure();
+    }
+
+    interface DeleteSavedPlaceCallback {
+        void onSuccess();
+
+        void onFailed();
+    }
+
+    interface CreateSavedPlaceCallback {
+        void onSuccess();
+
+        void onFailed();
     }
 
     void loadOpenTrips(LoadTripListCallback callback);
@@ -93,4 +111,11 @@ public interface DataSource {
     void searchFbPlaces(Location location, int radiusInMeters, int resultsLimit, String searchText, SearchFbPlacesCallback callback);
 
     void searchGooglePlaces(String location, int radiusInMeters, String searchText, String apiKey, SearchGooglePlacesCallback callback);
+
+    void loadSavedPlaces(String destinationId, LoadSavedPlacesCallback callback);
+
+    void deleteSavedPlace(SavedPlace savedPlace, DeleteSavedPlaceCallback callback);
+
+    void createSavedPlace(SavedPlace savedPlace, CreateSavedPlaceCallback callback);
+
 }

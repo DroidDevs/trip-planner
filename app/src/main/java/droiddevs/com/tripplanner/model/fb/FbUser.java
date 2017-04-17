@@ -1,4 +1,4 @@
-package droiddevs.com.tripplanner.model;
+package droiddevs.com.tripplanner.model.fb;
 
 import org.json.JSONException;
 import org.json.JSONObject;

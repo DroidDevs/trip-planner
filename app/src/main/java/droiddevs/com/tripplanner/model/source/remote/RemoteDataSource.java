@@ -27,13 +27,13 @@ import java.util.List;
 
 import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.model.Destination;
-import droiddevs.com.tripplanner.model.FbPlace;
-import droiddevs.com.tripplanner.model.FbUser;
-import droiddevs.com.tripplanner.model.Point;
+import droiddevs.com.tripplanner.model.fb.FbPlace;
+import droiddevs.com.tripplanner.model.fb.FbUser;
+import droiddevs.com.tripplanner.model.SavedPlace;
 import droiddevs.com.tripplanner.model.Trip;
 import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
 import droiddevs.com.tripplanner.model.source.DataSource;
-import droiddevs.com.tripplanner.model.util.PlacePointConverter;
+import droiddevs.com.tripplanner.model.util.PlaceConverter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -145,7 +145,8 @@ public class RemoteDataSource implements DataSource {
                 if (e != null) {
                     Log.e(LOG_TAG, e.toString());
                     callback.onFailure();
-                } else {
+                }
+                else {
                     Log.e(LOG_TAG, "loaded destination");
                     callback.onDestinationLoaded(object);
                 }
@@ -234,7 +235,7 @@ public class RemoteDataSource implements DataSource {
             @Override
             public void onResponse(Call<PlaceDetailsResponse> call, Response<PlaceDetailsResponse> response) {
                 Log.d(LOG_TAG, "Loaded place from web-api, place id: " + placeId);
-                Point place = PlacePointConverter.convertToPoint(response.body());
+                SavedPlace place = PlaceConverter.convertToSavedPlace(response.body());
                 Log.d(LOG_TAG, place.toString());
                 callback.onPlaceLoaded(place);
             }
@@ -265,7 +266,8 @@ public class RemoteDataSource implements DataSource {
                                 JSONObject responseObject = response.getJSONObject();
                                 JSONArray placesArray = responseObject.getJSONArray("data");
 
-                                List<FbPlace> places = gson.fromJson(placesArray.toString(), new TypeToken<Collection<FbPlace>>(){}.getType());
+                                List<FbPlace> places = gson.fromJson(placesArray.toString(), new TypeToken<Collection<FbPlace>>() {
+                                }.getType());
                                 callback.onPlacesFound(places);
                             } catch (Throwable ex) {
                                 ex.printStackTrace();
@@ -287,7 +289,8 @@ public class RemoteDataSource implements DataSource {
             public void onResponse(Call<List<GooglePlace>> call, Response<List<GooglePlace>> response) {
                 if (response != null) {
                     callback.onPlacesFound(response.body());
-                } else {
+                }
+                else {
                     callback.onFailure();
                 }
             }
@@ -296,6 +299,65 @@ public class RemoteDataSource implements DataSource {
             public void onFailure(Call<List<GooglePlace>> call, Throwable t) {
                 Log.e(LOG_TAG, t.getLocalizedMessage());
                 callback.onFailure();
+            }
+        });
+    }
+
+    @Override
+    public void loadSavedPlaces(String destinationId, final LoadSavedPlacesCallback callback) {
+        ParseQuery<SavedPlace> query = ParseQuery.getQuery(SavedPlace.class);
+        query.whereEqualTo(SavedPlace.DESTINATION_ID_KEY, destinationId);
+
+        query.findInBackground(new FindCallback<SavedPlace>() {
+            @Override
+            public void done(List<SavedPlace> objects, ParseException e) {
+                if (e != null) {
+                    Log.e(LOG_TAG, e.toString());
+                    callback.onFailure();
+                }
+                else {
+                    callback.onSavedPlacesLoaded(objects);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void deleteSavedPlace(SavedPlace savedPlace, final DeleteSavedPlaceCallback callback) {
+        savedPlace.deleteEventually(new DeleteCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(LOG_TAG, e.toString());
+                    if (callback != null) {
+                        callback.onFailed();
+                    }
+                }
+                else {
+                    if (callback != null) {
+                        callback.onSuccess();
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void createSavedPlace(SavedPlace savedPlace, final CreateSavedPlaceCallback callback) {
+        savedPlace.saveEventually(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(LOG_TAG, e.toString());
+                    if (callback != null) {
+                        callback.onFailed();
+                    }
+                }
+                else {
+                    if (callback != null) {
+                        callback.onSuccess();
+                    }
+                }
             }
         });
     }

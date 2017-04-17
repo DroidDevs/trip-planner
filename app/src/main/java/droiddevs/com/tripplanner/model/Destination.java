@@ -3,33 +3,22 @@ package droiddevs.com.tripplanner.model;
 import com.parse.ParseClassName;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by elmira on 4/4/17.
  */
 
 @ParseClassName("Destination")
-public class Destination extends Point {
+public class Destination extends SavedPlace {
 
-    public static final String DESTINATION_ID_KEY = "destinationId";
     public static final String TRIP_ID_KEY = "tripId";
     public static final String ORDER_KEY = "order";
     public static final String DURATION_KEY = "duration";
     public static final String START_DATE_KEY = "startDate";
     public static final String END_DATE_KEY = "endDate";
-    public static final String SAVED_PLACES_KEY = "savedPlaces";
 
     public Destination() {
         super();
-    }
-
-    public String getDestinationId() {
-        return getString(DESTINATION_ID_KEY);
-    }
-
-    public void setDestinationId(String destinationId) {
-        put(DESTINATION_ID_KEY, destinationId);
     }
 
     public String getTripId() {
@@ -72,12 +61,20 @@ public class Destination extends Point {
         put(END_DATE_KEY, endDate);
     }
 
-    public List<Point> getSavedPlaces() {
-        return getList(SAVED_PLACES_KEY);
+    public double getLatitude() {
+        return getDouble(LATITUDE_KEY);
     }
 
-    public void setSavedPlaces(List<Point> savedPlaces) {
-        put(SAVED_PLACES_KEY, savedPlaces);
+    public void setLatitude(double latitude) {
+        put(LATITUDE_KEY, latitude);
+    }
+
+    public double getLongitude() {
+        return getDouble(LONGITUDE_KEY);
+    }
+
+    public void setLongitude(double longitude) {
+        put(LONGITUDE_KEY, longitude);
     }
 
     @Override
@@ -90,7 +87,6 @@ public class Destination extends Point {
                 ", duration=" + getDuration() +
                 ", startDate=" + getStartDate() +
                 ", endDate=" + getEndDate() +
-                ", savedPlaces=" + getSavedPlaces() +
                 '}';
     }
 }

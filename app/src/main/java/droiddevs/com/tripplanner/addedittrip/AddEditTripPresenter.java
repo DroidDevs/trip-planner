@@ -34,6 +34,9 @@ public class AddEditTripPresenter implements Contract.Presenter {
     private Calendar mCalendar = Calendar.getInstance();
     private static final int DEFAULT_DURATION_IN_DAYS = 2;
 
+    /*//todo remove this
+    private List<SavedPlace> savedPlaces = new ArrayList<>();*/
+
     public AddEditTripPresenter(Repository mRepository, Contract.View mView, String tripId) {
         this.mRepository = mRepository;
         this.mView = mView;
@@ -95,6 +98,15 @@ public class AddEditTripPresenter implements Contract.Presenter {
 
         mView.onDestinationAdded(destination);
         mView.onTripEndDateChanged(mTrip.getEndDate());
+
+        /*//todo remove this
+        SavedPlace savedPlace = new SavedPlace();
+        savedPlace.setPlaceId(googlePlace.getId());
+        savedPlace.setLongitude(googlePlace.getLatLng().longitude);
+        savedPlace.setLatitude(googlePlace.getLatLng().latitude);
+        savedPlace.setDestinationId(destination.getDestinationId());
+        savedPlace.setName(googlePlace.getName().toString());
+        savedPlaces.add(savedPlace);*/
     }
 
     @Override
@@ -177,6 +189,20 @@ public class AddEditTripPresenter implements Contract.Presenter {
                 }
             }
         });
+
+        /*for (final SavedPlace savedPlace: savedPlaces) {
+            mRepository.createSavedPlace(savedPlace, new DataSource.CreateSavedPlaceCallback() {
+                @Override
+                public void onSuccess() {
+                    Log.d(LOG_TAG, "save place: "+savedPlace.getName());
+                }
+
+                @Override
+                public void onFailed() {
+
+                }
+            });
+        }*/
     }
 
     @Override
@@ -214,17 +240,13 @@ public class AddEditTripPresenter implements Contract.Presenter {
 
     private Destination convertPlaceToDestination(Place googlePlace) {
         Destination destination = new Destination();
+        destination.setDestinationId(UUID.randomUUID().toString());
+
         destination.setName(googlePlace.getName().toString());
-        destination.setPointId(googlePlace.getId());
+        destination.setPlaceId(googlePlace.getId());
 
         destination.setLatitude(googlePlace.getLatLng().latitude);
         destination.setLongitude(googlePlace.getLatLng().longitude);
-
-        destination.setPhoneNumber(googlePlace.getPhoneNumber().toString());
-        destination.setRating(googlePlace.getRating());
-
-        destination.setTypes(googlePlace.getPlaceTypes());
-        destination.setDestinationId(UUID.randomUUID().toString());
 
         return destination;
     }
