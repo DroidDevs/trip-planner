@@ -7,11 +7,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.parse.LogInCallback;
 import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +28,8 @@ import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.triplist.TripsActivity;
 
 public class LoginActivity extends AppCompatActivity {
+    private static final String TAG = LoginActivity.class.getSimpleName();
+
     @BindView(R.id.btContinueWithFB)
     Button btContinueWithFB;
 
@@ -52,22 +60,50 @@ public class LoginActivity extends AppCompatActivity {
                     // TODO: Error Logging In
                     Log.d("DEBUG", "Uh oh. The user cancelled the Facebook login.");
                 }
-                else if (user.isNew()) {
-                    // TODO: SUCCESS
-                    Log.d("DEBUG", "User signed up and logged in through Facebook!");
-                    Intent intent = new Intent(LoginActivity.this, TripsActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
                 else {
-                    // TODO: SUCCESS
-                    Log.d("DEBUG", "User logged in through Facebook!");
-                    Intent intent = new Intent(LoginActivity.this, TripsActivity.class);
-                    startActivity(intent);
-                    finish();
+                    if (user.isNew()) { // New user
+                        saveUserInfoFromFacebook(); // Save email to parse
+                    }
+                    showTrips();
                 }
             }
         });
+    }
+
+    private void saveUserInfoFromFacebook() {
+        Bundle params = new Bundle();
+        params.putString("fields", "first_name,last_name,email");
+
+        GraphRequest request = GraphRequest.newGraphPathRequest(AccessToken.getCurrentAccessToken(), "me", new GraphRequest.Callback() {
+            @Override
+            public void onCompleted(GraphResponse response) {
+
+                try {
+                    JSONObject responseObject = response.getJSONObject();
+                    if (responseObject.has("email")) {
+                        ParseUser user = ParseUser.getCurrentUser();
+                        if (user != null) {
+                            String userEmail = responseObject.getString("email");
+                            user.setEmail(userEmail);
+                            user.save();
+                        }
+                    }
+                } catch (JSONException e) {
+                    Log.d(TAG, "Error deserializing json");
+                } catch (ParseException e) {
+                    Log.d(TAG, "Error saving parse user email");
+                }
+            }
+        });
+
+        request.setParameters(params);
+        request.executeAsync();
+    }
+
+    private void showTrips() {
+        Intent intent = new Intent(LoginActivity.this, TripsActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void setACL() {

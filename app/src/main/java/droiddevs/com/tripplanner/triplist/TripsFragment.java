@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -37,10 +38,11 @@ public class TripsFragment extends Fragment implements TripsContract.View, TripA
     private List<Trip> mTrips;
     private TripsContract.Presenter mPresenter;
     private TripAdapter mAdapter;
-
-    @BindView(R.id.rvTrips) RecyclerView rvTrips;
     private Unbinder unbinder;
     private boolean onResumeFromAddEdit = false;
+
+    @BindView(R.id.rvTrips)
+    RecyclerView rvTrips;
 
     public static TripsFragment newInstance() {
         return new TripsFragment();
@@ -134,7 +136,8 @@ public class TripsFragment extends Fragment implements TripsContract.View, TripA
     }
 
     private void showTripMenuPopup(final Trip trip, View anchorView) {
-        PopupMenu popup = new PopupMenu(anchorView.getContext(), anchorView);
+        ActionBar actionBar = ((TripsActivity) getActivity()).getSupportActionBar();
+        PopupMenu popup = new PopupMenu(actionBar.getThemedContext(), anchorView);
         popup.getMenuInflater().inflate(R.menu.popup_trip_menu, popup.getMenu());
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {

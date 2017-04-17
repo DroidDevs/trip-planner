@@ -8,11 +8,36 @@
     android:orientation="vertical"
     android:gravity="bottom">
 
+    <ImageView
+        android:id="@+id/ivUserImage"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/tvUsername"
+        android:layout_marginBottom="10dp"/>
+
     <TextView
+        android:id="@+id/tvUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Header"
         android:textColor="@android:color/white"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:layout_above="@+id/tvUserEmail"
+        android:layout_marginBottom="2dp"/>
+
+    <TextView
+        android:id="@+id/tvUserEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"/>
 
 </RelativeLayout>

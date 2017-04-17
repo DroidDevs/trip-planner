@@ -9,7 +9,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.facebook.Profile;
+import com.parse.ParseUser;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,6 +55,7 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         mDrawerToggle = setupDrawerToggle();
         mDrawerLayout.addDrawerListener(mDrawerToggle);
+        setupDrawerHeader(nvDrawer.getHeaderView(0));
         setupDrawerContent(nvDrawer);
 
         // Change toolbar title
@@ -103,6 +110,7 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
+        mDrawerLayout.closeDrawers(); // Close drawer
         switch (menuItem.getItemId()) {
             case R.id.nav_create_trip:
                 showAddEditTrip(null); // Create trip
@@ -140,5 +148,27 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
     @Override
     public void OnTripEditRequest(String tripId) {
         showAddEditTrip(tripId);
+    }
+
+    private void setupDrawerHeader(View headerLayout) {
+        ParseUser currentParseUser = ParseUser.getCurrentUser();
+        Profile currentUser = Profile.getCurrentProfile();
+        if (currentUser != null) {
+            TextView tvUsername = (TextView) headerLayout.findViewById(R.id.tvUsername);
+            TextView tvUserEmail = (TextView) headerLayout.findViewById(R.id.tvUserEmail);
+            ImageView ivUserImage = (ImageView) headerLayout.findViewById(R.id.ivUserImage);
+
+            tvUsername.setText(currentUser.getName());
+
+            String email = currentParseUser.getEmail();
+            if (email != null && email.length() > 0) {
+                tvUserEmail.setText(email);
+            }
+
+            Glide.with(TripsActivity.this)
+                    .load(currentUser.getProfilePictureUri(400, 0))
+                    .into(ivUserImage);
+            //.transform(new BorderedCircleTransform(this))
+        }
     }
 }

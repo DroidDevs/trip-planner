@@ -200,6 +200,25 @@ public class Repository implements DataSource {
         }
     }
 
+    @Override
+    public void loadDestination(final String destinationId, final LoadDestinationCallback callback) {
+        localDataSource.loadDestination(destinationId, new LoadDestinationCallback() {
+            @Override
+            public void onDestinationLoaded(Destination destination) {
+                callback.onDestinationLoaded(destination);
+            }
+
+            @Override
+            public void onFailure() {
+                if (canLoadFromRemoteSource) {
+                    remoteDataSource.loadDestination(destinationId, callback);
+                    return;
+                }
+                callback.onFailure();
+            }
+        });
+    }
+
     public void setCanLoadFromRemoteSource(boolean canLoadFromRemoteSource) {
         this.canLoadFromRemoteSource = canLoadFromRemoteSource;
     }

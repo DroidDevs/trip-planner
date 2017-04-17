@@ -1,5 +1,6 @@
 package droiddevs.com.tripplanner.tripdestination;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,13 +18,16 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.adapters.tripdestination.TripDestinationAdapter;
-import droiddevs.com.tripplanner.model.DestinationOption;
+import droiddevs.com.tripplanner.model.PlaceOption;
+import droiddevs.com.tripplanner.suggestedplaces.SuggestedPlacesActivity;
 import droiddevs.com.tripplanner.util.SpacesItemDecoration;
 
 public class TripDestinationFragment extends Fragment implements TripDestinationContract.View, TripDestinationAdapter.DestinationOptionClickedListener {
-    private static final String ARG_DESTINATION_ID = "destination_id";
+    public static final String ARG_DESTINATION_ID = "destination_id";
+    public static final String ARG_PLACE_TYPE_SEARCH_STRING = "placeTypeSearchString";
+    public static final String ARG_PLACE_TYPE_TITLE = "placeTypeTitle";
 
-    private List<DestinationOption> mDestinationOptions;
+    private List<PlaceOption> mPlaceOptions;
     private TripDestinationAdapter mAdapter;
 
     @BindView(R.id.rvDestinationOptions)
@@ -75,8 +79,8 @@ public class TripDestinationFragment extends Fragment implements TripDestination
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        mDestinationOptions = new ArrayList<>();
-        mAdapter = new TripDestinationAdapter(getContext(), mDestinationOptions);
+        mPlaceOptions = new ArrayList<>();
+        mAdapter = new TripDestinationAdapter(getContext(), mPlaceOptions);
         mAdapter.setOnDestinationOptionClickedListener(this);
 
         rvDestinationOptions.setAdapter(mAdapter);
@@ -88,7 +92,7 @@ public class TripDestinationFragment extends Fragment implements TripDestination
     }
 
     @Override
-    public void showDestinationOptions(List<DestinationOption> options) {
+    public void showDestinationPlaceOptions(List<PlaceOption> options) {
         mAdapter.setOptions(options);
     }
 
@@ -98,7 +102,11 @@ public class TripDestinationFragment extends Fragment implements TripDestination
     }
 
     @Override
-    public void OnOptionClicked(DestinationOption option) {
-        // TODO: LOAD OPTION ACTIVITY
+    public void OnOptionClicked(PlaceOption option) {
+        Intent intent = new Intent(getContext(), SuggestedPlacesActivity.class);
+        intent.putExtra(ARG_DESTINATION_ID, mDesinationId);
+        intent.putExtra(ARG_PLACE_TYPE_SEARCH_STRING, option.getOptionType().typeSearchString());
+        intent.putExtra(ARG_PLACE_TYPE_TITLE, option.getOptionTitle());
+        startActivity(intent);
     }
 }

@@ -21,7 +21,6 @@ import com.parse.SaveCallback;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -131,6 +130,29 @@ public class RemoteDataSource implements DataSource {
     }
 
     @Override
+    public void loadDestination(String destinationId, final LoadDestinationCallback callback) {
+        if (destinationId == null) {
+            callback.onFailure();
+            return;
+        }
+
+        ParseQuery<Destination> query = ParseQuery.getQuery(Destination.class);
+        query.whereEqualTo(Destination.DESTINATION_ID_KEY, destinationId);
+        query.getFirstInBackground(new GetCallback<Destination>() {
+            @Override
+            public void done(Destination object, ParseException e) {
+                if (e != null) {
+                    Log.e(LOG_TAG, e.toString());
+                    callback.onFailure();
+                } else {
+                    Log.e(LOG_TAG, "loaded destination");
+                    callback.onDestinationLoaded(object);
+                }
+            }
+        });
+    }
+
+    @Override
     public void updateTrip(final Trip trip, final SaveTripCallback callback) {
         trip.saveEventually(new SaveCallback() {
             @Override
@@ -226,7 +248,7 @@ public class RemoteDataSource implements DataSource {
 
     @Override
     public void searchFbPlaces(Location location, int radiusInMeters, int resultsLimit, String searchText, final SearchFbPlacesCallback callback) {
-        GraphRequest.newPlacesSearchRequest(
+        GraphRequest searchRequest = GraphRequest.newPlacesSearchRequest(
                 AccessToken.getCurrentAccessToken(),
                 location, radiusInMeters, resultsLimit, searchText,
                 new GraphRequest.GraphJSONArrayCallback() {
@@ -239,9 +261,10 @@ public class RemoteDataSource implements DataSource {
                         else {
                             try {
                                 Log.d(LOG_TAG, "FB raw response: " + response.getRawResponse());
-                                Type collectionType = new TypeToken<Collection<FbPlace>>() {
-                                }.getType();
-                                List<FbPlace> places = gson.fromJson(response.getRawResponse(), collectionType);
+                                JSONObject responseObject = response.getJSONObject();
+                                JSONArray placesArray = responseObject.getJSONArray("data");
+
+                                List<FbPlace> places = gson.fromJson(placesArray.toString(), new TypeToken<Collection<FbPlace>>(){}.getType());
                                 callback.onPlacesFound(places);
                             } catch (Throwable ex) {
                                 ex.printStackTrace();
@@ -251,5 +274,6 @@ public class RemoteDataSource implements DataSource {
                         }
                     }
                 });
+        searchRequest.executeAsync();
     }
 }
