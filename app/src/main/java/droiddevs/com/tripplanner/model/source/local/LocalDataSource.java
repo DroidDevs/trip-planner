@@ -158,6 +158,11 @@ public class LocalDataSource implements DataSource {
     }
 
     @Override
+    public void searchGooglePlaces(String location, int radiusInMeters, String searchText, String apiKey, SearchGooglePlacesCallback callback) {
+        throw new UnsupportedOperationException("Operation is not supported in local data source");
+    }
+
+    @Override
     public void loadPlace(String placeId, final LoadPlaceCallback callback) {
         ParseQuery<Point> query = ParseQuery.getQuery(Point.class).fromLocalDatastore();
         query.whereEqualTo(Point.POINT_ID_KEY, placeId);

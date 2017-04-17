@@ -31,6 +31,7 @@ import droiddevs.com.tripplanner.model.FbPlace;
 import droiddevs.com.tripplanner.model.FbUser;
 import droiddevs.com.tripplanner.model.Point;
 import droiddevs.com.tripplanner.model.Trip;
+import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
 import droiddevs.com.tripplanner.model.source.DataSource;
 import droiddevs.com.tripplanner.model.util.PlacePointConverter;
 import retrofit2.Call;
@@ -275,5 +276,27 @@ public class RemoteDataSource implements DataSource {
                     }
                 });
         searchRequest.executeAsync();
+    }
+
+    public void searchGooglePlaces(String location, int radiusInMeters, String searchTypeString, String apiKey, final SearchGooglePlacesCallback callback) {
+        GooglePlacesService retrofitService = RetrofitGooglePlacesService.newGooglePlacesService();
+
+        Call<List<GooglePlace>> listCall = retrofitService.searchPlaces(location, radiusInMeters, searchTypeString, apiKey);
+        listCall.enqueue(new Callback<List<GooglePlace>>() {
+            @Override
+            public void onResponse(Call<List<GooglePlace>> call, Response<List<GooglePlace>> response) {
+                if (response != null) {
+                    callback.onPlacesFound(response.body());
+                } else {
+                    callback.onFailure();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<GooglePlace>> call, Throwable t) {
+                Log.e(LOG_TAG, t.getLocalizedMessage());
+                callback.onFailure();
+            }
+        });
     }
 }

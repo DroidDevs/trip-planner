@@ -9,6 +9,7 @@ import droiddevs.com.tripplanner.model.FbPlace;
 import droiddevs.com.tripplanner.model.FbUser;
 import droiddevs.com.tripplanner.model.Point;
 import droiddevs.com.tripplanner.model.Trip;
+import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
 
 /**
  * Created by elmira on 4/3/17.
@@ -63,6 +64,12 @@ public interface DataSource {
         void onFailure();
     }
 
+    interface SearchGooglePlacesCallback {
+        void onPlacesFound(List<GooglePlace> places);
+
+        void onFailure();
+    }
+
     void loadOpenTrips(LoadTripListCallback callback);
 
     void loadTrip(String tripId, LoadTripCallback callback);
@@ -84,4 +91,6 @@ public interface DataSource {
     void updateDestination(Destination destination);
 
     void searchFbPlaces(Location location, int radiusInMeters, int resultsLimit, String searchText, SearchFbPlacesCallback callback);
+
+    void searchGooglePlaces(String location, int radiusInMeters, String searchText, String apiKey, SearchGooglePlacesCallback callback);
 }

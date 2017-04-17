@@ -1,11 +1,9 @@
 package droiddevs.com.tripplanner.suggestedplaces;
 
-import android.location.Location;
-
 import java.util.List;
 
 import droiddevs.com.tripplanner.model.Destination;
-import droiddevs.com.tripplanner.model.FbPlace;
+import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
 import droiddevs.com.tripplanner.model.source.DataSource;
 import droiddevs.com.tripplanner.model.source.Repository;
 
@@ -55,22 +53,21 @@ public class SuggestedPlacesPresenter implements SuggestedPlacesContract.Present
     }
 
     private void loadSuggestedPlacesForDestination(Destination destination, String placeTypeSearchString) {
-        // Construct location object
-        Location destinationLocation = new Location("");
-        destinationLocation.setLatitude(destination.getLatitude());
-        destinationLocation.setLongitude(destination.getLongitude());
+        final String GoogleAPIKey = "AIzaSyBLM-VesFSnqP6wvQJFB0pxOmMX4QDHHig";
+        final String locationString = String.valueOf(destination.getLatitude())
+                + "," + String.valueOf(destination.getLongitude());
 
-        // Search for fb places of type within 2 miles (in meters) with max 50 results
-        mRepository.searchFbPlaces(destinationLocation, 3219, 50, placeTypeSearchString, new DataSource.SearchFbPlacesCallback() {
-            @Override
-            public void onPlacesFound(List<FbPlace> places) {
-                mView.showSuggestedPlaces(places);
-            }
+        mRepository.searchGooglePlaces(locationString, 3219, placeTypeSearchString, GoogleAPIKey,
+                new DataSource.SearchGooglePlacesCallback() {
+                        @Override
+                        public void onPlacesFound(List<GooglePlace> places) {
+                            mView.showSuggestedPlaces(places);
+                        }
 
-            @Override
-            public void onFailure() {
-                mView.showSuggestedPlaces(null);
-            }
+                        @Override
+                        public void onFailure() {
+                            mView.showSuggestedPlaces(null);
+                        }
         });
     }
 }

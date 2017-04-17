@@ -2,7 +2,7 @@ package droiddevs.com.tripplanner.suggestedplaces;
 
 import java.util.List;
 
-import droiddevs.com.tripplanner.model.FbPlace;
+import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
 import droiddevs.com.tripplanner.mvp.BasePresenter;
 import droiddevs.com.tripplanner.mvp.BaseView;
 
@@ -12,7 +12,7 @@ import droiddevs.com.tripplanner.mvp.BaseView;
 
 public class SuggestedPlacesContract {
     interface View extends BaseView<Presenter> {
-        void showSuggestedPlaces(List<FbPlace> places);
+        void showSuggestedPlaces(List<GooglePlace> places);
     }
 
     interface Presenter extends BasePresenter {

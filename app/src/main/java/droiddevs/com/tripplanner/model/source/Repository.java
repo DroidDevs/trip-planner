@@ -243,6 +243,11 @@ public class Repository implements DataSource {
         remoteDataSource.searchFbPlaces(location, radiusInMeters, resultsLimit, searchText, callback);
     }
 
+    @Override
+    public void searchGooglePlaces(String location, int radiusInMeters, String searchText, String apiKey, SearchGooglePlacesCallback callback) {
+        remoteDataSource.searchGooglePlaces(location, radiusInMeters, searchText, apiKey, callback);
+    }
+
     private void addTripsToCache(List<Trip> list) {
         if (list == null || list.size() == 0) return;
 

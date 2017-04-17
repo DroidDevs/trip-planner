@@ -70,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    // TODO: SHOULD MOVE THIS GRAPH REQUEST TO REMOTE DATASOURCE
     private void saveUserInfoFromFacebook() {
         Bundle params = new Bundle();
         params.putString("fields", "first_name,last_name,email");
