@@ -15,7 +15,7 @@ import droiddevs.com.tripplanner.application.TripPlannerApplication;
 
 import static droiddevs.com.tripplanner.addedittrip.AddEditTripFragment.ARGUMENT_TRIP_ID;
 import static droiddevs.com.tripplanner.triplist.TripsActivity.ADD_TRIP_RESULT_TYPE;
-import static droiddevs.com.tripplanner.triplist.TripsActivity.ARGUMENT_TRIP_RESULT_TYPE;
+import static droiddevs.com.tripplanner.triplist.TripsActivity.ARG_TRIP_RESULT_TYPE;
 import static droiddevs.com.tripplanner.triplist.TripsActivity.EDIT_TRIP_RESULT_TYPE;
 
 public class AddEditTripActivity extends AppCompatActivity implements AddEditTripFragment.OnFragmentDoneListener {
@@ -69,7 +69,7 @@ public class AddEditTripActivity extends AppCompatActivity implements AddEditTri
         Intent resultIntent;
         if (tripId != null) {
             resultIntent = new Intent();
-            resultIntent.putExtra(ARGUMENT_TRIP_RESULT_TYPE, EDIT_TRIP_RESULT_TYPE);
+            resultIntent.putExtra(ARG_TRIP_RESULT_TYPE, EDIT_TRIP_RESULT_TYPE);
             resultIntent.putExtra(ARGUMENT_TRIP_ID, tripId);
             setResult(RESULT_OK, resultIntent);
         } else {
@@ -83,7 +83,7 @@ public class AddEditTripActivity extends AppCompatActivity implements AddEditTri
         Intent resultIntent;
         if (tripId != null) {
             resultIntent = new Intent();
-            resultIntent.putExtra(ARGUMENT_TRIP_RESULT_TYPE, ADD_TRIP_RESULT_TYPE);
+            resultIntent.putExtra(ARG_TRIP_RESULT_TYPE, ADD_TRIP_RESULT_TYPE);
             resultIntent.putExtra(ARGUMENT_TRIP_ID, tripId);
             setResult(RESULT_OK, resultIntent);
         } else {
