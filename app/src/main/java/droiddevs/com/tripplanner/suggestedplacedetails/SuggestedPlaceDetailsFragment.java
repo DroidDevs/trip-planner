@@ -116,5 +116,4 @@ public class SuggestedPlaceDetailsFragment extends Fragment implements Suggested
             btnSavePlace.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorLightGray));
         }
     }
-
 }

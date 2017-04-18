@@ -392,10 +392,12 @@ public class Repository implements DataSource {
             @Override
             public void onSavedPlaceLoaded(SavedPlace place) {
                 if (place != null) {
-                    place.unpinInBackground();
                     place.pinInBackground();
+                    place.
+                    callback.onSavedPlaceLoaded(place);
+                } else {
+                    localDataSource.loadSavedPlace(googlePlaceId, destinationId, callback);
                 }
-                callback.onSavedPlaceLoaded(place);
             }
 
             @Override
