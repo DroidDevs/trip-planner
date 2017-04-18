@@ -29,6 +29,7 @@ public class AddEditTripActivity extends AppCompatActivity implements AddEditTri
     FloatingActionButton fab;
 
     private Contract.Presenter mPresenter;
+    private boolean isNewTrip = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +37,10 @@ public class AddEditTripActivity extends AppCompatActivity implements AddEditTri
         setContentView(R.layout.activity_add_edit_trip);
         ButterKnife.bind(this);
 
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setupToolbar();
 
         String tripId = getIntent().getStringExtra(ARGUMENT_TRIP_ID);
+        isNewTrip = (tripId == null || "".equalsIgnoreCase(tripId));
 
         AddEditTripFragment addEditTripFragment = (AddEditTripFragment) getSupportFragmentManager().findFragmentById(R.id.content_frame);
         if (addEditTripFragment == null) {
@@ -72,7 +73,8 @@ public class AddEditTripActivity extends AppCompatActivity implements AddEditTri
             resultIntent.putExtra(ARG_TRIP_RESULT_TYPE, EDIT_TRIP_RESULT_TYPE);
             resultIntent.putExtra(ARGUMENT_TRIP_ID, tripId);
             setResult(RESULT_OK, resultIntent);
-        } else {
+        }
+        else {
             setResult(RESULT_CANCELED);
         }
         finish();
@@ -86,7 +88,8 @@ public class AddEditTripActivity extends AppCompatActivity implements AddEditTri
             resultIntent.putExtra(ARG_TRIP_RESULT_TYPE, ADD_TRIP_RESULT_TYPE);
             resultIntent.putExtra(ARGUMENT_TRIP_ID, tripId);
             setResult(RESULT_OK, resultIntent);
-        } else {
+        }
+        else {
             setResult(RESULT_CANCELED);
         }
         finish();
@@ -99,5 +102,11 @@ public class AddEditTripActivity extends AppCompatActivity implements AddEditTri
             return true;
         }
         else return super.onOptionsItemSelected(item);
+    }
+
+    private void setupToolbar() {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(isNewTrip ? R.string.trip_create : R.string.trip_edit);
     }
 }

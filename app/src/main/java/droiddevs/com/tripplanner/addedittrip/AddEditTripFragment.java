@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -39,7 +40,8 @@ import static android.app.Activity.RESULT_OK;
  */
 
 public class AddEditTripFragment extends Fragment implements Contract.View, AddEditTripAdapter.OnChangeDestinationListener,
-        AddEditTripAdapter.OnAddDestinationListener, AddEditTripAdapter.OnDeleteDestinationListener, StartDateViewHolder.OnStartDateChangeListener {
+        AddEditTripAdapter.OnAddDestinationListener, AddEditTripAdapter.OnDeleteDestinationListener, StartDateViewHolder.OnStartDateChangeListener,
+        SelectDurationFragment.OnDurationSelectedListener, AddEditTripAdapter.OnSelectDurationListener {
     private static final String LOG_TAG = "AddEditTripFragment";
 
     public static final String ARGUMENT_TRIP_ID = "tripId";
@@ -61,6 +63,7 @@ public class AddEditTripFragment extends Fragment implements Contract.View, AddE
 
     public interface OnFragmentDoneListener {
         void onDoneEdit(String tripId);
+
         void onTripAdded(String tripId);
     }
 
@@ -142,7 +145,8 @@ public class AddEditTripFragment extends Fragment implements Contract.View, AddE
         if (mFragmentDoneListener != null) {
             if (newTrip) {
                 mFragmentDoneListener.onTripAdded(trip.getTripId());
-            } else {
+            }
+            else {
                 mFragmentDoneListener.onDoneEdit(trip.getTripId());
             }
         }
@@ -222,8 +226,9 @@ public class AddEditTripFragment extends Fragment implements Contract.View, AddE
 
     private void setupRecyclerView() {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
         mAdapter = new AddEditTripAdapter();
+
+        mAdapter.setOnSelectDurationListener(this);
         mAdapter.setDestinationAddListener(this);
 
         mAdapter.setDestinationChangeListener(this);
@@ -279,6 +284,20 @@ public class AddEditTripFragment extends Fragment implements Contract.View, AddE
     @Override
     public void onTripEndDateChanged(Date endDate) {
         mAdapter.setEndDate(endDate);
+    }
+
+
+    @Override
+    public void onSelectDuration(String destId) {
+        FragmentManager fm = getFragmentManager();
+        SelectDurationFragment fragment = SelectDurationFragment.newInstance(destId);
+        fragment.setTargetFragment(AddEditTripFragment.this, 300);
+        fragment.show(fm, "select_duration");
+    }
+
+    @Override
+    public void onDurationSelected(String destinationId, int durationIdDays) {
+        mPresenter.onDurationSelected(destinationId, durationIdDays);
     }
 
     private void showPlaceAutocompleteDialog(int requestCode) {

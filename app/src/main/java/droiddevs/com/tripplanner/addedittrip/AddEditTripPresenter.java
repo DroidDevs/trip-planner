@@ -34,9 +34,6 @@ public class AddEditTripPresenter implements Contract.Presenter {
     private Calendar mCalendar = Calendar.getInstance();
     private static final int DEFAULT_DURATION_IN_DAYS = 2;
 
-    /*//todo remove this
-    private List<SavedPlace> savedPlaces = new ArrayList<>();*/
-
     public AddEditTripPresenter(Repository mRepository, Contract.View mView, String tripId) {
         this.mRepository = mRepository;
         this.mView = mView;
@@ -98,15 +95,6 @@ public class AddEditTripPresenter implements Contract.Presenter {
 
         mView.onDestinationAdded(destination);
         mView.onTripEndDateChanged(mTrip.getEndDate());
-
-        /*//todo remove this
-        SavedPlace savedPlace = new SavedPlace();
-        savedPlace.setPlaceId(googlePlace.getId());
-        savedPlace.setLongitude(googlePlace.getLatLng().longitude);
-        savedPlace.setLatitude(googlePlace.getLatLng().latitude);
-        savedPlace.setDestinationId(destination.getDestinationId());
-        savedPlace.setName(googlePlace.getName().toString());
-        savedPlaces.add(savedPlace);*/
     }
 
     @Override
@@ -189,20 +177,6 @@ public class AddEditTripPresenter implements Contract.Presenter {
                 }
             }
         });
-
-        /*for (final SavedPlace savedPlace: savedPlaces) {
-            mRepository.createSavedPlace(savedPlace, new DataSource.CreateSavedPlaceCallback() {
-                @Override
-                public void onSuccess() {
-                    Log.d(LOG_TAG, "save place: "+savedPlace.getName());
-                }
-
-                @Override
-                public void onFailed() {
-
-                }
-            });
-        }*/
     }
 
     @Override
@@ -232,6 +206,26 @@ public class AddEditTripPresenter implements Contract.Presenter {
 
         mTrip = trip;
         mView.setTripDetails(trip);
+    }
+
+    @Override
+    public void onDurationSelected(String destinationId, int durationIdDays) {
+        if (mTrip == null || destinationId == null) return;
+        if (mTrip.getDestinations() == null || mTrip.getDestinations().size() == 0) return;
+        if (mView == null || !mView.isActive()) return;
+
+        for (Destination destination : mTrip.getDestinations()) {
+            if (destination.getDestinationId().equals(destinationId)) {
+                destination.setDuration(durationIdDays);
+
+                updateTripDates();
+
+                mView.onTripEndDateChanged(mTrip.getEndDate());
+                mView.onDestinationChanged(destinationId, destination);
+
+                break;
+            }
+        }
     }
 
     private boolean isNewTrip() {
