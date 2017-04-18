@@ -8,6 +8,8 @@ import java.util.List;
 
 import droiddevs.com.tripplanner.application.TripPlannerApplication;
 import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
+import droiddevs.com.tripplanner.model.googleplaces.OpeningHours;
+import droiddevs.com.tripplanner.model.googleplaces.Photo;
 
 /**
  * Created by elmira on 4/4/17.
@@ -152,12 +154,25 @@ public class SavedPlace extends ParseObject {
         savedPlace.setLongitude(place.getGeometry().getLocation().getLng());
         savedPlace.setRating(place.getRating());
         savedPlace.setTypes(place.getTypes());
-        savedPlace.setPhotoReference(place.getPhotos().get(0).getPhotoReference());
-        savedPlace.setOpenNowWeekdayText(place.getOpeningHours().getWeekdayText());
+
+        OpeningHours openingHours = place.getOpeningHours();
+        if (openingHours != null) {
+            List<Object> weekdayHours = openingHours.getWeekdayText();
+            if (weekdayHours != null) {
+                savedPlace.setOpenNowWeekdayText(weekdayHours);
+            }
+        }
+
+        List<Photo> photos = place.getPhotos();
+        if (photos.size() > 0) {
+            Photo photo = photos.get(0);
+            savedPlace.setPhotoReference(photo.getPhotoReference());
+        }
 
         //savedPlace.setDestinationId();
         //savedPlace.setPhoneNumber();
         //savedPlace.setOpenNow();
+
         return savedPlace;
     }
 }

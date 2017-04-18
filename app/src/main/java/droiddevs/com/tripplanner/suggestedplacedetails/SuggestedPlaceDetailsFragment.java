@@ -29,6 +29,7 @@ public class SuggestedPlaceDetailsFragment extends Fragment implements Suggested
     TextView tvOpenNow;
 
     private Unbinder mUnbinder;
+    private boolean mSavedPlace;
     private SuggestedPlaceDetailsContract.Presenter mPresenter;
 
     public SuggestedPlaceDetailsFragment() {}
@@ -86,7 +87,7 @@ public class SuggestedPlaceDetailsFragment extends Fragment implements Suggested
         btnSavePlace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (savedPlace) {
+                if (mSavedPlace) {
                     mPresenter.deletePlace(place);
                 } else {
                     mPresenter.savePlace(place);
@@ -94,6 +95,7 @@ public class SuggestedPlaceDetailsFragment extends Fragment implements Suggested
             }
         });
     }
+
     @Override
     public void onPlaceSaved(boolean success) {
         setAsSaved(success);
@@ -105,6 +107,7 @@ public class SuggestedPlaceDetailsFragment extends Fragment implements Suggested
     }
 
     private void setAsSaved(boolean saved) {
+        mSavedPlace = saved;
         if (saved) {
             btnSavePlace.setText("Remove");
             btnSavePlace.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
