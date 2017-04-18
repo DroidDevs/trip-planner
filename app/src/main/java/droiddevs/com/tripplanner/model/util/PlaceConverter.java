@@ -5,6 +5,8 @@ import java.util.List;
 
 import droiddevs.com.tripplanner.model.SavedPlace;
 import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
+import droiddevs.com.tripplanner.model.googleplaces.OpeningHours;
+import droiddevs.com.tripplanner.model.googleplaces.Photo;
 import droiddevs.com.tripplanner.model.map.PlaceItem;
 import droiddevs.com.tripplanner.model.source.remote.PlaceDetailsResponse;
 
@@ -76,28 +78,32 @@ public class PlaceConverter {
         return list;
     }
 
-    public static SavedPlace convertToSavedPlace(String destinationId, GooglePlace googlePlace) {
-        if (googlePlace == null) return null;
+    public static SavedPlace convertToSavedPlaceFromGooglePlace(String destinationId, GooglePlace place) {
         SavedPlace savedPlace = new SavedPlace();
         savedPlace.setDestinationId(destinationId);
 
-        savedPlace.setName(googlePlace.getName());
-        savedPlace.setPlaceId(googlePlace.getPlaceId());
+        savedPlace.setName(place.getName());
+        savedPlace.setPlaceId(place.getPlaceId());
+        savedPlace.setLatitude(place.getGeometry().getLocation().getLat());
+        savedPlace.setLongitude(place.getGeometry().getLocation().getLng());
+        savedPlace.setRating(place.getRating());
+        savedPlace.setTypes(place.getTypes());
 
-        savedPlace.setLatitude(googlePlace.getGeometry().getLocation().getLat());
-        savedPlace.setLongitude(googlePlace.getGeometry().getLocation().getLng());
+        OpeningHours openingHours = place.getOpeningHours();
+        if (openingHours != null) {
+            savedPlace.setOpenNow(openingHours.getOpenNow());
 
-        savedPlace.setRating(googlePlace.getRating());
-
-        String photoReference = null;
-        if (googlePlace.getPhotos() != null && googlePlace.getPhotos().size() > 0) {
-            photoReference = googlePlace.getPhotos().get(0).getPhotoReference();
+            List<Object> weekdayHours = openingHours.getWeekdayText();
+            if (weekdayHours != null) {
+                savedPlace.setOpenNowWeekdayText(weekdayHours);
+            }
         }
 
-        savedPlace.setPhotoReference(photoReference);
-        //savedPlace.setPhoneNumber(googlePlace.get);
-        savedPlace.setTypes(googlePlace.getTypes());
-
+        List<Photo> photos = place.getPhotos();
+        if (photos.size() > 0) {
+            Photo photo = photos.get(0);
+            savedPlace.setPhotoReference(photo.getPhotoReference());
+        }
         return savedPlace;
     }
 }
