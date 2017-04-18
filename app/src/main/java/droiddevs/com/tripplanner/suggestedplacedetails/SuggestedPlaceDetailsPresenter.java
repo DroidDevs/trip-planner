@@ -1,7 +1,5 @@
 package droiddevs.com.tripplanner.suggestedplacedetails;
 
-import android.util.Log;
-
 import droiddevs.com.tripplanner.model.SavedPlace;
 import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
 import droiddevs.com.tripplanner.model.source.DataSource;
@@ -54,6 +52,7 @@ public class SuggestedPlaceDetailsPresenter implements SuggestedPlaceDetailsCont
     public void savePlace(GooglePlace place) {
         SavedPlace newSavedPlace = SavedPlace.savedPlaceFromGooglePlace(place);
         newSavedPlace.setDestinationId(mDestinationId);
+        mCurrentSavedPlace = newSavedPlace;
 
         mRepository.createSavedPlace(newSavedPlace,
                 new DataSource.CreateSavedPlaceCallback() {

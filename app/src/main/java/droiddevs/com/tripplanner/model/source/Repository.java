@@ -6,6 +6,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import com.parse.DeleteCallback;
+import com.parse.ParseException;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -390,11 +393,15 @@ public class Repository implements DataSource {
     public void loadSavedPlace(final String googlePlaceId, final String destinationId, final LoadSavedPlaceCallback callback) {
         remoteDataSource.loadSavedPlace(googlePlaceId, destinationId, new LoadSavedPlaceCallback() {
             @Override
-            public void onSavedPlaceLoaded(SavedPlace place) {
+            public void onSavedPlaceLoaded(final SavedPlace place) {
                 if (place != null) {
-                    place.pinInBackground();
-                    place.
-                    callback.onSavedPlaceLoaded(place);
+                    place.unpinInBackground(new DeleteCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            place.pinInBackground();
+                            callback.onSavedPlaceLoaded(place);
+                        }
+                    });
                 } else {
                     localDataSource.loadSavedPlace(googlePlaceId, destinationId, callback);
                 }
@@ -421,7 +428,6 @@ public class Repository implements DataSource {
                 callback.onFailed();
             }
         });
-
     }
 
     @Override
