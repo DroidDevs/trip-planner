@@ -4,5 +4,8 @@
             android:id="@+id/nav_create_trip"
             android:icon="@drawable/ic_add_circle_outline_white_24dp"
             android:title="@string/create_trip" />
+        <item
+            android:id="@+id/nav_view_past_trips"
+            android:title="@string/past_trips" />
     </group>
 </menu>

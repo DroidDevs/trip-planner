@@ -10,10 +10,16 @@ import droiddevs.com.tripplanner.mvp.BaseView;
 
 public class SuggestedPlaceDetailsContract {
     public interface View extends BaseView<Presenter> {
-        void showPlaceDetails(GooglePlace place);
+        void showPlaceDetails(GooglePlace place, boolean savedPlace);
+
+        void onPlaceSaved(boolean success);
+
+        void onPlaceDeleted(boolean success);
     }
 
     public interface Presenter extends BasePresenter {
+        void savePlace(GooglePlace place);
 
+        void deletePlace(GooglePlace place);
     }
 }

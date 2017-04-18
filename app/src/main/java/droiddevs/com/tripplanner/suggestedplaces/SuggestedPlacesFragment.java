@@ -23,11 +23,13 @@ import droiddevs.com.tripplanner.suggestedplacedetails.SuggestedPlaceDetailsActi
 
 public class SuggestedPlacesFragment extends Fragment implements SuggestedPlacesContract.View, SuggestedPlacesAdapter.SuggestedPlaceInteractionListener {
     public static final String ARG_PLACE_OBJ = "placeObj";
+    public static final String ARG_DESTINATION_ID = "destinationId";
 
     private List<GooglePlace> mPlaces;
     private SuggestedPlacesContract.Presenter mPresenter;
     private SuggestedPlacesAdapter mAdapter;
     private Unbinder unbinder;
+    private String mDestinationId;
 
     @BindView(R.id.rvSuggestedPlaces)
     RecyclerView rvSuggestedPlaces;
@@ -90,6 +92,11 @@ public class SuggestedPlacesFragment extends Fragment implements SuggestedPlaces
     public void OnPlaceClicked(GooglePlace place) {
         Intent intent = new Intent(getContext(), SuggestedPlaceDetailsActivity.class);
         intent.putExtra(ARG_PLACE_OBJ, place);
+        intent.putExtra(ARG_DESTINATION_ID, mDestinationId);
         startActivity(intent);
+    }
+
+    public void setDestinationId(String destinationId) {
+        mDestinationId  = destinationId;
     }
 }

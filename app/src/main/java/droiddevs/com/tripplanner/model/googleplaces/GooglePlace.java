@@ -136,7 +136,7 @@ public class GooglePlace implements Parcelable
     }
 
     public Long getRating() {
-        return rating;
+        return (rating != null) ? rating : 0;
     }
 
     public void setRating(Long rating) {

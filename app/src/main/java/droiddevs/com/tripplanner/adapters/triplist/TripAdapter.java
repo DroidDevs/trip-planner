@@ -109,8 +109,10 @@ public class TripAdapter extends RecyclerView.Adapter<TripViewHolder> implements
     }
 
     public void addTrip(Trip trip) {
-        mTrips.add(trip);
-        notifyItemInserted(mTrips.size() - 1);
+        if (!mTrips.contains(trip)) {
+            mTrips.add(trip);
+            notifyItemInserted(mTrips.size() - 1);
+        }
     }
 
     public void reloadTrip(Trip trip) {
