@@ -5,10 +5,12 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import droiddevs.com.tripplanner.R;
+import droiddevs.com.tripplanner.adapters.ItemTouchHelperAdapter;
 import droiddevs.com.tripplanner.model.Destination;
 import droiddevs.com.tripplanner.model.Trip;
 
@@ -17,7 +19,8 @@ import droiddevs.com.tripplanner.model.Trip;
  */
 
 public class AddEditTripAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
-        implements NameViewHolder.OnNameChangeListener, StartDateViewHolder.OnStartDateChangeListener {
+        implements NameViewHolder.OnNameChangeListener, StartDateViewHolder.OnStartDateChangeListener,
+        ItemTouchHelperAdapter {
 
     private List<Destination> mDestinations;
 
@@ -227,5 +230,28 @@ public class AddEditTripAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         int position = mDestinations.size();
         mDestinations.add(destination);
         notifyItemInserted(ITEMS_OFFSET + position);
+    }
+
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+        fromPosition -= ITEMS_OFFSET;
+        toPosition -= ITEMS_OFFSET;
+
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(mDestinations, i, i + 1);
+            }
+        }
+        else {
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(mDestinations, i, i - 1);
+            }
+        }
+        notifyItemMoved(fromPosition, toPosition);
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+
     }
 }
