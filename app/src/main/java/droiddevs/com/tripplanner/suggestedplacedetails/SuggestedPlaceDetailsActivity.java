@@ -18,6 +18,7 @@ import droiddevs.com.tripplanner.application.TripPlannerApplication;
 import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
 import droiddevs.com.tripplanner.model.googleplaces.Photo;
 
+import static droiddevs.com.tripplanner.suggestedplaces.SuggestedPlacesFragment.ARG_DESTINATION_ID;
 import static droiddevs.com.tripplanner.suggestedplaces.SuggestedPlacesFragment.ARG_PLACE_OBJ;
 
 public class SuggestedPlaceDetailsActivity extends AppCompatActivity {
@@ -26,6 +27,7 @@ public class SuggestedPlaceDetailsActivity extends AppCompatActivity {
     @BindView(R.id.ivToolbarImage)
     ImageView toolbarImage;
 
+    private String mDestinationId;
     private GooglePlace mCurrentPlace;
     private SuggestedPlaceDetailsContract.Presenter mPresenter;
 
@@ -40,6 +42,7 @@ public class SuggestedPlaceDetailsActivity extends AppCompatActivity {
         setTitle("");
 
         mCurrentPlace = getIntent().getParcelableExtra(ARG_PLACE_OBJ);
+        mDestinationId = getIntent().getStringExtra(ARG_DESTINATION_ID);
         loadPlaceImage();
 
         // Add fragment to content frame
@@ -57,7 +60,8 @@ public class SuggestedPlaceDetailsActivity extends AppCompatActivity {
         mPresenter = new SuggestedPlaceDetailsPresenter(
                 TripPlannerApplication.getRepository(),
                 suggestedPlaceDetailsFragment,
-                mCurrentPlace);
+                mCurrentPlace,
+                mDestinationId);
     }
 
     @Override

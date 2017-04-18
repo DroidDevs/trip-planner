@@ -7,6 +7,7 @@ import com.parse.ParseObject;
 import java.util.List;
 
 import droiddevs.com.tripplanner.application.TripPlannerApplication;
+import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
 
 /**
  * Created by elmira on 4/4/17.
@@ -141,5 +142,22 @@ public class SavedPlace extends ParseObject {
                 ", photoUrl='" + getPhotoUrl() + '\'' +
                 ", types=" + getTypes() +
                 '}';
+    }
+
+    public static SavedPlace savedPlaceFromGooglePlace(GooglePlace place) {
+        SavedPlace savedPlace = new SavedPlace();
+        savedPlace.setName(place.getName());
+        savedPlace.setPlaceId(place.getPlaceId());
+        savedPlace.setLatitude(place.getGeometry().getLocation().getLat());
+        savedPlace.setLongitude(place.getGeometry().getLocation().getLng());
+        savedPlace.setRating(place.getRating());
+        savedPlace.setTypes(place.getTypes());
+        savedPlace.setPhotoReference(place.getPhotos().get(0).getPhotoReference());
+        savedPlace.setOpenNowWeekdayText(place.getOpeningHours().getWeekdayText());
+
+        //savedPlace.setDestinationId();
+        //savedPlace.setPhoneNumber();
+        //savedPlace.setOpenNow();
+        return savedPlace;
     }
 }

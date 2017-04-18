@@ -40,12 +40,14 @@ public class TripsFragment extends Fragment implements TripsContract.View, TripA
     private TripAdapter mAdapter;
     private Unbinder unbinder;
     private boolean onResumeFromAddEdit = false;
+    private boolean mPastEvents = false;
 
     @BindView(R.id.rvTrips)
     RecyclerView rvTrips;
 
     public static TripsFragment newInstance() {
-        return new TripsFragment();
+        TripsFragment fragment = new TripsFragment();
+        return fragment;
     }
 
     @Override
@@ -159,5 +161,9 @@ public class TripsFragment extends Fragment implements TripsContract.View, TripA
 
     public void setTripFragmentCallbackListener(TripFragmentCallbackListener listener) {
         mListener = listener;
+    }
+
+    public void setPastEvents(boolean pastEvents) {
+        this.mPastEvents = pastEvents;
     }
 }

@@ -14,6 +14,7 @@ import droiddevs.com.tripplanner.model.source.Repository;
 
 public class SuggestedPlacesPresenter implements SuggestedPlacesContract.Presenter {
     private String mSearchString;
+
     private String mDestinationId;
 
     private SuggestedPlacesContract.View mView;
@@ -57,18 +58,17 @@ public class SuggestedPlacesPresenter implements SuggestedPlacesContract.Present
         final String locationString = String.valueOf(destination.getLatitude())
                 + "," + String.valueOf(destination.getLongitude());
 
-        // 3219 = 1 mile in meters
-        mRepository.searchGooglePlaces(locationString, 3219, placeTypeSearchString, TripPlannerApplication.getGooglePlacesApiKey(),
+        mRepository.searchGooglePlaces(locationString, 10000, placeTypeSearchString, TripPlannerApplication.getGooglePlacesApiKey(),
                 new DataSource.SearchGooglePlacesCallback() {
-                        @Override
-                        public void onPlacesFound(List<GooglePlace> places) {
-                            mView.showSuggestedPlaces(places);
-                        }
+                    @Override
+                    public void onPlacesFound(List<GooglePlace> places) {
+                        mView.showSuggestedPlaces(places);
+                    }
 
-                        @Override
-                        public void onFailure() {
-                            mView.showSuggestedPlaces(null);
-                        }
-        });
+                    @Override
+                    public void onFailure() {
+                        mView.showSuggestedPlaces(null);
+                    }
+                });
     }
 }

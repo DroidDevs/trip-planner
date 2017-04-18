@@ -48,6 +48,7 @@ public class SuggestedPlacesActivity extends AppCompatActivity {
 
         if (suggestedPlacesFragment == null) {
             suggestedPlacesFragment = SuggestedPlacesFragment.newInstance();
+            suggestedPlacesFragment.setDestinationId(mDestinationId);
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.contentFrame, suggestedPlacesFragment);

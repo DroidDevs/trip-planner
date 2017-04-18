@@ -3,6 +3,7 @@ package droiddevs.com.tripplanner.suggestedplacedetails;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,7 +69,7 @@ public class SuggestedPlaceDetailsFragment extends Fragment implements Suggested
     }
 
     @Override
-    public void showPlaceDetails(GooglePlace place) {
+    public void showPlaceDetails(final GooglePlace place, final boolean savedPlace) {
         tvPlaceTitle.setText(place.getName());
         rbPlaceRating.setRating(place.getRating());
 
@@ -81,11 +82,36 @@ public class SuggestedPlaceDetailsFragment extends Fragment implements Suggested
             }
         }
 
+        setAsSaved(savedPlace);
         btnSavePlace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Save Place
+                if (savedPlace) {
+                    mPresenter.deletePlace(place);
+                } else {
+                    mPresenter.savePlace(place);
+                }
             }
         });
     }
+    @Override
+    public void onPlaceSaved(boolean success) {
+        setAsSaved(success);
+    }
+
+    @Override
+    public void onPlaceDeleted(boolean success) {
+        setAsSaved(!success);
+    }
+
+    private void setAsSaved(boolean saved) {
+        if (saved) {
+            btnSavePlace.setText("Remove");
+            btnSavePlace.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+        } else {
+            btnSavePlace.setText("Save");
+            btnSavePlace.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorLightGray));
+        }
+    }
+
 }

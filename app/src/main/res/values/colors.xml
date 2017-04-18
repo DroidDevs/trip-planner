@@ -14,4 +14,6 @@
 
     <color name="colorAccentLight">#EC407A</color>
 
+    <color name="colorLightGray">#BDBDBD</color>
+
 </resources>
