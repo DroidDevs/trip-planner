@@ -23,6 +23,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -143,6 +144,7 @@ public class RemoteDataSource implements DataSource {
                 }
                 else {
                     Log.d(LOG_TAG, "loaded trip with destinations");
+                    Collections.sort(objects);
                     trip.setDestinations(objects);
                     callback.onTripLoaded(trip);
                 }

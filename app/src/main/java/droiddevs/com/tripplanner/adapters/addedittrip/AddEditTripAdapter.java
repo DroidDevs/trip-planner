@@ -1,6 +1,7 @@
 package droiddevs.com.tripplanner.adapters.addedittrip;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -23,6 +24,7 @@ public class AddEditTripAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         ItemTouchHelperAdapter {
 
     private List<Destination> mDestinations;
+    private static final String LOG_TAG = "AddEditTripAdapter";
 
     private static final int NAME_POSITION = 0;
     private static final int START_DATE_POSITION = 1;
@@ -234,24 +236,44 @@ public class AddEditTripAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public void onItemMove(int fromPosition, int toPosition) {
-        fromPosition -= ITEMS_OFFSET;
-        toPosition -= ITEMS_OFFSET;
+        Log.d(LOG_TAG, "onItemMove() fromPosition: " + fromPosition + ", toPosition: " + toPosition);
+        if (toPosition < ITEMS_OFFSET || toPosition == getItemCount() - 1) return;
+        if (fromPosition == toPosition) return;
+
+        int destFromPosition = fromPosition - ITEMS_OFFSET;
+        int destToPosition = toPosition - ITEMS_OFFSET;
 
         if (fromPosition < toPosition) {
-            for (int i = fromPosition; i < toPosition; i++) {
+            for (int i = destFromPosition; i < destToPosition; i++) {
                 Collections.swap(mDestinations, i, i + 1);
             }
         }
         else {
-            for (int i = fromPosition; i > toPosition; i--) {
+            for (int i = destFromPosition; i > destToPosition; i--) {
                 Collections.swap(mDestinations, i, i - 1);
             }
         }
+
+        /*if (fromPosition > toPosition) {
+            for (int i = destFromPosition; i < destToPosition; i++) {
+                Collections.swap(mDestinations, i, i + 1);
+            }
+        }
+        else {
+            for (int i = destFromPosition + 1; i >= destToPosition; i--) {
+                Collections.swap(mDestinations, i, i - 1);
+            }
+        }
+        Collections.swap(mDestinations, destFromPosition, destToPosition);
+        */
         notifyItemMoved(fromPosition, toPosition);
     }
 
     @Override
     public void onItemDismiss(int position) {
-
+        if (destinationDeleteListener == null || position < ITEMS_OFFSET || position == getItemCount() - 1)
+            return;
+        Destination destination = mDestinations.get(position - ITEMS_OFFSET);
+        destinationDeleteListener.onDeleteDestination(destination.getDestinationId());
     }
 }

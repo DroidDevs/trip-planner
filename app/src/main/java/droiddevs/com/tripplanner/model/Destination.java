@@ -1,5 +1,7 @@
 package droiddevs.com.tripplanner.model;
 
+import android.support.annotation.NonNull;
+
 import com.parse.ParseClassName;
 
 import java.util.Date;
@@ -9,7 +11,7 @@ import java.util.Date;
  */
 
 @ParseClassName("Destination")
-public class Destination extends SavedPlace {
+public class Destination extends SavedPlace implements Comparable<Destination> {
 
     public static final String TRIP_ID_KEY = "tripId";
     public static final String ORDER_KEY = "order";
@@ -88,5 +90,11 @@ public class Destination extends SavedPlace {
                 ", startDate=" + getStartDate() +
                 ", endDate=" + getEndDate() +
                 '}';
+    }
+
+    @Override
+    public int compareTo(@NonNull Destination o) {
+        if (this.getDestinationId().equals(o.getDestinationId())) return 0;
+        return this.getOrder() < o.getOrder() ? -1 : 1;
     }
 }

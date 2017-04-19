@@ -47,6 +47,7 @@
     <string name="three_days">3\ndays</string>
     <string name="one_week">1\nweek</string>
     <string name="two_weeks">2\nweeks</string>
-    <string name="pick_days">peek\ndays</string>
+    <string name="pick_days">pick\ndays</string>
+    <string name="done">Done</string>
 
 </resources>
