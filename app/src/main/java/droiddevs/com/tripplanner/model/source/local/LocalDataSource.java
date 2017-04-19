@@ -11,6 +11,7 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -105,6 +106,7 @@ public class LocalDataSource implements DataSource {
             callback.onFailure();
             return;
         }
+
         trip.fetchAllInBackground(trip.getDestinations(), new FindCallback<Destination>() {
             @Override
             public void done(List<Destination> objects, ParseException e) {
@@ -113,6 +115,7 @@ public class LocalDataSource implements DataSource {
                     callback.onFailure();
                 }
                 else {
+                    Collections.sort(objects);
                     trip.setDestinations(objects);
                     callback.onTripLoaded(trip);
                 }

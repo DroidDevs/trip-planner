@@ -1,5 +1,6 @@
 package droiddevs.com.tripplanner.adapters.addedittrip;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,8 +26,11 @@ public class DestinationViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.ivClose)
     ImageView closeImageView;
 
+    View rootView;
+
     public DestinationViewHolder(View itemView) {
         super(itemView);
+        rootView = itemView;
         ButterKnife.bind(this, itemView);
     }
 
@@ -61,5 +65,13 @@ public class DestinationViewHolder extends RecyclerView.ViewHolder {
                 }
             });
         }
+    }
+
+    public void onItemSelected(){
+        rootView.setBackgroundColor(ContextCompat.getColor(rootView.getContext(), R.color.background_color_light));
+    }
+
+    public void onItemClear(){
+        rootView.setBackgroundColor(ContextCompat.getColor(rootView.getContext(), android.R.color.transparent));
     }
 }

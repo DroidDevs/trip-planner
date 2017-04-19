@@ -2,71 +2,101 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="@dimen/margin_medium"
+                android:layout_margin="@dimen/margin_small"
                 android:alpha="0.7"
                 android:background="@color/background_color"
                 android:padding="@dimen/margin_small">
 
     <TextView
+        android:id="@+id/tvPickDays"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tvTwoDays"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/background_circle_color_primary"
+        android:gravity="center"
+        android:text="@string/pick_days"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:layout_marginBottom="@dimen/margin_large"
+        android:alpha="1"/>
+
+    <EditText
+        android:id="@+id/etDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:layout_above="@+id/tvTwoDays"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/margin_large"
+        android:alpha="1"/>
+
+    <TextView
         android:id="@+id/tvOneDay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/tvOneWeek"
+        android:layout_alignBaseline="@+id/tvTwoDays"
+        android:layout_toLeftOf="@+id/tvTwoDays"
         android:background="@drawable/background_circle_color_primary"
         android:text="@string/one_day"
         android:textColor="@android:color/white"
-        android:layout_marginLeft="@dimen/margin_huge"
+        android:layout_marginLeft="@dimen/margin_medium"
         android:layout_marginBottom="@dimen/margin_large"
         android:textStyle="bold"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:alpha="1"/>
 
     <TextView
         android:id="@+id/tvTwoDays"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/tvOneWeek"
-        android:layout_toRightOf="@id/tvOneDay"
-        android:layout_marginLeft="@dimen/margin_large"
-        android:background="@drawable/background_circle_color_primary"
-        android:text="@string/two_days"
-        android:textColor="@android:color/white"
-        android:textStyle="bold"
-        android:layout_marginBottom="@dimen/margin_large"
-        android:gravity="center"/>
-
-    <TextView
-        android:id="@+id/tvThreeDays"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvOneDay"
-        android:layout_toLeftOf="@+id/tvOneWeek"
-        android:layout_marginLeft="@dimen/margin_large"
-        android:background="@drawable/background_circle_color_primary"
-        android:text="@string/three_days"
-        android:textColor="@android:color/white"
-        android:textStyle="bold"
-        android:layout_marginBottom="@dimen/margin_large"
-        android:gravity="center"/>
-
-    <TextView
-        android:id="@+id/tvOneWeek"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="@dimen/margin_large"
         android:background="@drawable/background_circle_color_primary"
+        android:text="@string/two_days"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:layout_marginBottom="@dimen/margin_large"
+        android:gravity="center"
+        android:alpha="1"/>
+
+    <TextView
+        android:id="@+id/tvThreeDays"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/tvTwoDays"
+        android:layout_marginLeft="@dimen/margin_large"
+        android:layout_alignBaseline="@+id/tvTwoDays"
+        android:background="@drawable/background_circle_color_primary"
+        android:text="@string/three_days"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:layout_marginBottom="@dimen/margin_large"
+        android:gravity="center"
+        android:alpha="1"/>
+
+    <TextView
+        android:id="@+id/tvOneWeek"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTwoDays"
+        android:layout_marginLeft="@dimen/margin_huge"
+        android:background="@drawable/background_circle_color_primary"
         android:text="@string/one_week"
         android:textColor="@android:color/white"
         android:layout_marginBottom="@dimen/margin_large"
         android:textStyle="bold"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:alpha="1"/>
 
     <TextView
         android:id="@+id/tvTwoWeeks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvOneDay"
+        android:layout_below="@+id/tvTwoDays"
         android:layout_toRightOf="@+id/tvOneWeek"
         android:layout_marginLeft="@dimen/margin_large"
         android:background="@drawable/background_circle_color_primary"
@@ -74,18 +104,7 @@
         android:textColor="@android:color/white"
         android:textStyle="bold"
         android:layout_marginBottom="@dimen/margin_large"
-        android:gravity="center"/>
-
-    <TextView
-        android:id="@+id/tvPickDays"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvOneWeek"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/background_circle_color_primary"
         android:gravity="center"
-        android:text="@string/pick_days"
-        android:textColor="@android:color/white"
-        android:textStyle="bold"/>
+        android:alpha="1"/>
 
 </RelativeLayout>

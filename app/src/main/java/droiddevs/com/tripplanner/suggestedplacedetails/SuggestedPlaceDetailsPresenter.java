@@ -1,11 +1,10 @@
 package droiddevs.com.tripplanner.suggestedplacedetails;
 
-import android.util.Log;
-
 import droiddevs.com.tripplanner.model.SavedPlace;
 import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
 import droiddevs.com.tripplanner.model.source.DataSource;
 import droiddevs.com.tripplanner.model.source.Repository;
+import droiddevs.com.tripplanner.model.util.PlaceConverter;
 
 /**
  * Created by Jared12 on 4/15/17.
@@ -52,8 +51,7 @@ public class SuggestedPlaceDetailsPresenter implements SuggestedPlaceDetailsCont
 
     @Override
     public void savePlace(GooglePlace place) {
-        SavedPlace newSavedPlace = SavedPlace.savedPlaceFromGooglePlace(place);
-        newSavedPlace.setDestinationId(mDestinationId);
+        SavedPlace newSavedPlace = PlaceConverter.convertToSavedPlaceFromGooglePlace(mDestinationId, place);
 
         mRepository.createSavedPlace(newSavedPlace,
                 new DataSource.CreateSavedPlaceCallback() {
@@ -66,14 +64,15 @@ public class SuggestedPlaceDetailsPresenter implements SuggestedPlaceDetailsCont
                     public void onFailed() {
                         mView.onPlaceSaved(false);
                     }
-        });
+                });
     }
 
     @Override
     public void deletePlace(GooglePlace place) {
         if (mCurrentSavedPlace != null) {
             deleteSavedPlace(mCurrentSavedPlace);
-        } else {
+        }
+        else {
             mView.onPlaceDeleted(false);
         }
     }

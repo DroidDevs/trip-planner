@@ -10,6 +10,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.adapters.addedittrip.AddEditTripAdapter;
+import droiddevs.com.tripplanner.adapters.addedittrip.AddEditTripTouchHelperCallback;
 import droiddevs.com.tripplanner.adapters.addedittrip.StartDateViewHolder;
 import droiddevs.com.tripplanner.model.Destination;
 import droiddevs.com.tripplanner.model.Trip;
@@ -242,6 +244,9 @@ public class AddEditTripFragment extends Fragment implements Contract.View, AddE
 
         mRecyclerView.addItemDecoration(new DividerItemDecoration(mRecyclerView.getContext(), layoutManager.getOrientation()));
         mRecyclerView.addItemDecoration(new ItemOffsetDecoration(getResources().getDimensionPixelSize(R.dimen.margin_small)));
+
+        ItemTouchHelper touchHelper = new ItemTouchHelper(new AddEditTripTouchHelperCallback(mAdapter));
+        touchHelper.attachToRecyclerView(mRecyclerView);
     }
 
     @Override

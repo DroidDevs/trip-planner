@@ -23,7 +23,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.HashMap;
@@ -178,7 +177,9 @@ public abstract class BaseMapFragment<T extends BaseMapItem> extends Fragment im
     public void setMapData(List<T> data) {
         Log.d(LOG_TAG, "setMapData() count: " + (data == null ? 0 : data.size()));
         mAdapter.setMapData(data);
-        //createMapMarkers();
+        if (mRecyclerView != null && data!=null && data.size()>0) {
+            mRecyclerView.smoothScrollToPosition(0);
+        }
     }
 
     private void setupRecyclerView() {
@@ -234,7 +235,7 @@ public abstract class BaseMapFragment<T extends BaseMapItem> extends Fragment im
             }
         }
         if (polylineOptions != null) {
-            Polyline polyline = mGoogleMap.addPolyline(polylineOptions
+            mGoogleMap.addPolyline(polylineOptions
                     .width(mAdapter.getPolylineWidth() <= 0 ? INITIAL_STROKE_WIDTH_PX : mAdapter.getPolylineWidth())
                     .color(ContextCompat.getColor(getContext(), mAdapter.getPolylineColor()))
                     .pattern(mAdapter.getPolylinePattern())
