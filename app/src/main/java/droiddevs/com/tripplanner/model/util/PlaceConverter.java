@@ -68,12 +68,18 @@ public class PlaceConverter {
         return list;
     }
 
-    public static List<PlaceItem> convertToPlaceItemListFromGooglePlace(List<GooglePlace> googlePlaces) {
+    public static List<PlaceItem> convertToPlaceItemListFromGooglePlace(String destinationId, List<GooglePlace> googlePlaces) {
         if (googlePlaces == null) return new ArrayList<>();
         List<PlaceItem> list = new ArrayList<>();
         for (int i = 0; i < googlePlaces.size(); i++) {
             GooglePlace googlePlace = googlePlaces.get(i);
-            list.add(new PlaceItem(googlePlace, i, null, false));
+            List<Photo> photos = googlePlace.getPhotos();
+            Photo placePhoto = null;
+            if (photos.size() > 0) {
+                placePhoto = photos.get(0);
+            }
+            //// TODO: check if this place is already saved or not?
+            list.add(new PlaceItem(googlePlace, destinationId, i, placePhoto == null ? null : placePhoto.getFullPhotoURLReference(), false));
         }
         return list;
     }
@@ -100,10 +106,27 @@ public class PlaceConverter {
         }
 
         List<Photo> photos = place.getPhotos();
-        if (photos.size() > 0) {
+        if (photos != null && photos.size() > 0) {
             Photo photo = photos.get(0);
             savedPlace.setPhotoReference(photo.getPhotoReference());
         }
+        return savedPlace;
+    }
+
+    public static SavedPlace convertToSavedPlaceFromPlaceItem(PlaceItem placeItem) {
+        SavedPlace savedPlace = new SavedPlace();
+        savedPlace.setDestinationId(placeItem.getDestinationId());
+
+        savedPlace.setName(placeItem.getName());
+        savedPlace.setPlaceId(placeItem.getPlaceId());
+        savedPlace.setLatitude(placeItem.getLatLng().latitude);
+        savedPlace.setLongitude(placeItem.getLatLng().longitude);
+        savedPlace.setRating(placeItem.getRating());
+
+        savedPlace.setOpenNowWeekdayText(placeItem.getWeekdayHours());
+        savedPlace.setPhotoReference(placeItem.getPhotoReference());
+
+        //savedPlace.setTypes(place.getTypes());
         return savedPlace;
     }
 }

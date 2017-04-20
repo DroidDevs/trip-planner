@@ -19,11 +19,9 @@ import butterknife.Unbinder;
 import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.adapters.suggestedplaces.SuggestedPlacesAdapter;
 import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
-import droiddevs.com.tripplanner.suggestedplacedetails.SuggestedPlaceDetailsActivity;
+import droiddevs.com.tripplanner.placedetails.PlaceDetailsActivity;
 
 public class SuggestedPlacesFragment extends Fragment implements SuggestedPlacesContract.View, SuggestedPlacesAdapter.SuggestedPlaceInteractionListener {
-    public static final String ARG_PLACE_OBJ = "placeObj";
-    public static final String ARG_DESTINATION_ID = "destinationId";
 
     private List<GooglePlace> mPlaces;
     private SuggestedPlacesContract.Presenter mPresenter;
@@ -90,13 +88,13 @@ public class SuggestedPlacesFragment extends Fragment implements SuggestedPlaces
 
     @Override
     public void OnPlaceClicked(GooglePlace place) {
-        Intent intent = new Intent(getContext(), SuggestedPlaceDetailsActivity.class);
-        intent.putExtra(ARG_PLACE_OBJ, place);
-        intent.putExtra(ARG_DESTINATION_ID, mDestinationId);
+        Intent intent = new Intent(getContext(), PlaceDetailsActivity.class);
+        intent.putExtra(PlaceDetailsActivity.ARG_PLACE_OBJ, place);
+        intent.putExtra(PlaceDetailsActivity.ARG_DESTINATION_ID, mDestinationId);
         startActivity(intent);
     }
 
     public void setDestinationId(String destinationId) {
-        mDestinationId  = destinationId;
+        mDestinationId = destinationId;
     }
 }
