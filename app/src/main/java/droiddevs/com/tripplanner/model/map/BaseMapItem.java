@@ -1,5 +1,8 @@
 package droiddevs.com.tripplanner.model.map;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import droiddevs.com.tripplanner.R;
@@ -8,7 +11,7 @@ import droiddevs.com.tripplanner.R;
  * Created by elmira on 4/11/17.
  */
 
-public class BaseMapItem {
+public class BaseMapItem implements Parcelable {
 
     private LatLng latLng;
     private String name;
@@ -70,4 +73,41 @@ public class BaseMapItem {
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(this.latLng, flags);
+        dest.writeString(this.name);
+        dest.writeInt(this.position);
+        dest.writeInt(this.iconResId);
+        dest.writeInt(this.selectedIconResId);
+        dest.writeString(this.photoUrl);
+    }
+
+    protected BaseMapItem(Parcel in) {
+        this.latLng = in.readParcelable(LatLng.class.getClassLoader());
+        this.name = in.readString();
+        this.position = in.readInt();
+        this.iconResId = in.readInt();
+        this.selectedIconResId = in.readInt();
+        this.photoUrl = in.readString();
+    }
+
+    public static final Creator<BaseMapItem> CREATOR = new Creator<BaseMapItem>() {
+        @Override
+        public BaseMapItem createFromParcel(Parcel source) {
+            return new BaseMapItem(source);
+        }
+
+        @Override
+        public BaseMapItem[] newArray(int size) {
+            return new BaseMapItem[size];
+        }
+    };
 }

@@ -1,39 +1,128 @@
 package droiddevs.com.tripplanner.model.map;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.android.gms.maps.model.LatLng;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.model.SavedPlace;
 import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
+import droiddevs.com.tripplanner.model.googleplaces.OpeningHours;
+import droiddevs.com.tripplanner.model.googleplaces.Photo;
 
 /**
  * Created by elmira on 4/17/17.
  */
 
-public class PlaceItem extends BaseMapItem {
+public class PlaceItem extends BaseMapItem implements Parcelable {
 
-    private double rating;
+    private float rating;
     private boolean saved;
+
+    private List<Object> weekdayHours;
+    private String photoReference;
+
+    private String placeId;
+    private String destinationId;
 
     public PlaceItem(SavedPlace place, int position) {
         super(new LatLng(place.getLatitude(), place.getLongitude()), place.getName(), position, place.getPhotoUrl());
-        this.rating = place.getRating();
+        this.photoReference = place.getPhotoReference();
+
+        this.rating = (float) place.getRating();
         this.saved = true;
-        setIconResId(R.drawable.ic_star_color_accent);
-        setSelectedIconResId(R.drawable.ic_favorite_big);
+
+        this.destinationId = place.getDestinationId();
+        this.placeId = place.getDestinationId();
+
+        setIconResId(R.drawable.ic_favorite_off);
+        setSelectedIconResId(R.drawable.ic_favorite_on);
     }
 
-    public PlaceItem(GooglePlace place, int position, String photoUrl, boolean saved) {
+    public PlaceItem(GooglePlace place, String destinationId, int position, String photoUrl, boolean saved) {
         super(new LatLng(place.getGeometry().getLocation().getLat(), place.getGeometry().getLocation().getLng()), place.getName(), position, photoUrl);
         this.rating = place.getRating();
         this.saved = saved;
+
+        this.destinationId = destinationId;
+        this.placeId = place.getPlaceId();
+
+        OpeningHours openingHours = place.getOpeningHours();
+        if (openingHours != null) {
+            this.weekdayHours = openingHours.getWeekdayText();
+        }
+        List<Photo> photos = place.getPhotos();
+        if (photos != null && photos.size() > 0) {
+            Photo photo = photos.get(0);
+            this.photoReference = photo.getPhotoReference();
+        }
     }
 
-    public double getRating() {
+    public List<Object> getWeekdayHours() {
+        return weekdayHours;
+    }
+
+    public String getPlaceId() {
+        return placeId;
+    }
+
+    public String getDestinationId() {
+        return destinationId;
+    }
+
+    public float getRating() {
         return rating;
+    }
+
+    public String getPhotoReference() {
+        return photoReference;
     }
 
     public boolean isSaved() {
         return saved;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeFloat(this.rating);
+        dest.writeByte(this.saved ? (byte) 1 : (byte) 0);
+        dest.writeList(this.weekdayHours);
+        dest.writeString(this.photoReference);
+        dest.writeString(this.placeId);
+        dest.writeString(this.destinationId);
+    }
+
+    protected PlaceItem(Parcel in) {
+        super(in);
+        this.rating = in.readFloat();
+        this.saved = in.readByte() != 0;
+        this.weekdayHours = new ArrayList<Object>();
+        in.readList(this.weekdayHours, Object.class.getClassLoader());
+        this.photoReference = in.readString();
+        this.placeId = in.readString();
+        this.destinationId = in.readString();
+    }
+
+    public static final Creator<PlaceItem> CREATOR = new Creator<PlaceItem>() {
+        @Override
+        public PlaceItem createFromParcel(Parcel source) {
+            return new PlaceItem(source);
+        }
+
+        @Override
+        public PlaceItem[] newArray(int size) {
+            return new PlaceItem[size];
+        }
+    };
 }

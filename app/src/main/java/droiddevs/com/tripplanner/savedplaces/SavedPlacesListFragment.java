@@ -17,7 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import droiddevs.com.tripplanner.R;
-import droiddevs.com.tripplanner.adapters.savedplaces.SavedPlacesAdapter;
+import droiddevs.com.tripplanner.adapters.places.PlacesAdapter;
 import droiddevs.com.tripplanner.model.map.PlaceItem;
 import droiddevs.com.tripplanner.viewutil.ItemOffsetDecoration;
 
@@ -25,7 +25,7 @@ import droiddevs.com.tripplanner.viewutil.ItemOffsetDecoration;
  * Created by elmira on 4/16/17.
  */
 
-public class SavedPlacesListFragment extends Fragment {
+public class SavedPlacesListFragment extends Fragment implements PlacesAdapter.OnPlaceClickedListener, PlacesAdapter.OnPlaceFavoriteCheckedListener {
 
     @BindView(R.id.rvSavedPlaces)
     RecyclerView mRecyclerView;
@@ -34,7 +34,7 @@ public class SavedPlacesListFragment extends Fragment {
     View emptyListLayout;
 
     private Unbinder unbinder;
-    private SavedPlacesAdapter mAdapter;
+    private PlacesAdapter mAdapter;
 
     private SavedPlacesContract.Presenter mPresenter;
 
@@ -69,7 +69,8 @@ public class SavedPlacesListFragment extends Fragment {
             unbinder.unbind();
         }
     }
-    public void setActivityPresenter(SavedPlacesContract.Presenter presenter){
+
+    public void setActivityPresenter(SavedPlacesContract.Presenter presenter) {
         mPresenter = presenter;
     }
 
@@ -84,7 +85,10 @@ public class SavedPlacesListFragment extends Fragment {
     }
 
     private void setupRecyclerView() {
-        mAdapter = new SavedPlacesAdapter();
+        mAdapter = new PlacesAdapter();
+        mAdapter.setPlaceClickedListener(this);
+        mAdapter.setPlaceFavoriteCheckedListener(this);
+
         mRecyclerView.setAdapter(mAdapter);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
@@ -93,5 +97,18 @@ public class SavedPlacesListFragment extends Fragment {
         mRecyclerView.addItemDecoration(new DividerItemDecoration(mRecyclerView.getContext(), layoutManager.getOrientation()));
         mRecyclerView.addItemDecoration(new ItemOffsetDecoration(getResources().getDimensionPixelSize(R.dimen.margin_small)));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+    }
+
+    @Override
+    public void onPlaceClicked(PlaceItem placeItem) {
+        /*Intent intent = new Intent(getContext(), PlaceDetailsActivity.class);
+        intent.putExtra(PlaceDetailsActivity.ARG_PLACE_OBJ, place);
+        intent.putExtra(PlaceDetailsActivity.ARG_DESTINATION_ID, mDestinationId);
+        startActivity(intent);*/
+    }
+
+    @Override
+    public void onPlaceFavoriteChecked(PlaceItem placeItem, boolean checked) {
+
     }
 }

@@ -1,4 +1,4 @@
-package droiddevs.com.tripplanner.suggestedplacedetails;
+package droiddevs.com.tripplanner.placedetails;
 
 import droiddevs.com.tripplanner.model.SavedPlace;
 import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
@@ -10,16 +10,17 @@ import droiddevs.com.tripplanner.model.util.PlaceConverter;
  * Created by Jared12 on 4/15/17.
  */
 
-public class SuggestedPlaceDetailsPresenter implements SuggestedPlaceDetailsContract.Presenter {
+public class PlaceDetailsPresenter implements PlaceDetailsContract.Presenter {
+    //todo this should be a PlaceItem object
     private GooglePlace mCurrentPlace;
 
-    private SuggestedPlaceDetailsContract.View mView;
+    private PlaceDetailsContract.View mView;
     private Repository mRepository;
     private SavedPlace mCurrentSavedPlace;
 
     private String mDestinationId;
 
-    public SuggestedPlaceDetailsPresenter(Repository repository, SuggestedPlaceDetailsContract.View view, GooglePlace currentPlace, String destinationId) {
+    public PlaceDetailsPresenter(Repository repository, PlaceDetailsContract.View view, GooglePlace currentPlace, String destinationId) {
         mCurrentPlace = currentPlace;
         mDestinationId = destinationId;
 

@@ -1,4 +1,4 @@
-package droiddevs.com.tripplanner.suggestedplacedetails;
+package droiddevs.com.tripplanner.placedetails;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -18,18 +18,20 @@ import droiddevs.com.tripplanner.application.TripPlannerApplication;
 import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
 import droiddevs.com.tripplanner.model.googleplaces.Photo;
 
-import static droiddevs.com.tripplanner.suggestedplaces.SuggestedPlacesFragment.ARG_DESTINATION_ID;
-import static droiddevs.com.tripplanner.suggestedplaces.SuggestedPlacesFragment.ARG_PLACE_OBJ;
-
-public class SuggestedPlaceDetailsActivity extends AppCompatActivity {
+public class PlaceDetailsActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.ivToolbarImage)
     ImageView toolbarImage;
 
     private String mDestinationId;
+
+    //todo this should be a PlaceItem object
     private GooglePlace mCurrentPlace;
-    private SuggestedPlaceDetailsContract.Presenter mPresenter;
+    private PlaceDetailsContract.Presenter mPresenter;
+
+    public static final String ARG_PLACE_OBJ = "placeObj";
+    public static final String ARG_DESTINATION_ID = "destinationId";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,23 +43,25 @@ public class SuggestedPlaceDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("");
 
+        //todo this should be a PlaceItem object
         mCurrentPlace = getIntent().getParcelableExtra(ARG_PLACE_OBJ);
+
         mDestinationId = getIntent().getStringExtra(ARG_DESTINATION_ID);
         loadPlaceImage();
 
         // Add fragment to content frame
-        SuggestedPlaceDetailsFragment suggestedPlaceDetailsFragment =
-                (SuggestedPlaceDetailsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+        PlaceDetailsFragment suggestedPlaceDetailsFragment =
+                (PlaceDetailsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
 
         if (suggestedPlaceDetailsFragment == null) {
-            suggestedPlaceDetailsFragment = SuggestedPlaceDetailsFragment.newInstance();
+            suggestedPlaceDetailsFragment = PlaceDetailsFragment.newInstance();
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.contentFrame, suggestedPlaceDetailsFragment);
             transaction.commit();
         }
 
-        mPresenter = new SuggestedPlaceDetailsPresenter(
+        mPresenter = new PlaceDetailsPresenter(
                 TripPlannerApplication.getRepository(),
                 suggestedPlaceDetailsFragment,
                 mCurrentPlace,

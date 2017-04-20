@@ -1,4 +1,4 @@
-package droiddevs.com.tripplanner.suggestedplacedetails;
+package droiddevs.com.tripplanner.placedetails;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,7 +18,7 @@ import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
 import droiddevs.com.tripplanner.model.googleplaces.OpeningHours;
 
-public class SuggestedPlaceDetailsFragment extends Fragment implements SuggestedPlaceDetailsContract.View {
+public class PlaceDetailsFragment extends Fragment implements PlaceDetailsContract.View {
     @BindView(R.id.tvPlaceTitle)
     TextView tvPlaceTitle;
     @BindView(R.id.rbPlaceRating)
@@ -29,12 +29,13 @@ public class SuggestedPlaceDetailsFragment extends Fragment implements Suggested
     TextView tvOpenNow;
 
     private Unbinder mUnbinder;
-    private SuggestedPlaceDetailsContract.Presenter mPresenter;
+    private PlaceDetailsContract.Presenter mPresenter;
 
-    public SuggestedPlaceDetailsFragment() {}
+    public PlaceDetailsFragment() {
+    }
 
-    public static SuggestedPlaceDetailsFragment newInstance() {
-        SuggestedPlaceDetailsFragment fragment = new SuggestedPlaceDetailsFragment();
+    public static PlaceDetailsFragment newInstance() {
+        PlaceDetailsFragment fragment = new PlaceDetailsFragment();
         return fragment;
     }
 
@@ -64,7 +65,7 @@ public class SuggestedPlaceDetailsFragment extends Fragment implements Suggested
     }
 
     @Override
-    public void setPresenter(SuggestedPlaceDetailsContract.Presenter presenter) {
+    public void setPresenter(PlaceDetailsContract.Presenter presenter) {
         mPresenter = presenter;
     }
 
@@ -77,7 +78,8 @@ public class SuggestedPlaceDetailsFragment extends Fragment implements Suggested
         if (openingHours != null) {
             if (openingHours.getOpenNow()) {
                 tvOpenNow.setText("Open Now");
-            } else {
+            }
+            else {
                 tvOpenNow.setText("Closed");
             }
         }
@@ -88,12 +90,14 @@ public class SuggestedPlaceDetailsFragment extends Fragment implements Suggested
             public void onClick(View v) {
                 if (savedPlace) {
                     mPresenter.deletePlace(place);
-                } else {
+                }
+                else {
                     mPresenter.savePlace(place);
                 }
             }
         });
     }
+
     @Override
     public void onPlaceSaved(boolean success) {
         setAsSaved(success);
@@ -108,7 +112,8 @@ public class SuggestedPlaceDetailsFragment extends Fragment implements Suggested
         if (saved) {
             btnSavePlace.setText("Remove");
             btnSavePlace.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
-        } else {
+        }
+        else {
             btnSavePlace.setText("Save");
             btnSavePlace.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorLightGray));
         }

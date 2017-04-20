@@ -63,7 +63,7 @@
             android:value="@string/google_places_api_key" />
 
         <activity android:name=".suggestedplaces.SuggestedPlacesActivity" />
-        <activity android:name=".suggestedplacedetails.SuggestedPlaceDetailsActivity"></activity>
+        <activity android:name=".placedetails.PlaceDetailsActivity"></activity>
     </application>
 
 </manifest>

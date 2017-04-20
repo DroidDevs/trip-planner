@@ -36,7 +36,6 @@ public class Repository implements DataSource {
     private boolean canLoadFromRemoteSource = true;
 
     private FbUser mCurrentFbUser;
-    private List<FbUser> mFbFriends;
 
     public static Repository getInstance(LocalDataSource localDataSource, RemoteDataSource remoteDataSource) {
         if (SHARED_INSTANCE == null) {
@@ -302,9 +301,8 @@ public class Repository implements DataSource {
         return mCurrentFbUser != null;
     }
 
-    public boolean isFbFriendsLoaded() {
-        Log.d(LOG_TAG, "FB friends list: " + (mFbFriends == null ? "undefined" : mFbFriends.size()));
-        return mFbFriends != null;
+    public FbUser getCurrentFbUser() {
+        return mCurrentFbUser;
     }
 
     @Override
