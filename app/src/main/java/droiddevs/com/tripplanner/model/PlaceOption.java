@@ -22,6 +22,15 @@ public class PlaceOption {
         public String typeSearchString() {
             return this.typeString;
         }
+
+        public static PlaceOptionType fromString(String text) throws IllegalArgumentException {
+            for (PlaceOptionType pt : PlaceOptionType.values()) {
+                if (pt.typeString.equalsIgnoreCase(text)) {
+                    return pt;
+                }
+            }
+            throw new IllegalArgumentException("A PlaceOptionType representing the passed string does not exist");
+        }
     }
 
     private Drawable mOptionImageDrawable;

@@ -2,6 +2,7 @@ package droiddevs.com.tripplanner.placedetails;
 
 import droiddevs.com.tripplanner.model.SavedPlace;
 import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
+import droiddevs.com.tripplanner.model.map.PlaceItem;
 import droiddevs.com.tripplanner.model.source.DataSource;
 import droiddevs.com.tripplanner.model.source.Repository;
 import droiddevs.com.tripplanner.model.util.PlaceConverter;
@@ -11,8 +12,7 @@ import droiddevs.com.tripplanner.model.util.PlaceConverter;
  */
 
 public class PlaceDetailsPresenter implements PlaceDetailsContract.Presenter {
-    //todo this should be a PlaceItem object
-    private GooglePlace mCurrentPlace;
+    private PlaceItem mCurrentPlace;
 
     private PlaceDetailsContract.View mView;
     private Repository mRepository;
@@ -20,7 +20,7 @@ public class PlaceDetailsPresenter implements PlaceDetailsContract.Presenter {
 
     private String mDestinationId;
 
-    public PlaceDetailsPresenter(Repository repository, PlaceDetailsContract.View view, GooglePlace currentPlace, String destinationId) {
+    public PlaceDetailsPresenter(Repository repository, PlaceDetailsContract.View view, PlaceItem currentPlace, String destinationId) {
         mCurrentPlace = currentPlace;
         mDestinationId = destinationId;
 

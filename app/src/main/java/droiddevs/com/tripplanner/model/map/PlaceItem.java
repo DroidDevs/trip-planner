@@ -13,6 +13,7 @@ import droiddevs.com.tripplanner.model.SavedPlace;
 import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
 import droiddevs.com.tripplanner.model.googleplaces.OpeningHours;
 import droiddevs.com.tripplanner.model.googleplaces.Photo;
+import droiddevs.com.tripplanner.util.PhotoUrlUtil;
 
 /**
  * Created by elmira on 4/17/17.
@@ -37,7 +38,7 @@ public class PlaceItem extends BaseMapItem implements Parcelable {
         this.saved = true;
 
         this.destinationId = place.getDestinationId();
-        this.placeId = place.getDestinationId();
+        this.placeId = place.getPlaceId();
 
         setIconResId(R.drawable.ic_favorite_off);
         setSelectedIconResId(R.drawable.ic_favorite_on);
@@ -86,6 +87,9 @@ public class PlaceItem extends BaseMapItem implements Parcelable {
         return saved;
     }
 
+    public String getPhotoUrl() {
+        return PhotoUrlUtil.getPhotoUrl(photoReference);
+    }
 
     @Override
     public int describeContents() {
@@ -125,4 +129,14 @@ public class PlaceItem extends BaseMapItem implements Parcelable {
             return new PlaceItem[size];
         }
     };
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof PlaceItem)) {
+            return false;
+        }
+        PlaceItem otherPlaceItem = (PlaceItem) obj;
+        return (this.getPlaceId().equals(otherPlaceItem.getPlaceId()))
+                && (this.getDestinationId().equals(otherPlaceItem.getDestinationId()));
+    }
 }

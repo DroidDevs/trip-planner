@@ -10,22 +10,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import droiddevs.com.tripplanner.R;
-import droiddevs.com.tripplanner.adapters.suggestedplaces.SuggestedPlacesAdapter;
-import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
+import droiddevs.com.tripplanner.adapters.places.PlacesAdapter;
+import droiddevs.com.tripplanner.model.map.PlaceItem;
 import droiddevs.com.tripplanner.placedetails.PlaceDetailsActivity;
 
-public class SuggestedPlacesFragment extends Fragment implements SuggestedPlacesContract.View, SuggestedPlacesAdapter.SuggestedPlaceInteractionListener {
+public class SuggestedPlacesFragment extends Fragment implements SuggestedPlacesContract.View,
+                                                                 PlacesAdapter.OnPlaceClickedListener,
+                                                                 PlacesAdapter.OnPlaceFavoriteCheckedListener {
 
-    private List<GooglePlace> mPlaces;
     private SuggestedPlacesContract.Presenter mPresenter;
-    private SuggestedPlacesAdapter mAdapter;
+    private PlacesAdapter mAdapter;
     private Unbinder unbinder;
     private String mDestinationId;
 
@@ -59,14 +59,15 @@ public class SuggestedPlacesFragment extends Fragment implements SuggestedPlaces
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mPlaces = new ArrayList<>();
-        mAdapter = new SuggestedPlacesAdapter(getContext(), mPlaces);
-        mAdapter.setSuggestedPlaceInteractionListener(this);
+        mAdapter = new PlacesAdapter();
+        mAdapter.setPlaceClickedListener(this);
+        mAdapter.setPlaceFavoriteCheckedListener(this);
 
         rvSuggestedPlaces.setAdapter(mAdapter);
         rvSuggestedPlaces.setHasFixedSize(true);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager linearLayoutManager =
+                new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rvSuggestedPlaces.setLayoutManager(linearLayoutManager);
     }
 
@@ -77,7 +78,7 @@ public class SuggestedPlacesFragment extends Fragment implements SuggestedPlaces
     }
 
     @Override
-    public void showSuggestedPlaces(List<GooglePlace> places) {
+    public void showSuggestedPlaces(List<PlaceItem> places) {
         mAdapter.setPlaces(places);
     }
 
@@ -86,15 +87,29 @@ public class SuggestedPlacesFragment extends Fragment implements SuggestedPlaces
         mPresenter = presenter;
     }
 
+    public void setDestinationId(String destinationId) {
+        mDestinationId = destinationId;
+    }
+
     @Override
-    public void OnPlaceClicked(GooglePlace place) {
+    public void onPlaceClicked(PlaceItem placeItem) {
         Intent intent = new Intent(getContext(), PlaceDetailsActivity.class);
-        intent.putExtra(PlaceDetailsActivity.ARG_PLACE_OBJ, place);
+        intent.putExtra(PlaceDetailsActivity.ARG_PLACE_OBJ, placeItem);
         intent.putExtra(PlaceDetailsActivity.ARG_DESTINATION_ID, mDestinationId);
         startActivity(intent);
     }
 
-    public void setDestinationId(String destinationId) {
-        mDestinationId = destinationId;
+    @Override
+    public void onPlaceFavoriteChecked(PlaceItem placeItem, boolean checked) {
+        if (checked) {
+            mPresenter.savePlace(placeItem);
+        } else {
+            mPresenter.deletePlace(placeItem);
+        }
+    }
+
+    @Override
+    public void onSavedPlaceDeleted(PlaceItem placeItem) {
+        mAdapter.deletePlace(placeItem);
     }
 }

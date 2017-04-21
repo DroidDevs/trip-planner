@@ -45,6 +45,14 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesViewHolder> {
         notifyDataSetChanged();
     }
 
+    public void deletePlace(PlaceItem placeItem) {
+        int index = this.places.indexOf(placeItem);
+        if (index > -1) {
+            this.places.remove(index);
+            notifyItemRemoved(index);
+        }
+    }
+
     @Override
     public int getItemCount() {
         return places == null ? 0 : places.size();

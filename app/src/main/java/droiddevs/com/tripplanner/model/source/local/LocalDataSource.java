@@ -184,7 +184,7 @@ public class LocalDataSource implements DataSource {
     }
 
     @Override
-    public void searchGooglePlaces(String location, int radiusInMeters, String searchText, String apiKey, SearchGooglePlacesCallback callback) {
+    public void searchGooglePlaces(String location, String destinationId, int radiusInMeters, String searchTypeString, String apiKey, final SearchGooglePlacesCallback callback) {
         throw new UnsupportedOperationException("Operation is not supported in local data source");
     }
 
