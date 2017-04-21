@@ -9,14 +9,11 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.application.TripPlannerApplication;
-import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
-import droiddevs.com.tripplanner.model.googleplaces.Photo;
+import droiddevs.com.tripplanner.model.map.PlaceItem;
 
 public class PlaceDetailsActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
@@ -26,8 +23,7 @@ public class PlaceDetailsActivity extends AppCompatActivity {
 
     private String mDestinationId;
 
-    //todo this should be a PlaceItem object
-    private GooglePlace mCurrentPlace;
+    private PlaceItem mCurrentPlace;
     private PlaceDetailsContract.Presenter mPresenter;
 
     public static final String ARG_PLACE_OBJ = "placeObj";
@@ -77,11 +73,10 @@ public class PlaceDetailsActivity extends AppCompatActivity {
     private void loadPlaceImage() {
         if (mCurrentPlace == null) return;
 
-        List<Photo> placePhotos = mCurrentPlace.getPhotos();
-        if (placePhotos.size() > 0) {
-            Photo placePhoto = placePhotos.get(0);
+        String placeUrl = mCurrentPlace.getPhotoUrl();
+        if (placeUrl != null) {
             Glide.with(this)
-                    .load(placePhoto.getFullPhotoURLReference())
+                    .load(placeUrl)
                     .centerCrop()
                     .into(toolbarImage);
         }

@@ -1,6 +1,7 @@
 package droiddevs.com.tripplanner.placedetails;
 
 import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
+import droiddevs.com.tripplanner.model.map.PlaceItem;
 import droiddevs.com.tripplanner.mvp.BasePresenter;
 import droiddevs.com.tripplanner.mvp.BaseView;
 
@@ -10,7 +11,7 @@ import droiddevs.com.tripplanner.mvp.BaseView;
 
 public class PlaceDetailsContract {
     public interface View extends BaseView<Presenter> {
-        void showPlaceDetails(GooglePlace place, boolean savedPlace);
+        void showPlaceDetails(PlaceItem place, boolean savedPlace);
 
         void onPlaceSaved(boolean success);
 

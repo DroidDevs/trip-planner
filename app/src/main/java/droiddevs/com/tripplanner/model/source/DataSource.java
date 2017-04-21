@@ -5,11 +5,11 @@ import android.location.Location;
 import java.util.List;
 
 import droiddevs.com.tripplanner.model.Destination;
-import droiddevs.com.tripplanner.model.fb.FbPlace;
-import droiddevs.com.tripplanner.model.fb.FbUser;
 import droiddevs.com.tripplanner.model.SavedPlace;
 import droiddevs.com.tripplanner.model.Trip;
-import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
+import droiddevs.com.tripplanner.model.fb.FbPlace;
+import droiddevs.com.tripplanner.model.fb.FbUser;
+import droiddevs.com.tripplanner.model.map.PlaceItem;
 
 /**
  * Created by elmira on 4/3/17.
@@ -65,7 +65,7 @@ public interface DataSource {
     }
 
     interface SearchGooglePlacesCallback {
-        void onPlacesFound(List<GooglePlace> places);
+        void onPlacesFound(List<PlaceItem> places);
 
         void onFailure();
     }
@@ -120,7 +120,7 @@ public interface DataSource {
 
     void searchFbPlaces(Location location, int radiusInMeters, int resultsLimit, String searchText, SearchFbPlacesCallback callback);
 
-    void searchGooglePlaces(String location, int radiusInMeters, String searchText, String apiKey, SearchGooglePlacesCallback callback);
+    void searchGooglePlaces(String location, String destinationId, int radiusInMeters, String searchTypeString, String apiKey, final SearchGooglePlacesCallback callback);
 
     void loadSavedPlaces(String destinationId, LoadSavedPlacesCallback callback);
 

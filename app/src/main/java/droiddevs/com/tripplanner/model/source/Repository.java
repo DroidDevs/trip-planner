@@ -307,8 +307,8 @@ public class Repository implements DataSource {
     }
 
     @Override
-    public void searchGooglePlaces(String location, int radiusInMeters, String searchText, String apiKey, SearchGooglePlacesCallback callback) {
-        remoteDataSource.searchGooglePlaces(location, radiusInMeters, searchText, apiKey, callback);
+    public void searchGooglePlaces(String location, String destinationId, int radiusInMeters, String searchTypeString, String apiKey, SearchGooglePlacesCallback callback) {
+        remoteDataSource.searchGooglePlaces(location, destinationId, radiusInMeters, searchTypeString, apiKey, callback);
     }
 
     private void addTripsToCache(List<Trip> list) {
@@ -424,7 +424,7 @@ public class Repository implements DataSource {
 
     @Override
     public void deleteSavedPlace(final SavedPlace savedPlace, final DeleteSavedPlaceCallback callback) {
-        localDataSource.deleteSavedPlace(savedPlace, new DeleteSavedPlaceCallback() {
+        remoteDataSource.deleteSavedPlace(savedPlace, new DeleteSavedPlaceCallback() {
             @Override
             public void onSuccess() {
                 callback.onSuccess();
@@ -436,7 +436,6 @@ public class Repository implements DataSource {
                 callback.onFailed();
             }
         });
-
     }
 
     @Override

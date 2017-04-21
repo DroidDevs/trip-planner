@@ -22,6 +22,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -34,6 +35,7 @@ import droiddevs.com.tripplanner.model.Trip;
 import droiddevs.com.tripplanner.model.fb.FbPlace;
 import droiddevs.com.tripplanner.model.fb.FbUser;
 import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
+import droiddevs.com.tripplanner.model.map.PlaceItem;
 import droiddevs.com.tripplanner.model.source.DataSource;
 import droiddevs.com.tripplanner.model.util.PlaceConverter;
 import retrofit2.Call;
@@ -315,7 +317,7 @@ public class RemoteDataSource implements DataSource {
         searchRequest.executeAsync();
     }
 
-    public void searchGooglePlaces(String location, int radiusInMeters, String searchTypeString, String apiKey, final SearchGooglePlacesCallback callback) {
+    public void searchGooglePlaces(String location, final String destinationId, int radiusInMeters, String searchTypeString, String apiKey, final SearchGooglePlacesCallback callback) {
         GooglePlacesService retrofitService = RetrofitGooglePlacesService.newGooglePlacesService();
 
         Call<List<GooglePlace>> listCall = retrofitService.searchPlaces(location, radiusInMeters, searchTypeString, apiKey);
@@ -323,7 +325,12 @@ public class RemoteDataSource implements DataSource {
             @Override
             public void onResponse(Call<List<GooglePlace>> call, Response<List<GooglePlace>> response) {
                 if (response != null) {
-                    callback.onPlacesFound(response.body());
+                    List<PlaceItem> placeItems = new ArrayList<>();
+                    List<GooglePlace> googlePlaces = response.body();
+                    if (googlePlaces != null && googlePlaces.size() > 0) {
+                        placeItems = PlaceConverter.convertToPlaceItemListFromGooglePlace(destinationId, googlePlaces);
+                    }
+                    callback.onPlacesFound(placeItems);
                 }
                 else {
                     callback.onFailure();
@@ -379,7 +386,7 @@ public class RemoteDataSource implements DataSource {
 
     @Override
     public void deleteSavedPlace(SavedPlace savedPlace, final DeleteSavedPlaceCallback callback) {
-        savedPlace.deleteEventually(new DeleteCallback() {
+        savedPlace.deleteInBackground(new DeleteCallback() {
             @Override
             public void done(ParseException e) {
                 if (e != null) {

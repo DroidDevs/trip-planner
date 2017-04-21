@@ -41,7 +41,8 @@ public class PlacesViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    public void bind(final PlaceItem placeItem, final PlacesAdapter.OnPlaceFavoriteCheckedListener favouriteCheckedListener,
+    public void bind(final PlaceItem placeItem,
+                     final PlacesAdapter.OnPlaceFavoriteCheckedListener favouriteCheckedListener,
                      final PlacesAdapter.OnPlaceClickedListener placeClickedListener) {
 
         nameTextView.setText(placeItem.getName());

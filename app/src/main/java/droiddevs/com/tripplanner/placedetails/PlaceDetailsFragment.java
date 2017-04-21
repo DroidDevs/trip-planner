@@ -15,8 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import droiddevs.com.tripplanner.R;
-import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
-import droiddevs.com.tripplanner.model.googleplaces.OpeningHours;
+import droiddevs.com.tripplanner.model.map.PlaceItem;
 
 public class PlaceDetailsFragment extends Fragment implements PlaceDetailsContract.View {
     @BindView(R.id.tvPlaceTitle)
@@ -70,29 +69,29 @@ public class PlaceDetailsFragment extends Fragment implements PlaceDetailsContra
     }
 
     @Override
-    public void showPlaceDetails(final GooglePlace place, final boolean savedPlace) {
+    public void showPlaceDetails(final PlaceItem place, final boolean savedPlace) {
         tvPlaceTitle.setText(place.getName());
         rbPlaceRating.setRating(place.getRating());
 
-        OpeningHours openingHours = place.getOpeningHours();
-        if (openingHours != null) {
-            if (openingHours.getOpenNow()) {
-                tvOpenNow.setText("Open Now");
-            }
-            else {
-                tvOpenNow.setText("Closed");
-            }
-        }
+//        OpeningHours openingHours = place.getOpeningHours();
+//        if (openingHours != null) {
+//            if (openingHours.getOpenNow()) {
+//                tvOpenNow.setText("Open Now");
+//            }
+//            else {
+//                tvOpenNow.setText("Closed");
+//            }
+//        }
 
         setAsSaved(savedPlace);
         btnSavePlace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (savedPlace) {
-                    mPresenter.deletePlace(place);
+                    //mPresenter.deletePlace(place);
                 }
                 else {
-                    mPresenter.savePlace(place);
+                    //mPresenter.savePlace(place);
                 }
             }
         });

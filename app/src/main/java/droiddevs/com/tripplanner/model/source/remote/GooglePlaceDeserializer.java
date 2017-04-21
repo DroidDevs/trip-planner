@@ -25,7 +25,6 @@ public class GooglePlaceDeserializer implements JsonDeserializer<List<GooglePlac
         JsonObject jsonObj = json.getAsJsonObject();
         JsonArray placesArray = jsonObj.get("results").getAsJsonArray();
 
-        List<GooglePlace> placesList = gson.fromJson(placesArray, new TypeToken<List<GooglePlace>>(){}.getType());
-        return placesList;
+        return gson.fromJson(placesArray, new TypeToken<List<GooglePlace>>(){}.getType());
     }
 }
