@@ -67,6 +67,7 @@ public class Repository implements DataSource {
     public void loadUpcomingTrips(final LoadTripListCallback callback) {
         if (!mCachedUpcomingTrips.isEmpty()) {
             callback.onTripListLoaded(new ArrayList<Trip>(mCachedUpcomingTrips.values()));
+            return;
         }
 
         //load data from remote data source
