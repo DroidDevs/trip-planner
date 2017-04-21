@@ -62,6 +62,8 @@ public abstract class BaseMapFragment<T extends BaseMapItem> extends Fragment im
     private static final int INITIAL_STROKE_WIDTH_PX = 10;
     private Unbinder unbinder;
 
+    private boolean isMapReady = false;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +106,7 @@ public abstract class BaseMapFragment<T extends BaseMapItem> extends Fragment im
     @Override
     public void onResume() {
         super.onResume();
+        isMapReady = false;
         mMapView.onResume();
 
         Log.d(LOG_TAG, "onResume()");
@@ -113,6 +116,7 @@ public abstract class BaseMapFragment<T extends BaseMapItem> extends Fragment im
     @Override
     public void onPause() {
         super.onPause();
+        isMapReady = false;
         mMapView.onPause();
 
         Log.d(LOG_TAG, "onPause()");
@@ -163,6 +167,7 @@ public abstract class BaseMapFragment<T extends BaseMapItem> extends Fragment im
     public void onMapReady(GoogleMap googleMap) {
         Log.d(LOG_TAG, "onMapReady()");
         this.mGoogleMap = googleMap;
+        isMapReady = true;
 
         // Hide the zoom controls, compass and map toolbar as the bottom panel will cover it.
         mGoogleMap.getUiSettings().setZoomControlsEnabled(false);
@@ -179,6 +184,9 @@ public abstract class BaseMapFragment<T extends BaseMapItem> extends Fragment im
         mAdapter.setMapData(data);
         if (mRecyclerView != null && data!=null && data.size()>0) {
             mRecyclerView.smoothScrollToPosition(0);
+        }
+        if (isMapReady){
+            createMapMarkers();
         }
     }
 

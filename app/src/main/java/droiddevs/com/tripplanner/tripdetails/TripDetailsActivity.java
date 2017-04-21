@@ -3,6 +3,7 @@ package droiddevs.com.tripplanner.tripdetails;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -128,9 +129,11 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
             public void onPageSelected(int position) {
                 if (position == 0) {
                     toolbarImage.setVisibility(View.GONE);
+                    toolbar.setBackgroundColor(ContextCompat.getColor(TripDetailsActivity.this, R.color.colorPrimary));
                 }
                 else {
                     toolbarImage.setVisibility(View.VISIBLE);
+                    toolbar.setBackgroundColor(ContextCompat.getColor(TripDetailsActivity.this, android.R.color.transparent));
                     loadImagePerTabPosition(position - 1);
                 }
             }
