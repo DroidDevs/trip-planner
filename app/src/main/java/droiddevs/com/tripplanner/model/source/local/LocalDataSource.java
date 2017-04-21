@@ -53,7 +53,7 @@ public class LocalDataSource implements DataSource {
             @Override
             public void done(List<Trip> objects, ParseException e) {
                 if (e != null) {
-                    Log.e(LOG_TAG, e.toString());
+                    Log.e(LOG_TAG, e.toString(), e);
                     callback.onFailure();
                 }
                 else {
@@ -72,7 +72,7 @@ public class LocalDataSource implements DataSource {
             @Override
             public void done(List<Trip> objects, ParseException e) {
                 if (e != null) {
-                    Log.e(LOG_TAG, e.toString());
+                    Log.e(LOG_TAG, e.toString(), e);
                     callback.onFailure();
                 }
                 else {
@@ -90,7 +90,7 @@ public class LocalDataSource implements DataSource {
             @Override
             public void done(final Trip trip, ParseException e) {
                 if (e != null) {
-                    Log.e(LOG_TAG, e.toString());
+                    Log.e(LOG_TAG, e.toString(), e);
                     callback.onFailure();
                 }
                 else {
@@ -106,12 +106,11 @@ public class LocalDataSource implements DataSource {
             callback.onFailure();
             return;
         }
-
         trip.fetchAllInBackground(trip.getDestinations(), new FindCallback<Destination>() {
             @Override
             public void done(List<Destination> objects, ParseException e) {
                 if (e != null) {
-                    Log.e(LOG_TAG, e.toString());
+                    Log.e(LOG_TAG, e.toString(), e);
                     callback.onFailure();
                 }
                 else {
@@ -136,7 +135,7 @@ public class LocalDataSource implements DataSource {
             @Override
             public void done(Destination object, ParseException e) {
                 if (e != null) {
-                    Log.e(LOG_TAG, e.toString());
+                    Log.e(LOG_TAG, e.toString(), e);
                     callback.onFailure();
                 }
                 else {
@@ -150,30 +149,21 @@ public class LocalDataSource implements DataSource {
     @Override
     public void updateTrip(final Trip trip, final SaveTripCallback callback) {
         Log.d(LOG_TAG, "updateTrip() " + trip.toString());
-        trip.fetchIfNeededInBackground(new GetCallback<Trip>() {
+
+        trip.pinInBackground(new SaveCallback() {
             @Override
-            public void done(final Trip object, ParseException e) {
+            public void done(ParseException e) {
                 if (e != null) {
-                    Log.e(LOG_TAG, "can not fetch a trip: " + e.toString());
+                    Log.e(LOG_TAG, "can not pin a trip: " + e.toString(), e);
                     if (callback != null) callback.onFailed();
                 }
                 else {
-                    object.pinInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e != null) {
-                                Log.e(LOG_TAG, "can not pin a trip: " + e.toString());
-                                if (callback != null) callback.onFailed();
-                            }
-                            else {
-                                Log.d(LOG_TAG, "Trip was updated successfully locally, tripId: " + object.getTripId());
-                                if (callback != null) callback.onSuccess(object);
-                            }
-                        }
-                    });
+                    Log.d(LOG_TAG, "Trip was updated successfully locally, tripId: " + trip.getTripId());
+                    if (callback != null) callback.onSuccess(trip);
                 }
             }
         });
+
     }
 
     @Override
@@ -206,7 +196,7 @@ public class LocalDataSource implements DataSource {
             @Override
             public void done(final SavedPlace place, ParseException e) {
                 if (e != null) {
-                    Log.e(LOG_TAG, e.toString());
+                    Log.e(LOG_TAG, e.toString(), e);
                     callback.onFailure();
                 }
                 else {
@@ -246,7 +236,7 @@ public class LocalDataSource implements DataSource {
             @Override
             public void done(List<SavedPlace> objects, ParseException e) {
                 if (e != null) {
-                    Log.e(LOG_TAG, e.toString());
+                    Log.e(LOG_TAG, e.toString(), e);
                     callback.onFailure();
                 }
                 else {
@@ -266,7 +256,7 @@ public class LocalDataSource implements DataSource {
             @Override
             public void done(SavedPlace object, ParseException e) {
                 if (e != null) {
-                    Log.e(LOG_TAG, e.toString());
+                    Log.e(LOG_TAG, e.toString(), e);
                     callback.onFailure();
                 }
                 else {
@@ -282,7 +272,7 @@ public class LocalDataSource implements DataSource {
             @Override
             public void done(ParseException e) {
                 if (e != null) {
-                    Log.e(LOG_TAG, e.toString());
+                    Log.e(LOG_TAG, e.toString(), e);
                     callback.onFailed();
                 }
                 else {
@@ -294,21 +284,16 @@ public class LocalDataSource implements DataSource {
 
     @Override
     public void createSavedPlace(SavedPlace savedPlace, final CreateSavedPlaceCallback callback) {
-        savedPlace.fetchIfNeededInBackground(new GetCallback<SavedPlace>() {
+        savedPlace.pinInBackground(new SaveCallback() {
             @Override
-            public void done(SavedPlace object, ParseException e) {
-                object.pinInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e != null) {
-                            Log.e(LOG_TAG, e.toString());
-                            callback.onFailed();
-                        }
-                        else {
-                            callback.onSuccess();
-                        }
-                    }
-                });
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(LOG_TAG, e.toString(), e);
+                    callback.onFailed();
+                }
+                else {
+                    callback.onSuccess();
+                }
             }
         });
     }

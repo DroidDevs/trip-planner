@@ -8,13 +8,11 @@ import android.os.Process;
 import android.util.Log;
 
 import com.parse.DeleteCallback;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import droiddevs.com.tripplanner.model.Destination;
@@ -34,7 +32,6 @@ public class Repository implements DataSource {
     private LocalDataSource localDataSource;
     private RemoteDataSource remoteDataSource;
 
-    private LinkedHashMap<String, Trip> mCachedUpcomingTrips;
     private static Repository SHARED_INSTANCE;
 
     private FbUser mCurrentFbUser;
@@ -54,8 +51,6 @@ public class Repository implements DataSource {
         this.localDataSource = localDataSource;
         this.remoteDataSource = remoteDataSource;
 
-        mCachedUpcomingTrips = new LinkedHashMap<>();
-
         mHandlerThread = new HandlerThread("TripPhotoThread", Process.THREAD_PRIORITY_DISPLAY);
         mHandlerThread.start();
 
@@ -65,17 +60,11 @@ public class Repository implements DataSource {
 
     @Override
     public void loadUpcomingTrips(final LoadTripListCallback callback) {
-        if (!mCachedUpcomingTrips.isEmpty()) {
-            callback.onTripListLoaded(new ArrayList<Trip>(mCachedUpcomingTrips.values()));
-            return;
-        }
-
         //load data from remote data source
         remoteDataSource.loadUpcomingTrips(new LoadTripListCallback() {
             @Override
             public void onTripListLoaded(final List<Trip> trips) {
                 Collections.sort(trips);
-                addTripsToCache(trips);
                 callback.onTripListLoaded(trips);
 
                 if (trips.size() > 0) {
@@ -95,7 +84,6 @@ public class Repository implements DataSource {
                     @Override
                     public void onTripListLoaded(List<Trip> trips) {
                         Collections.sort(trips);
-                        addTripsToCache(trips);
                         callback.onTripListLoaded(trips);
                     }
 
@@ -127,28 +115,25 @@ public class Repository implements DataSource {
     @Override
     public void loadTrip(final String tripId, final LoadTripCallback callback) {
         Log.d(LOG_TAG, "Loading trip: " + tripId);
-        //return Trip immediately if it stores in the cache
-        /*if (mCachedUpcomingTrips.containsKey(tripId)) {
-            Log.d(LOG_TAG, "Found trip in memory cache");
-            callback.onTripLoaded(mCachedUpcomingTrips.get(tripId));
-        }*/
-        //else {// try to load trip from remote source
+        // try to load trip from remote source
         remoteDataSource.loadTrip(tripId, new LoadTripCallback() {
             @Override
             public void onTripLoaded(final Trip trip) {
                 Log.d(LOG_TAG, "Found trip in remote source. ");
 
-                boolean isUpcomingTrip = trip.getEndDate().after(new Date());
-                if (isUpcomingTrip) {
-                    mCachedUpcomingTrips.put(tripId, trip);
-                }
-                callback.onTripLoaded(trip);
-
-                //sync with local data source
-                trip.unpinInBackground(new DeleteCallback() {
+                ParseObject.fetchAllInBackground(trip.getDestinations(), new FindCallback<Destination>() {
                     @Override
-                    public void done(ParseException e) {
-                        trip.pinInBackground();
+                    public void done(List<Destination> objects, ParseException e) {
+                        trip.setDestinations(objects);
+                        callback.onTripLoaded(trip);
+
+                        //sync with local data source
+                        trip.unpinInBackground(new DeleteCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                trip.pinInBackground();
+                            }
+                        });
                     }
                 });
             }
@@ -160,10 +145,6 @@ public class Repository implements DataSource {
                     @Override
                     public void onTripLoaded(final Trip trip) {
                         Log.d(LOG_TAG, "Found trip in local database.");
-                        boolean isUpcomingTrip = trip.getEndDate().after(new Date());
-                        if (isUpcomingTrip) {
-                            mCachedUpcomingTrips.put(tripId, trip);
-                        }
                         callback.onTripLoaded(trip);
                     }
 
@@ -174,16 +155,11 @@ public class Repository implements DataSource {
                 });
             }
         });
-        //}
+
     }
 
     @Override
     public void updateTrip(final Trip trip, final SaveTripCallback callback) {
-        final boolean isUpcomingTrip = trip.getEndDate().after(new Date());
-        //update memory cache
-        if (isUpcomingTrip) {
-            mCachedUpcomingTrips.put(trip.getTripId(), trip);
-        }
         //update local database
         localDataSource.updateTrip(trip, new SaveTripCallback() {
             @Override
@@ -213,9 +189,6 @@ public class Repository implements DataSource {
                                 loadedTripPhoto = true;
                                 trip.setPhotoReference(destination.getPhotoReference());
                                 updateTrip(trip);
-                                if (isUpcomingTrip) {
-                                    mCachedUpcomingTrips.put(trip.getTripId(), trip);
-                                }
 
                                 // Execute callback on main thread
                                 mUiHandler.post(new Runnable() {
@@ -226,9 +199,7 @@ public class Repository implements DataSource {
                                 });
                             }
                         }
-                        if (isUpcomingTrip) {
-                            mCachedUpcomingTrips.put(trip.getTripId(), trip);
-                        }
+                        updateTrip(trip);
                     }
                 });
             }
@@ -242,10 +213,11 @@ public class Repository implements DataSource {
 
     @Override
     public void updateTrip(Trip trip) {
-        //update local database
-        localDataSource.updateTrip(trip);
         //update remotely
         remoteDataSource.updateTrip(trip);
+        //update local database
+        localDataSource.updateTrip(trip);
+
     }
 
     @Override
@@ -311,15 +283,6 @@ public class Repository implements DataSource {
         remoteDataSource.searchGooglePlaces(location, destinationId, radiusInMeters, searchTypeString, apiKey, callback);
     }
 
-    private void addTripsToCache(List<Trip> list) {
-        mCachedUpcomingTrips.clear();
-        if (list == null || list.size() == 0) return;
-
-        for (Trip trip : list) {
-            mCachedUpcomingTrips.put(trip.getTripId(), trip);
-        }
-    }
-
     public boolean isCurrentFbUserDefined() {
         Log.d(LOG_TAG, "current FB user: " + (mCurrentFbUser == null ? "undefined" : mCurrentFbUser.toString()));
         return mCurrentFbUser != null;
@@ -364,7 +327,6 @@ public class Repository implements DataSource {
 
     @Override
     public void deleteTrip(final Trip trip, final DeleteTripCallback callback) {
-        mCachedUpcomingTrips.remove(trip.getTripId());
         localDataSource.deleteTrip(trip, new DeleteTripCallback() {
             @Override
             public void onTripDeleted() {
