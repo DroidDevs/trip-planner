@@ -1,4 +1,4 @@
-package droiddevs.com.tripplanner.viewutil;
+package droiddevs.com.tripplanner.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;

@@ -4,10 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,12 +28,8 @@ import droiddevs.com.tripplanner.login.OauthActivity;
 import static droiddevs.com.tripplanner.addedittrip.AddEditTripFragment.ARGUMENT_TRIP_ID;
 
 public class TripsActivity extends OauthActivity implements TripsFragment.TripFragmentCallbackListener {
-    public static final int ADD_EDIT_TRIP_REQUEST = 1;
-    public static final int ADD_TRIP_RESULT_TYPE = 2;
-    public static final int EDIT_TRIP_RESULT_TYPE = 3;
-
-    public static final String ARG_TRIP_RESULT_TYPE = "result_type";
     public static final String ARG_PAST_EVENTS = "past_events";
+    private static final String LOG_DATA = "TripsActivity";
 
     @BindView(R.id.include_toolbar)
     Toolbar toolbar;
@@ -46,6 +43,8 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(LOG_DATA, "onCreate()");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_list);
         ButterKnife.bind(this);
@@ -65,24 +64,25 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
             // Change toolbar title
             TextView tvTitle = (TextView) ButterKnife.findById(toolbar, R.id.toolbar_title);
             tvTitle.setText("Trips");
-        } else {
+        }
+        else {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             setTitle("Past Trips");
         }
 
         // Add fragment to content frame
-        TripsFragment tripsFragment =
-                (TripsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
-
+        TripsFragment tripsFragment = (TripsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
         if (tripsFragment == null) {
             tripsFragment = TripsFragment.newInstance();
             tripsFragment.setTripFragmentCallbackListener(this);
-
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.contentFrame, tripsFragment);
-            transaction.commit();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.contentFrame, tripsFragment)
+                    .commit();
         }
-
+        else {
+            tripsFragment.setTripFragmentCallbackListener(this);
+        }
         // Create the presenter
         mTripsPresenter = new TripsPresenter(TripPlannerApplication.getRepository(), tripsFragment, pastEvents);
     }
@@ -93,11 +93,30 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
     }
 
     @Override
+    protected void onResume() {
+        Log.d(LOG_DATA, "onResume()");
+        super.onResume();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(LOG_DATA, "onStop()");
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d(LOG_DATA, "onDestroy()");
+        super.onDestroy();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mDrawerToggle != null
                 && mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
-        } else {
+        }
+        else {
             switch (item.getItemId()) {
                 case android.R.id.home:
                     onBackPressed();
@@ -138,24 +157,6 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == ADD_EDIT_TRIP_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                String tripId = data.getStringExtra(ARGUMENT_TRIP_ID);
-                int resultType = data.getIntExtra(ARG_TRIP_RESULT_TYPE, 0);
-                switch (resultType) {
-                    case ADD_TRIP_RESULT_TYPE:
-                        mTripsPresenter.addTrip(tripId);
-                        break;
-                    case EDIT_TRIP_RESULT_TYPE:
-                        mTripsPresenter.reloadTripAfterEdit(tripId);
-                        break;
-                }
-            }
-        }
-    }
-
     private void showAddEditTrip(@Nullable String tripId) {
         // Create trip
         Intent intent = new Intent(this, AddEditTripActivity.class);
@@ -163,7 +164,8 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
             // Editing trip
             intent.putExtra(ARGUMENT_TRIP_ID, tripId);
         }
-        startActivityForResult(intent, ADD_EDIT_TRIP_REQUEST);
+        startActivity(intent);
+        mDrawerLayout.closeDrawer(Gravity.LEFT);
     }
 
     @Override
@@ -181,9 +183,11 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
 
             tvUsername.setText(currentUser.getName());
 
-            String email = currentParseUser.getEmail();
-            if (email != null && email.length() > 0) {
-                tvUserEmail.setText(email);
+            if (currentParseUser != null) {
+                String email = currentParseUser.getEmail();
+                if (email != null && email.length() > 0) {
+                    tvUserEmail.setText(email);
+                }
             }
 
             Glide.with(TripsActivity.this)

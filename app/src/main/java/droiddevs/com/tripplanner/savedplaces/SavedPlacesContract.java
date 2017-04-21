@@ -1,5 +1,7 @@
 package droiddevs.com.tripplanner.savedplaces;
 
+import android.content.Context;
+
 import java.util.List;
 
 import droiddevs.com.tripplanner.map.MapContract;

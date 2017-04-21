@@ -7,6 +7,7 @@ import droiddevs.com.tripplanner.model.map.PlaceItem;
 import droiddevs.com.tripplanner.model.source.DataSource;
 import droiddevs.com.tripplanner.model.source.Repository;
 import droiddevs.com.tripplanner.model.util.PlaceConverter;
+import droiddevs.com.tripplanner.util.NetworkUtil;
 
 /**
  * Created by elmira on 4/16/17.
@@ -29,6 +30,8 @@ public class SavedPlacesPresenter implements SavedPlacesContract.Presenter {
 
     @Override
     public void start() {
+        if (mView==null) return;
+
         mRepository.loadSavedPlaces(mDestinationId, new DataSource.LoadSavedPlacesCallback() {
             @Override
             public void onSavedPlacesLoaded(List<SavedPlace> places) {

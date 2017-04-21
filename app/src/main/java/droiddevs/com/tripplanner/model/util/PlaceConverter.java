@@ -1,5 +1,7 @@
 package droiddevs.com.tripplanner.model.util;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +17,8 @@ import droiddevs.com.tripplanner.model.source.remote.PlaceDetailsResponse;
  */
 
 public class PlaceConverter {
+
+    private static final String LOG_TAG = "PlaceConverter";
 
     public static SavedPlace convertToSavedPlace(PlaceDetailsResponse response) {
 
@@ -85,6 +89,9 @@ public class PlaceConverter {
     }
 
     public static SavedPlace convertToSavedPlaceFromGooglePlace(String destinationId, GooglePlace place) {
+        Log.d(LOG_TAG, "convertToSavedPlaceFromGooglePlace(), destId: " + destinationId);
+        //todo Jared check why destinationId is null sometimes
+
         SavedPlace savedPlace = new SavedPlace();
         savedPlace.setDestinationId(destinationId);
 

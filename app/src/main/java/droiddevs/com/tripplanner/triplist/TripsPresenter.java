@@ -10,6 +10,7 @@ import droiddevs.com.tripplanner.model.source.Repository;
 
 /**
  * Created by jared.manfredi on 4/5/17.
+ * Updated by Elmira Andreeva on 4/20/17
  */
 
 public class TripsPresenter implements TripsContract.Presenter {
@@ -40,56 +41,34 @@ public class TripsPresenter implements TripsContract.Presenter {
     }
 
     @Override
-    public void deleteTrip(Trip trip, final int position) {
+    public void deleteTrip(final Trip trip) {
         mRepository.deleteTrip(trip, new Repository.DeleteTripCallback() {
             @Override
             public void onTripDeleted() {
-                mTripsView.onTripDeleted(position);
-            }
-        });
-    }
-
-    @Override
-    public void addTrip(String tripId) {
-        mRepository.loadTrip(tripId, new DataSource.LoadTripCallback() {
-            @Override
-            public void onTripLoaded(Trip trip) {
-                mTripsView.onTripAdded(trip);
-            }
-
-            @Override
-            public void onFailure() {
-                // TODO: add something here, maybe alert of add trip failure?
-                // it wouldnt have failed though if we got here, so not sure how to handle
-            }
-        });
-    }
-
-    @Override
-    public void reloadTripAfterEdit(String tripId) {
-        mRepository.loadTrip(tripId, new DataSource.LoadTripCallback() {
-            @Override
-            public void onTripLoaded(Trip trip) {
-                mTripsView.onTripEdited(trip);
-            }
-
-            @Override
-            public void onFailure() {
-                // TODO: add something here, maybe alert of edit trip failure?
-                // it wouldnt have failed though if we got here, so not sure how to handle
+                if (mTripsView != null && mTripsView.isActive()) {
+                    mTripsView.onTripDeleted(trip.getTripId());
+                }
             }
         });
     }
 
     private void loadUpcomingTrips() {
-        mRepository.loadOpenTrips(new DataSource.LoadTripListCallback() {
+        if (mTripsView == null || !mTripsView.isActive()) return;
+
+        mTripsView.setLoadingLayout(true);
+
+        mRepository.loadUpcomingTrips(new DataSource.LoadTripListCallback() {
             @Override
             public void onTripListLoaded(List<Trip> trips) {
-                mTripsView.showTrips(trips);
+                if (mTripsView.isActive()) {
+                    mTripsView.setLoadingLayout(false);
+                    mTripsView.showTrips(trips);
+                }
             }
 
             @Override
             public void onFailure() {
+                mTripsView.setLoadingLayout(false);
                 // TODO: SHOW FAILURE TO LOAD TRIPS
             }
         });
@@ -99,7 +78,9 @@ public class TripsPresenter implements TripsContract.Presenter {
         mRepository.loadPastTrips(new DataSource.LoadTripListCallback() {
             @Override
             public void onTripListLoaded(List<Trip> trips) {
-                mTripsView.showTrips(trips);
+                if (mTripsView != null && mTripsView.isActive()) {
+                    mTripsView.showTrips(trips);
+                }
             }
 
             @Override

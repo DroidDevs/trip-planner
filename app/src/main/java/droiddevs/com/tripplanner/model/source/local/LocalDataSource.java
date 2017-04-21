@@ -45,7 +45,7 @@ public class LocalDataSource implements DataSource {
     }
 
     @Override
-    public void loadOpenTrips(final LoadTripListCallback callback) {
+    public void loadUpcomingTrips(final LoadTripListCallback callback) {
         ParseQuery<Trip> query = ParseQuery.getQuery(Trip.class).fromLocalDatastore();
         query.whereGreaterThanOrEqualTo(Trip.END_DATE_KEY, new Date());
 
@@ -149,16 +149,28 @@ public class LocalDataSource implements DataSource {
 
     @Override
     public void updateTrip(final Trip trip, final SaveTripCallback callback) {
-        trip.pinInBackground(new SaveCallback() {
+        Log.d(LOG_TAG, "updateTrip() " + trip.toString());
+        trip.fetchIfNeededInBackground(new GetCallback<Trip>() {
             @Override
-            public void done(ParseException e) {
+            public void done(final Trip object, ParseException e) {
                 if (e != null) {
-                    Log.e(LOG_TAG, e.toString());
-                    callback.onFailed();
+                    Log.e(LOG_TAG, "can not fetch a trip: " + e.toString());
+                    if (callback != null) callback.onFailed();
                 }
                 else {
-                    Log.d(LOG_TAG, "Trip was updated successfully locally, tripId: " + trip.getTripId());
-                    callback.onSuccess();
+                    object.pinInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e != null) {
+                                Log.e(LOG_TAG, "can not pin a trip: " + e.toString());
+                                if (callback != null) callback.onFailed();
+                            }
+                            else {
+                                Log.d(LOG_TAG, "Trip was updated successfully locally, tripId: " + object.getTripId());
+                                if (callback != null) callback.onSuccess(object);
+                            }
+                        }
+                    });
                 }
             }
         });
@@ -167,6 +179,7 @@ public class LocalDataSource implements DataSource {
     @Override
     public void updateTrip(Trip trip) {
         if (trip == null) return;
+        Log.d(LOG_TAG, "updateTrip(): " + trip.toString());
         trip.pinInBackground();
     }
 
@@ -210,6 +223,7 @@ public class LocalDataSource implements DataSource {
     @Override
     public void updateDestination(Destination destination) {
         if (destination == null) return;
+        Log.d(LOG_TAG, "updateDestination(): " + destination.toString());
         destination.pinInBackground();
     }
 
@@ -254,7 +268,8 @@ public class LocalDataSource implements DataSource {
                 if (e != null) {
                     Log.e(LOG_TAG, e.toString());
                     callback.onFailure();
-                } else {
+                }
+                else {
                     callback.onSavedPlaceLoaded(object);
                 }
             }
@@ -279,16 +294,21 @@ public class LocalDataSource implements DataSource {
 
     @Override
     public void createSavedPlace(SavedPlace savedPlace, final CreateSavedPlaceCallback callback) {
-        savedPlace.pinInBackground(new SaveCallback() {
+        savedPlace.fetchIfNeededInBackground(new GetCallback<SavedPlace>() {
             @Override
-            public void done(ParseException e) {
-                if (e != null) {
-                    Log.e(LOG_TAG, e.toString());
-                    callback.onFailed();
-                }
-                else {
-                    callback.onSuccess();
-                }
+            public void done(SavedPlace object, ParseException e) {
+                object.pinInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e != null) {
+                            Log.e(LOG_TAG, e.toString());
+                            callback.onFailed();
+                        }
+                        else {
+                            callback.onSuccess();
+                        }
+                    }
+                });
             }
         });
     }

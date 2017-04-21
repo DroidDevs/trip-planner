@@ -19,7 +19,7 @@ import butterknife.Unbinder;
 import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.adapters.places.PlacesAdapter;
 import droiddevs.com.tripplanner.model.map.PlaceItem;
-import droiddevs.com.tripplanner.viewutil.ItemOffsetDecoration;
+import droiddevs.com.tripplanner.util.ItemOffsetDecoration;
 
 /**
  * Created by elmira on 4/16/17.
