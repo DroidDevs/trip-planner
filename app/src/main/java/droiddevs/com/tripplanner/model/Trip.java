@@ -16,7 +16,7 @@ import droiddevs.com.tripplanner.util.PhotoUrlUtil;
  */
 
 @ParseClassName("Trip")
-public class Trip extends ParseObject implements Comparable<Trip>{
+public class Trip extends ParseObject implements Comparable<Trip> {
 
     public static final String TRIP_ID_KEY = "tripId";
     public static final String NAME_KEY = "name";
@@ -83,17 +83,6 @@ public class Trip extends ParseObject implements Comparable<Trip>{
 
     public String getPhotoUrl() {
         return PhotoUrlUtil.getPhotoUrl(getPhotoReference());
-    }
-
-    @Override
-    public int hashCode() {
-        return getTripId().hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof Trip)) return false;
-        return this.getTripId().equals(((Trip) obj).getTripId());
     }
 
     @Override
