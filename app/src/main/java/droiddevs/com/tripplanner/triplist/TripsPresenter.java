@@ -35,9 +35,10 @@ public class TripsPresenter implements TripsContract.Presenter {
     public void loadTrips() {
         if (!mPastEvents) {
             loadUpcomingTrips();
-            return;
         }
-        loadPastTrips();
+        else {
+            loadPastTrips();
+        }
     }
 
     @Override
