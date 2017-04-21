@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -26,6 +25,7 @@ import droiddevs.com.tripplanner.tripdetails.TripDetailsActivity;
 
 /**
  * Created by jared.manfredi on 4/5/17.
+ * Updated by Elmira Andreeva on 4/20/17
  */
 
 public class TripsFragment extends Fragment implements TripsContract.View, TripAdapter.TripInteractionListener {
@@ -35,11 +35,9 @@ public class TripsFragment extends Fragment implements TripsContract.View, TripA
 
     private TripFragmentCallbackListener mListener;
 
-    private List<Trip> mTrips;
     private TripsContract.Presenter mPresenter;
     private TripAdapter mAdapter;
     private Unbinder unbinder;
-    private boolean onResumeFromAddEdit = false;
     private boolean mPastEvents = false;
 
     @BindView(R.id.rvTrips)
@@ -58,11 +56,7 @@ public class TripsFragment extends Fragment implements TripsContract.View, TripA
     @Override
     public void onResume() {
         super.onResume();
-
-        if (!onResumeFromAddEdit) {
-            mPresenter.start();
-        }
-        onResumeFromAddEdit = false;
+        mPresenter.start();
     }
 
     @Override
@@ -90,8 +84,7 @@ public class TripsFragment extends Fragment implements TripsContract.View, TripA
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mTrips = new ArrayList<>();
-        mAdapter = new TripAdapter(getContext(), mTrips);
+        mAdapter = new TripAdapter(getContext());
         mAdapter.setOnTripClickListener(this);
 
         rvTrips.setAdapter(mAdapter);
@@ -104,25 +97,18 @@ public class TripsFragment extends Fragment implements TripsContract.View, TripA
 
     @Override
     public void showTrips(List<Trip> trips) {
-        mAdapter.setTrips(trips);
-        rvTrips.scrollToPosition(0);
+        if (trips == null || trips.size() == 0) {
+            //todo Jared: show empty layout
+        }
+        else {
+            mAdapter.setTrips(trips);
+            rvTrips.smoothScrollToPosition(0);
+        }
     }
 
     @Override
-    public void onTripDeleted(int position) {
-        mAdapter.deleteTrip(position);
-    }
-
-    @Override
-    public void onTripAdded(Trip trip) {
-        onResumeFromAddEdit = true;
-        mAdapter.addTrip(trip);
-    }
-
-    @Override
-    public void onTripEdited(Trip trip) {
-        onResumeFromAddEdit = true;
-        mAdapter.reloadTrip(trip);
+    public void onTripDeleted(String tripId) {
+        mAdapter.deleteTrip(tripId);
     }
 
     @Override
@@ -145,12 +131,13 @@ public class TripsFragment extends Fragment implements TripsContract.View, TripA
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.menu_delete:
-                        int position = mTrips.indexOf(trip);
-                        mPresenter.deleteTrip(trip, position);
+                        mPresenter.deleteTrip(trip);
                         return true;
                     case R.id.menu_edit:
-                        mListener.OnTripEditRequest(trip.getTripId());
-                        return true;
+                        if (mListener != null) {
+                            mListener.OnTripEditRequest(trip.getTripId());
+                            return true;
+                        }
                     default:
                         return false;
                 }
@@ -165,5 +152,15 @@ public class TripsFragment extends Fragment implements TripsContract.View, TripA
 
     public void setPastEvents(boolean pastEvents) {
         this.mPastEvents = pastEvents;
+    }
+
+    @Override
+    public boolean isActive() {
+        return isAdded();
+    }
+
+    @Override
+    public void setLoadingLayout(boolean isLoading) {
+        //todo Jared: show loading layout
     }
 }

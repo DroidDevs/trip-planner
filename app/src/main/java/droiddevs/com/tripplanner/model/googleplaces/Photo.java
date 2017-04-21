@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import droiddevs.com.tripplanner.application.TripPlannerApplication;
+import droiddevs.com.tripplanner.util.PhotoUrlUtil;
 
 public class Photo implements Parcelable
 {
@@ -67,7 +68,7 @@ public class Photo implements Parcelable
     }
 
     public String getFullPhotoURLReference() {
-        return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photoreference=" + photoReference + "&key=" + TripPlannerApplication.getGooglePlacesApiKey();
+        return PhotoUrlUtil.getPhotoUrl(photoReference);
     }
 
     public void setPhotoReference(String photoReference) {

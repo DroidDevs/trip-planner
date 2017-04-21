@@ -74,7 +74,7 @@ public class RemoteDataSource implements DataSource {
     }
 
     @Override
-    public void loadOpenTrips(final LoadTripListCallback callback) {
+    public void loadUpcomingTrips(final LoadTripListCallback callback) {
         ParseQuery<Trip> query = ParseQuery.getQuery(Trip.class);
         query.whereGreaterThanOrEqualTo(Trip.END_DATE_KEY, new Date());
 
@@ -187,7 +187,7 @@ public class RemoteDataSource implements DataSource {
                 }
                 else {
                     Log.d(LOG_TAG, "Trip was updated successfully in remote. Trip Id: " + trip.getTripId());
-                    callback.onSuccess();
+                    callback.onSuccess(trip);
                 }
             }
         });
@@ -242,12 +242,7 @@ public class RemoteDataSource implements DataSource {
 
     @Override
     public void deleteTrip(Trip trip, final DeleteTripCallback callback) {
-        trip.deleteInBackground(new DeleteCallback() {
-            @Override
-            public void done(ParseException e) {
-                callback.onTripDeleted();
-            }
-        });
+        trip.deleteEventually();
     }
 
     @Override
@@ -272,15 +267,14 @@ public class RemoteDataSource implements DataSource {
 
     @Override
     public SavedPlace loadPlaceSynchronously(final String placeId) {
-        Call<PlaceDetailsResponse> call =
-                mGooglePlacesService.getPlaceDetails(placeId, context.getString(R.string.google_places_api_key));
+        Call<PlaceDetailsResponse> call = mGooglePlacesService.getPlaceDetails(placeId, context.getString(R.string.google_places_api_key));
         try {
             Response<PlaceDetailsResponse> response = call.execute();
             if (response.isSuccessful()) {
                 Log.d(LOG_TAG, "Loaded place from web-api, place id: " + placeId);
-                SavedPlace place = PlaceConverter.convertToSavedPlace(response.body());
-                return place;
-            } else {
+                return PlaceConverter.convertToSavedPlace(response.body());
+            }
+            else {
                 return null;
             }
         } catch (IOException e) {
@@ -375,7 +369,8 @@ public class RemoteDataSource implements DataSource {
                 if (e != null) {
                     Log.e(LOG_TAG, e.toString());
                     callback.onFailure();
-                } else {
+                }
+                else {
                     callback.onSavedPlaceLoaded(object);
                 }
             }

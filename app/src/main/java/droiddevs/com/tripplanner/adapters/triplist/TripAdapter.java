@@ -9,11 +9,11 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import droiddevs.com.tripplanner.R;
-import droiddevs.com.tripplanner.model.Destination;
 import droiddevs.com.tripplanner.model.Trip;
 
 /**
@@ -23,6 +23,7 @@ import droiddevs.com.tripplanner.model.Trip;
 public class TripAdapter extends RecyclerView.Adapter<TripViewHolder> implements TripViewHolder.TripViewHolderListener {
     public interface TripInteractionListener {
         void OnTripClicked(Trip trip);
+
         void OnTripMenuClicked(Trip trip, View anchorView);
     }
 
@@ -30,9 +31,9 @@ public class TripAdapter extends RecyclerView.Adapter<TripViewHolder> implements
     private Context mContext;
     private TripInteractionListener mTripInteractionListener;
 
-    public TripAdapter(Context context, List<Trip> trips) {
+    public TripAdapter(Context context) {
         mContext = context;
-        mTrips = trips;
+        mTrips = new ArrayList<>();
     }
 
     public void setOnTripClickListener(TripInteractionListener listener) {
@@ -57,18 +58,12 @@ public class TripAdapter extends RecyclerView.Adapter<TripViewHolder> implements
         String dateString = simpleDateFormat.format(trip.getStartDate()) + " - " + simpleDateFormat.format(trip.getEndDate());
         holder.tvTripDate.setText(dateString);
 
-        List<Destination> tripDestinations = trip.getDestinations();
-        if (tripDestinations != null
-                && tripDestinations.size() > 0) {
-
-            Destination firstDestination = trip.getDestinations().get(0);
-            String photoUrl = firstDestination.getPhotoUrl();
-            if (photoUrl != null) {
-                Glide.with(getContext())
-                        .load(photoUrl)
-                        .centerCrop()
-                        .into(holder.ivTripImage);
-            }
+        String photoUrl = trip.getPhotoUrl();
+        if (photoUrl != null) {
+            Glide.with(getContext())
+                    .load(photoUrl)
+                    .centerCrop()
+                    .into(holder.ivTripImage);
         }
 
         holder.ibTripMenu.setOnClickListener(new View.OnClickListener() {
@@ -99,26 +94,37 @@ public class TripAdapter extends RecyclerView.Adapter<TripViewHolder> implements
 
     public void setTrips(List<Trip> trips) {
         mTrips.clear();
-        mTrips.addAll(trips);
+        mTrips.addAll(new ArrayList<Trip>(trips));
         notifyDataSetChanged();
     }
 
-    public void deleteTrip(int position) {
-        mTrips.remove(position);
-        notifyItemRemoved(position);
+    public void deleteTrip(String tripId) {
+        if (mTrips == null) return;
+        for (int i = 0; i < mTrips.size(); i++) {
+            Trip trip = mTrips.get(i);
+            if (trip.getTripId().equals(tripId)) {
+                mTrips.remove(i);
+                notifyItemRemoved(i);
+                return;
+            }
+        }
     }
 
     public void addTrip(Trip trip) {
-        if (!mTrips.contains(trip)) {
-            mTrips.add(trip);
-            notifyItemInserted(mTrips.size() - 1);
+        int tripIndex = mTrips.indexOf(trip);
+        if (tripIndex == -1) {
+            mTrips.add(0, trip);
+            notifyItemInserted(0);
         }
     }
 
     public void reloadTrip(Trip trip) {
         int tripIndex = mTrips.indexOf(trip);
-        mTrips.set(tripIndex, trip);
-        notifyItemChanged(tripIndex);
+        if (tripIndex != -1) {
+            mTrips.set(tripIndex, trip);
+            notifyItemChanged(tripIndex);
+        }
+        else addTrip(trip);
     }
 
     private Context getContext() {

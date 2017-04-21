@@ -15,7 +15,6 @@ import droiddevs.com.tripplanner.model.Destination;
 import droiddevs.com.tripplanner.model.Trip;
 import droiddevs.com.tripplanner.model.source.DataSource;
 import droiddevs.com.tripplanner.model.source.Repository;
-import droiddevs.com.tripplanner.util.NetworkUtil;
 
 /**
  * Created by elmira on 4/4/17.
@@ -47,7 +46,6 @@ public class AddEditTripPresenter implements Contract.Presenter {
         if (mView == null) return;
 
         if (!isNewTrip()) {
-            mRepository.setCanLoadFromRemoteSource(NetworkUtil.isNetworkAvailable(mView.getContext()));
             mRepository.loadTrip(mTripId, new DataSource.LoadTripCallback() {
                 @Override
                 public void onTripLoaded(Trip trip) {
@@ -164,9 +162,10 @@ public class AddEditTripPresenter implements Contract.Presenter {
 
         mRepository.updateTrip(mTrip, new DataSource.SaveTripCallback() {
             @Override
-            public void onSuccess() {
+            public void onSuccess(Trip trip) {
                 if (mView != null && mView.isActive()) {
-                    mView.onTripSaved(mTrip);
+                    mTrip = trip;
+                    mView.onTripSaved(mTrip.getTripId());
                 }
             }
 
@@ -196,7 +195,7 @@ public class AddEditTripPresenter implements Contract.Presenter {
 
         trip.setStartDate(new Date());
         mCalendar.setTime(trip.getStartDate());
-        mCalendar.add(Calendar.DAY_OF_MONTH, DEFAULT_DURATION_IN_DAYS - 1);
+        mCalendar.add(Calendar.DAY_OF_MONTH, DEFAULT_DURATION_IN_DAYS);
         trip.setEndDate(mCalendar.getTime());
 
         trip.setDestinations(destinations);
@@ -277,7 +276,7 @@ public class AddEditTripPresenter implements Contract.Presenter {
             totalDuration += destination.getDuration();
         }
         mCalendar.setTime(mTrip.getStartDate());
-        mCalendar.add(Calendar.DAY_OF_MONTH, Math.max(0, totalDuration - 1));
+        mCalendar.add(Calendar.DAY_OF_MONTH, Math.max(0, totalDuration));
         mTrip.setEndDate(mCalendar.getTime());
     }
 }

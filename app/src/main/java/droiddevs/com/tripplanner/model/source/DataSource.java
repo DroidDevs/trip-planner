@@ -36,7 +36,7 @@ public interface DataSource {
     }
 
     interface SaveTripCallback {
-        void onSuccess();
+        void onSuccess(Trip trip);
 
         void onFailed();
     }
@@ -94,7 +94,7 @@ public interface DataSource {
         void onFailed();
     }
 
-    void loadOpenTrips(LoadTripListCallback callback);
+    void loadUpcomingTrips(LoadTripListCallback callback);
 
     void loadPastTrips(LoadTripListCallback callback);
 

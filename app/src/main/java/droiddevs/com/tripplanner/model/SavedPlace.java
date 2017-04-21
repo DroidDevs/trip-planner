@@ -6,7 +6,7 @@ import com.parse.ParseObject;
 
 import java.util.List;
 
-import droiddevs.com.tripplanner.application.TripPlannerApplication;
+import droiddevs.com.tripplanner.util.PhotoUrlUtil;
 
 /**
  * Created by elmira on 4/4/17.
@@ -112,9 +112,7 @@ public class SavedPlace extends ParseObject {
     }
 
     public String getPhotoUrl() {
-        String photoReference = getPhotoReference();
-        if (photoReference == null || "".equals(photoReference.trim())) return null;
-        return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photoreference=" + photoReference + "&key=" + TripPlannerApplication.getGooglePlacesApiKey();
+        return PhotoUrlUtil.getPhotoUrl(getPhotoReference());
     }
 
     public String getPhotoReference() {

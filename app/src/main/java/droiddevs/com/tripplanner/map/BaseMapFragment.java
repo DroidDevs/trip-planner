@@ -36,7 +36,7 @@ import droiddevs.com.tripplanner.adapters.map.BaseMapAdapter;
 import droiddevs.com.tripplanner.model.map.BaseMapItem;
 
 import static droiddevs.com.tripplanner.R.id.map;
-import static droiddevs.com.tripplanner.viewutil.BitmapUtils.getBitmapFromDrawable;
+import static droiddevs.com.tripplanner.util.BitmapUtils.getBitmapFromDrawable;
 
 /**
  * Created by elmira on 4/09/17.

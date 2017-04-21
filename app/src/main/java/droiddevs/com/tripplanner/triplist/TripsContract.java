@@ -1,5 +1,7 @@
 package droiddevs.com.tripplanner.triplist;
 
+import android.content.Context;
+
 import java.util.List;
 
 import droiddevs.com.tripplanner.model.Trip;
@@ -8,26 +10,23 @@ import droiddevs.com.tripplanner.mvp.BaseView;
 
 /**
  * Created by jared.manfredi on 4/5/17.
+ * Updated by Elmira Andreeva on 4/20/17
  */
 
 public interface TripsContract {
     interface View extends BaseView<Presenter> {
         void showTrips(List<Trip> trips);
 
-        void onTripDeleted(int position);
+        void onTripDeleted(String tripId);
 
-        void onTripAdded(Trip trip);
+        boolean isActive();
 
-        void onTripEdited(Trip trip);
+        void setLoadingLayout(boolean isLoading);
     }
 
     interface Presenter extends BasePresenter {
         void loadTrips();
 
-        void deleteTrip(Trip trip, final int position);
-
-        void addTrip(String tripId);
-
-        void reloadTripAfterEdit(String tripId);
+        void deleteTrip(Trip trip);
     }
 }

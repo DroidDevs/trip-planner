@@ -32,7 +32,7 @@ import droiddevs.com.tripplanner.adapters.addedittrip.AddEditTripTouchHelperCall
 import droiddevs.com.tripplanner.adapters.addedittrip.StartDateViewHolder;
 import droiddevs.com.tripplanner.model.Destination;
 import droiddevs.com.tripplanner.model.Trip;
-import droiddevs.com.tripplanner.viewutil.ItemOffsetDecoration;
+import droiddevs.com.tripplanner.util.ItemOffsetDecoration;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -61,14 +61,6 @@ public class AddEditTripFragment extends Fragment implements Contract.View, AddE
     private String tripId = null;
     private boolean newTrip = true;
 
-    private OnFragmentDoneListener mFragmentDoneListener;
-
-    public interface OnFragmentDoneListener {
-        void onDoneEdit(String tripId);
-
-        void onTripAdded(String tripId);
-    }
-
     public AddEditTripFragment() {
         //required public empty constructor
     }
@@ -76,9 +68,6 @@ public class AddEditTripFragment extends Fragment implements Contract.View, AddE
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentDoneListener) {
-            mFragmentDoneListener = (OnFragmentDoneListener) context;
-        }
     }
 
     public static AddEditTripFragment newInstance(String tripId) {
@@ -111,6 +100,7 @@ public class AddEditTripFragment extends Fragment implements Contract.View, AddE
         Log.d(LOG_TAG, "onCreate() tripId: " + tripId);
 
         if (tripId == null) {
+            newTrip = true;
             showPlaceAutocompleteDialog(CREATE_TRIP_PLACE_AUTOCOMPLETE_REQUEST_CODE);
         }
         else {
@@ -134,32 +124,19 @@ public class AddEditTripFragment extends Fragment implements Contract.View, AddE
     @Override
     public void onTripLoadFailure() {
         Toast.makeText(this.getContext(), R.string.trip_addedit_load_failed, Toast.LENGTH_SHORT).show();
-        if (mFragmentDoneListener != null) {
-            mFragmentDoneListener.onDoneEdit(null);
-        }
     }
 
     @Override
-    public void onTripSaved(Trip trip) {
+    public void onTripSaved(String tripId) {
         Toast.makeText(this.getContext(), newTrip ? R.string.trip_addedit_save_success :
                 R.string.trip_addedit_update_success, Toast.LENGTH_SHORT).show();
 
-        if (mFragmentDoneListener != null) {
-            if (newTrip) {
-                mFragmentDoneListener.onTripAdded(trip.getTripId());
-            }
-            else {
-                mFragmentDoneListener.onDoneEdit(trip.getTripId());
-            }
-        }
+        getActivity().finish();
     }
 
     @Override
     public void onTripSaveFailure() {
         Toast.makeText(this.getContext(), R.string.trip_addedit_save_failed, Toast.LENGTH_SHORT).show();
-        if (mFragmentDoneListener != null) {
-            mFragmentDoneListener.onDoneEdit(null);
-        }
     }
 
     @Override

@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+
+<android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cvTrip"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    app:cardElevation="5dp"
+    app:cardUseCompatPadding="true">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/cvTrip"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardUseCompatPadding="true"
-        app:cardElevation="5dp">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/ivTripImage"
@@ -24,27 +21,27 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:background="@color/background_color"
-            android:contentDescription="@string/trip_image_accessibility" />
+            android:contentDescription="@string/trip_image_accessibility"/>
 
         <TextView
             android:id="@+id/tvTripTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
             android:layout_marginTop="20dp"
             android:layout_toLeftOf="@+id/ibTripMenu"
             android:layout_toStartOf="@+id/ibTripMenu"
+            android:shadowColor="@android:color/black"
+            android:shadowDx="-1"
+            android:shadowRadius="2"
             android:textColor="@android:color/white"
             android:textSize="15sp"
-            android:textStyle="bold"
-            android:shadowColor="@android:color/black"
-            android:shadowRadius="2"
-            android:shadowDx="-1" />
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/tvTripDates"
@@ -55,27 +52,26 @@
             android:layout_below="@+id/tvTripTitle"
             android:layout_marginLeft="20dp"
             android:layout_marginStart="20dp"
+            android:shadowColor="@android:color/black"
+            android:shadowDx="-1"
+            android:shadowRadius="2"
             android:textColor="@android:color/white"
             android:textSize="15sp"
-            android:textStyle="bold"
-            android:shadowColor="@android:color/black"
-            android:shadowRadius="2"
-            android:shadowDx="-1" />
+            android:textStyle="bold"/>
 
         <ImageButton
             android:id="@+id/ibTripMenu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/trip_menu_accessibility"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
             android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
             android:background="@android:color/transparent"
+            android:contentDescription="@string/trip_menu_accessibility"
             app:srcCompat="@drawable/ic_more_horiz_24dp"/>
 
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
-</LinearLayout>
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
