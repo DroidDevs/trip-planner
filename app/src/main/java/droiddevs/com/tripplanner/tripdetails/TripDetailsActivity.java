@@ -62,6 +62,9 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(LOG_TAG, "onCreate()");
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_trip_details);
+        ButterKnife.bind(this);
 
         mTripId = getIntent().getStringExtra(ARGUMENT_TRIP_ID);
         if (mTripId == null) {
@@ -69,13 +72,6 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
         }
 
         mDestinationId = getIntent().getStringExtra(ARGUMENT_DESTINATION_ID);
-        if (mDestinationId != null) {
-            setTheme(R.style.NoStatusBarTheme);
-        }
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trip_details);
-        ButterKnife.bind(this);
 
         // Setup toolbar
         setSupportActionBar(toolbar);

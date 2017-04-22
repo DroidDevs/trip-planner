@@ -41,8 +41,7 @@
             android:label="@string/title_activity_add_edit_trip" />
         <activity
             android:name=".tripdetails.TripDetailsActivity"
-            android:launchMode="singleTop"
-            android:theme="@style/NoStatusBarTheme" />
+            android:launchMode="singleTop"/>
 
         <activity android:name=".savedplaces.SavedPlacesActivity"/>
 
