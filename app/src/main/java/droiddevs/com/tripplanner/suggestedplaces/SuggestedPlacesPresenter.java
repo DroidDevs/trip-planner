@@ -29,6 +29,9 @@ public class SuggestedPlacesPresenter implements SuggestedPlacesContract.Present
     private SuggestedPlacesContract.View mView;
     private Repository mRepository;
 
+    private List<PlaceItem> mSuggestedPlaces;
+    private boolean isLoading = false;
+
     public SuggestedPlacesPresenter(Repository repository, SuggestedPlacesContract.View view, String placeTypeSearchString, String destinationId) {
         mSearchString = placeTypeSearchString;
         mDestinationId = destinationId;
@@ -42,6 +45,16 @@ public class SuggestedPlacesPresenter implements SuggestedPlacesContract.Present
     @Override
     public void start() {
         loadSuggestedPlaces(mSearchString, mDestinationId);
+    }
+
+    @Override
+    public void reloadData() {
+        if (mSuggestedPlaces != null && mSuggestedPlaces.size() > 0) {
+            if (mView != null) {
+                mView.showSuggestedPlaces(mSuggestedPlaces);
+            }
+        }
+        else start();
     }
 
     @Override
@@ -79,6 +92,7 @@ public class SuggestedPlacesPresenter implements SuggestedPlacesContract.Present
                 new DataSource.SearchGooglePlacesCallback() {
                     @Override
                     public void onPlacesFound(List<PlaceItem> places) {
+                        mSuggestedPlaces = places;
                         mView.showSuggestedPlaces(places);
                     }
 
@@ -94,6 +108,7 @@ public class SuggestedPlacesPresenter implements SuggestedPlacesContract.Present
             @Override
             public void onSavedPlacesLoaded(List<SavedPlace> places) {
                 List<PlaceItem> placeItems = PlaceConverter.convertToPlaceItemListFromSavedPlace(places);
+                mSuggestedPlaces = placeItems;
                 mView.showSuggestedPlaces(placeItems);
             }
 

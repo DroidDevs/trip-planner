@@ -1,4 +1,4 @@
-package droiddevs.com.tripplanner.adapters.savedplacemap;
+package droiddevs.com.tripplanner.adapters.placemap;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -16,7 +16,7 @@ import droiddevs.com.tripplanner.model.map.PlaceItem;
  * Created by elmira on 4/17/17.
  */
 
-public class SavedPlaceMapViewHolder extends RecyclerView.ViewHolder {
+public class PlaceMapViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.ivPlaceView)
     ImageView imageView;
@@ -27,7 +27,7 @@ public class SavedPlaceMapViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.tvRating)
     TextView ratingTextView;
 
-    public SavedPlaceMapViewHolder(View itemView) {
+    public PlaceMapViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
     }

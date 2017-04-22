@@ -2,11 +2,14 @@ package droiddevs.com.tripplanner.tripdetails;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,12 +23,18 @@ import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.addedittrip.AddEditTripActivity;
 import droiddevs.com.tripplanner.addedittrip.AddEditTripFragment;
 import droiddevs.com.tripplanner.application.TripPlannerApplication;
+import droiddevs.com.tripplanner.model.Destination;
 import droiddevs.com.tripplanner.model.Trip;
 
 public class TripDetailsActivity extends AppCompatActivity implements TripDetailsContract.View {
 
+    private static final String LOG_TAG = "TripDetailsActivity";
+
     public static final String ARGUMENT_TRIP_ID = "tripId";
+    public static final String ARGUMENT_DESTINATION_ID = "destId";
+
     private String mTripId;
+    private String mDestinationId;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -39,6 +48,12 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
     @BindView(R.id.viewPager)
     ViewPager mViewPager;
 
+    @BindView(R.id.collapsingToolbar)
+    CollapsingToolbarLayout collapsingToolbarLayout;
+
+    @BindView(R.id.appBarLayout)
+    AppBarLayout appBarLayout;
+
     private TripDetailsContract.Presenter mPresenter;
     private TripDetailsFragmentPagerAdapter mPagerAdapter;
 
@@ -46,14 +61,21 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trip_details);
-        ButterKnife.bind(this);
+        Log.d(LOG_TAG, "onCreate()");
 
         mTripId = getIntent().getStringExtra(ARGUMENT_TRIP_ID);
         if (mTripId == null) {
             finish();
         }
+
+        mDestinationId = getIntent().getStringExtra(ARGUMENT_DESTINATION_ID);
+        if (mDestinationId != null) {
+            setTheme(R.style.NoStatusBarTheme);
+        }
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_trip_details);
+        ButterKnife.bind(this);
 
         // Setup toolbar
         setSupportActionBar(toolbar);
@@ -71,12 +93,60 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(LOG_TAG, "onStart()");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d(LOG_TAG, "onRestart()");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(LOG_TAG, "onResume()");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(LOG_TAG, "onPause()");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(LOG_TAG, "onStop()");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(LOG_TAG, "onDestroy()");
+    }
+
+    @Override
     public void onTripLoaded(Trip trip) {
+        Log.d(LOG_TAG, "");
         mTrip = trip;
         mPagerAdapter.setTrip(trip);
 
         toolbar.setTitle(trip.getName());
         toolbarImage.setVisibility(View.GONE);
+
+        if (mDestinationId != null && mTrip.getDestinations() != null) {
+            for (int i = 0; i < mTrip.getDestinations().size(); i++) {
+                if (mDestinationId.equals(mTrip.getDestinations().get(i).getDestinationId())) {
+                    loadImagePerTabPosition(i + 1);
+                    mViewPager.setCurrentItem(i + 1);
+                    appBarLayout.setExpanded(false, true);
+                    break;
+                }
+            }
+        }
     }
 
     @Override
@@ -132,9 +202,7 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
                     toolbar.setBackgroundColor(ContextCompat.getColor(TripDetailsActivity.this, R.color.colorPrimary));
                 }
                 else {
-                    toolbarImage.setVisibility(View.VISIBLE);
-                    toolbar.setBackgroundColor(ContextCompat.getColor(TripDetailsActivity.this, android.R.color.transparent));
-                    loadImagePerTabPosition(position - 1);
+                    loadImagePerTabPosition(position);
                 }
             }
 
@@ -146,9 +214,15 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
     }
 
     private void loadImagePerTabPosition(int position) {
-        if (position < 0) return;
-        if (mTrip.getDestinations() != null && position < mTrip.getDestinations().size()) {
-            String photoUrl = mTrip.getDestinations().get(position).getPhotoUrl();
+        if (position == 0) return;
+
+        toolbarImage.setVisibility(View.VISIBLE);
+        toolbar.setBackgroundColor(ContextCompat.getColor(TripDetailsActivity.this, android.R.color.transparent));
+
+        if (mTrip.getDestinations() != null && position <= mTrip.getDestinations().size()) {
+            Destination destination = mTrip.getDestinations().get(position - 1);
+            mDestinationId = destination.getDestinationId();
+            String photoUrl = destination.getPhotoUrl();
             if (photoUrl != null) {
                 Glide.with(TripDetailsActivity.this)
                         .load(photoUrl)

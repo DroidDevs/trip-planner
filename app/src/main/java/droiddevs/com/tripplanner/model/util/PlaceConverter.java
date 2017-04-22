@@ -130,8 +130,12 @@ public class PlaceConverter {
         savedPlace.setLongitude(placeItem.getLatLng().longitude);
         savedPlace.setRating(placeItem.getRating());
 
-        savedPlace.setOpenNowWeekdayText(placeItem.getWeekdayHours());
-        savedPlace.setPhotoReference(placeItem.getPhotoReference());
+        if (placeItem.getWeekdayHours() != null) {
+            savedPlace.setOpenNowWeekdayText(placeItem.getWeekdayHours());
+        }
+        if (placeItem.getPhotoReference() != null) {
+            savedPlace.setPhotoReference(placeItem.getPhotoReference());
+        }
 
         //savedPlace.setTypes(place.getTypes());
         return savedPlace;

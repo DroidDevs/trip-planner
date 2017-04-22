@@ -13,6 +13,7 @@
         android:id="@+id/actionMap"
         android:icon="@drawable/ic_map_white"
         android:title="@string/action_map"
+        android:visible="true"
         app:showAsAction="always"/>
 
 </menu>

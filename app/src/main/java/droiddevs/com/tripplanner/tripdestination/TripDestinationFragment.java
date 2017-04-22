@@ -23,6 +23,7 @@ import droiddevs.com.tripplanner.suggestedplaces.SuggestedPlacesActivity;
 import droiddevs.com.tripplanner.util.SpacesItemDecoration;
 
 public class TripDestinationFragment extends Fragment implements TripDestinationContract.View, TripDestinationAdapter.DestinationOptionClickedListener {
+    public static final String ARGUMENT_TRIP_ID = "tripId";
     public static final String ARG_DESTINATION_ID = "destination_id";
     public static final String ARG_PLACE_TYPE_SEARCH_STRING = "placeTypeSearchString";
     public static final String ARG_PLACE_TYPE_TITLE = "placeTypeTitle";
@@ -34,16 +35,18 @@ public class TripDestinationFragment extends Fragment implements TripDestination
     RecyclerView rvDestinationOptions;
     private Unbinder unbinder;
 
+    private String mTripId;
     private String mDestinationId;
     private TripDestinationContract.Presenter mPresenter;
 
     public TripDestinationFragment() {
     }
 
-    public static TripDestinationFragment newInstance(String destinationId) {
+    public static TripDestinationFragment newInstance(String destinationId, String tripId) {
         TripDestinationFragment fragment = new TripDestinationFragment();
         Bundle args = new Bundle();
         args.putString(ARG_DESTINATION_ID, destinationId);
+        args.putString(ARGUMENT_TRIP_ID, tripId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,6 +57,7 @@ public class TripDestinationFragment extends Fragment implements TripDestination
 
         if (getArguments() != null) {
             mDestinationId = getArguments().getString(ARG_DESTINATION_ID);
+            mTripId = getArguments().getString(ARGUMENT_TRIP_ID);
         }
         mPresenter = new TripDestinationPresenter(getContext(), this);
     }
@@ -104,10 +108,19 @@ public class TripDestinationFragment extends Fragment implements TripDestination
 
     @Override
     public void OnOptionClicked(PlaceOption option) {
+        /*if (option.getOptionType() == PlaceOption.PlaceOptionType.TYPE_SAVED_PLACES) {
+            Intent intent = new Intent(getContext(), SavedPlacesActivity.class);
+            intent.putExtra(SavedPlacesActivity.ARGUMENT_DESTINATION_ID, mDestinationId);
+            intent.putExtra(SavedPlacesActivity.ARGUMENT_TRIP_ID, mTripId);
+            startActivity(intent);
+        }
+        else { */
         Intent intent = new Intent(getContext(), SuggestedPlacesActivity.class);
         intent.putExtra(ARG_DESTINATION_ID, mDestinationId);
         intent.putExtra(ARG_PLACE_TYPE_SEARCH_STRING, option.getOptionType().typeSearchString());
         intent.putExtra(ARG_PLACE_TYPE_TITLE, option.getOptionTitle());
+        intent.putExtra(ARGUMENT_TRIP_ID, mTripId);
         startActivity(intent);
+        //}
     }
 }

@@ -3,6 +3,7 @@ package droiddevs.com.tripplanner.model.source;
 import android.location.Location;
 
 import java.util.List;
+import java.util.Set;
 
 import droiddevs.com.tripplanner.model.Destination;
 import droiddevs.com.tripplanner.model.SavedPlace;
@@ -76,6 +77,11 @@ public interface DataSource {
         void onFailure();
     }
 
+    interface LoadSavedPlacesIdsCallback {
+        void onSavedPlacesIdsLoaded(Set<String> ids);
+        void onFailure();
+    }
+
     interface LoadSavedPlaceCallback {
         void onSavedPlaceLoaded(SavedPlace place);
 
@@ -130,4 +136,5 @@ public interface DataSource {
 
     void createSavedPlace(SavedPlace savedPlace, CreateSavedPlaceCallback callback);
 
+    void loadSavedPlacesIds(String destinationId, LoadSavedPlacesIdsCallback callback);
 }

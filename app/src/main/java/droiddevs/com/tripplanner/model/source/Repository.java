@@ -14,6 +14,7 @@ import com.parse.ParseObject;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import droiddevs.com.tripplanner.model.Destination;
 import droiddevs.com.tripplanner.model.SavedPlace;
@@ -412,6 +413,21 @@ public class Repository implements DataSource {
             @Override
             public void onFailed() {
                 callback.onFailed();
+            }
+        });
+    }
+
+    @Override
+    public void loadSavedPlacesIds(final String destinationId, final LoadSavedPlacesIdsCallback callback) {
+        remoteDataSource.loadSavedPlacesIds(destinationId, new LoadSavedPlacesIdsCallback() {
+            @Override
+            public void onSavedPlacesIdsLoaded(Set<String> ids) {
+                callback.onSavedPlacesIdsLoaded(ids);
+            }
+
+            @Override
+            public void onFailure() {
+                localDataSource.loadSavedPlacesIds(destinationId, callback);
             }
         });
     }

@@ -51,12 +51,12 @@ public class TripDetailsFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        Log.d(LOG_TAG, "getItem() position: "+ position);
+        Log.d(LOG_TAG, "getItem() position: " + position);
         if (position == 0) {
             return TripMapFragment.newInstance(mTrip.getTripId());
         }
         else {
-            return TripDestinationFragment.newInstance(mTrip.getDestinations().get(position - 1).getDestinationId());
+            return TripDestinationFragment.newInstance(mTrip.getDestinations().get(position - 1).getDestinationId(), mTrip.getTripId());
         }
     }
 
