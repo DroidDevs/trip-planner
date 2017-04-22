@@ -1,6 +1,7 @@
 package droiddevs.com.tripplanner.suggestedplaces;
 
 import java.util.List;
+import java.util.Set;
 
 import droiddevs.com.tripplanner.map.MapContract;
 import droiddevs.com.tripplanner.model.map.PlaceItem;
@@ -14,7 +15,7 @@ public class SuggestedPlacesContract {
 
     interface View extends BaseView<Presenter> {
 
-        void showSuggestedPlaces(List<PlaceItem> places);
+        void showSuggestedPlaces(List<PlaceItem> places, Set<String> savedPlaceIds);
 
         void onSavedPlaceDeleted(PlaceItem placeItem);
     }

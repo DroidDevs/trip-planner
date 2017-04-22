@@ -3,13 +3,15 @@ package droiddevs.com.tripplanner.placedetails;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.ToggleButton;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,8 +24,8 @@ public class PlaceDetailsFragment extends Fragment implements PlaceDetailsContra
     TextView tvPlaceTitle;
     @BindView(R.id.rbPlaceRating)
     RatingBar rbPlaceRating;
-    @BindView(R.id.btnSavePlace)
-    Button btnSavePlace;
+    @BindView(R.id.tbFavorite)
+    ToggleButton tbFavorite;
     @BindView(R.id.tvOpenNow)
     TextView tvOpenNow;
 
@@ -73,49 +75,21 @@ public class PlaceDetailsFragment extends Fragment implements PlaceDetailsContra
         tvPlaceTitle.setText(place.getName());
         rbPlaceRating.setRating(place.getRating());
 
-//        OpeningHours openingHours = place.getOpeningHours();
-//        if (openingHours != null) {
-//            if (openingHours.getOpenNow()) {
-//                tvOpenNow.setText("Open Now");
-//            }
-//            else {
-//                tvOpenNow.setText("Closed");
-//            }
-//        }
+        List<Object> weekdayHours = place.getWeekdayHours();
+        if (weekdayHours != null && weekdayHours.size() > 0) {
 
-        setAsSaved(savedPlace);
-        btnSavePlace.setOnClickListener(new View.OnClickListener() {
+        }
+
+        tbFavorite.setChecked(savedPlace);
+        tbFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (savedPlace) {
-                    //mPresenter.deletePlace(place);
-                }
-                else {
-                    //mPresenter.savePlace(place);
+                    mPresenter.deletePlace(place);
+                } else {
+                    mPresenter.savePlace(place);
                 }
             }
         });
     }
-
-    @Override
-    public void onPlaceSaved(boolean success) {
-        setAsSaved(success);
-    }
-
-    @Override
-    public void onPlaceDeleted(boolean success) {
-        setAsSaved(!success);
-    }
-
-    private void setAsSaved(boolean saved) {
-        if (saved) {
-            btnSavePlace.setText("Remove");
-            btnSavePlace.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
-        }
-        else {
-            btnSavePlace.setText("Save");
-            btnSavePlace.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorLightGray));
-        }
-    }
-
 }

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,6 +28,7 @@ public class SuggestedPlacesListFragment extends Fragment implements
     private PlacesAdapter mAdapter;
     private Unbinder unbinder;
     private String mDestinationId;
+    private boolean mPlaceDetailsOpened;
 
     @BindView(R.id.rvSuggestedPlaces)
     RecyclerView rvSuggestedPlaces;
@@ -43,7 +45,16 @@ public class SuggestedPlacesListFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.reloadData();
+
+        // We dont want to reload from cache when returning from details
+        // incase the saved state was changed, we need to reload.
+        // Should probably return state from details activity and reload only cell if need be
+        if (mPlaceDetailsOpened) {
+            mPlaceDetailsOpened = false;
+            mPresenter.start();
+        } else {
+            mPresenter.reloadData();
+        }
     }
 
     public void setPresenter(SuggestedPlacesContract.Presenter mPresenter) {
@@ -63,6 +74,7 @@ public class SuggestedPlacesListFragment extends Fragment implements
         super.onViewCreated(view, savedInstanceState);
 
         mAdapter = new PlacesAdapter();
+        //mAdapter.setPlacesSavedIdSet();
         mAdapter.setPlaceClickedListener(this);
         mAdapter.setPlaceFavoriteCheckedListener(this);
 
@@ -84,12 +96,17 @@ public class SuggestedPlacesListFragment extends Fragment implements
         mAdapter.setPlaces(places);
     }
 
+    public void setSavedPlacesData(Set<String> savedPlacesIds) {
+        mAdapter.setPlacesSavedIdSet(savedPlacesIds);
+    }
+
     public void setDestinationId(String destinationId) {
         mDestinationId = destinationId;
     }
 
     @Override
     public void onPlaceClicked(PlaceItem placeItem) {
+        mPlaceDetailsOpened = true;
         Intent intent = new Intent(getContext(), PlaceDetailsActivity.class);
         intent.putExtra(PlaceDetailsActivity.ARG_PLACE_OBJ, placeItem);
         intent.putExtra(PlaceDetailsActivity.ARG_DESTINATION_ID, mDestinationId);
@@ -100,10 +117,10 @@ public class SuggestedPlacesListFragment extends Fragment implements
     public void onPlaceFavoriteChecked(PlaceItem placeItem, boolean checked) {
         if (checked) {
             mPresenter.savePlace(placeItem);
-        }
-        else {
+        } else {
             mPresenter.deletePlace(placeItem);
         }
+        mAdapter.setPlaceSaved(checked, placeItem.getPlaceId());
     }
 
     public void onSavedPlaceDeleted(PlaceItem placeItem) {
