@@ -20,9 +20,8 @@ import droiddevs.com.tripplanner.adapters.places.PlacesAdapter;
 import droiddevs.com.tripplanner.model.map.PlaceItem;
 import droiddevs.com.tripplanner.placedetails.PlaceDetailsActivity;
 
-public class SuggestedPlacesFragment extends Fragment implements SuggestedPlacesContract.View,
-                                                                 PlacesAdapter.OnPlaceClickedListener,
-                                                                 PlacesAdapter.OnPlaceFavoriteCheckedListener {
+public class SuggestedPlacesListFragment extends Fragment implements
+        PlacesAdapter.OnPlaceClickedListener, PlacesAdapter.OnPlaceFavoriteCheckedListener {
 
     private SuggestedPlacesContract.Presenter mPresenter;
     private PlacesAdapter mAdapter;
@@ -32,8 +31,8 @@ public class SuggestedPlacesFragment extends Fragment implements SuggestedPlaces
     @BindView(R.id.rvSuggestedPlaces)
     RecyclerView rvSuggestedPlaces;
 
-    public static SuggestedPlacesFragment newInstance() {
-        return new SuggestedPlacesFragment();
+    public static SuggestedPlacesListFragment newInstance() {
+        return new SuggestedPlacesListFragment();
     }
 
     @Override
@@ -44,7 +43,11 @@ public class SuggestedPlacesFragment extends Fragment implements SuggestedPlaces
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.start();
+        mPresenter.reloadData();
+    }
+
+    public void setPresenter(SuggestedPlacesContract.Presenter mPresenter) {
+        this.mPresenter = mPresenter;
     }
 
     @Override
@@ -77,14 +80,8 @@ public class SuggestedPlacesFragment extends Fragment implements SuggestedPlaces
         unbinder.unbind();
     }
 
-    @Override
-    public void showSuggestedPlaces(List<PlaceItem> places) {
+    public void setData(List<PlaceItem> places) {
         mAdapter.setPlaces(places);
-    }
-
-    @Override
-    public void setPresenter(SuggestedPlacesContract.Presenter presenter) {
-        mPresenter = presenter;
     }
 
     public void setDestinationId(String destinationId) {
@@ -103,12 +100,12 @@ public class SuggestedPlacesFragment extends Fragment implements SuggestedPlaces
     public void onPlaceFavoriteChecked(PlaceItem placeItem, boolean checked) {
         if (checked) {
             mPresenter.savePlace(placeItem);
-        } else {
+        }
+        else {
             mPresenter.deletePlace(placeItem);
         }
     }
 
-    @Override
     public void onSavedPlaceDeleted(PlaceItem placeItem) {
         mAdapter.deletePlace(placeItem);
     }

@@ -2,18 +2,20 @@ package droiddevs.com.tripplanner.savedplaces;
 
 import java.util.List;
 
+import droiddevs.com.tripplanner.map.MapContract;
 import droiddevs.com.tripplanner.model.SavedPlace;
 import droiddevs.com.tripplanner.model.map.PlaceItem;
 import droiddevs.com.tripplanner.model.source.DataSource;
 import droiddevs.com.tripplanner.model.source.Repository;
 import droiddevs.com.tripplanner.model.util.PlaceConverter;
-import droiddevs.com.tripplanner.util.NetworkUtil;
 
 /**
  * Created by elmira on 4/16/17.
  */
 
-public class SavedPlacesPresenter implements SavedPlacesContract.Presenter {
+public class SavedPlacesPresenter implements SavedPlacesContract.Presenter, MapContract.Presenter {
+
+    public static final String LOG_TAG = "SavedPlacesPresenter";
 
     private Repository mRepository;
     private SavedPlacesContract.View mView;
@@ -30,7 +32,7 @@ public class SavedPlacesPresenter implements SavedPlacesContract.Presenter {
 
     @Override
     public void start() {
-        if (mView==null) return;
+        if (mView == null) return;
 
         mRepository.loadSavedPlaces(mDestinationId, new DataSource.LoadSavedPlacesCallback() {
             @Override
@@ -39,6 +41,7 @@ public class SavedPlacesPresenter implements SavedPlacesContract.Presenter {
                 if (mView != null) {
                     mView.onPlacesLoaded(mSavedPlaces);
                 }
+                isLoading = false;
             }
 
             @Override
@@ -46,6 +49,7 @@ public class SavedPlacesPresenter implements SavedPlacesContract.Presenter {
                 if (mView != null) {
                     mView.onFailure();
                 }
+                isLoading = false;
             }
         });
     }

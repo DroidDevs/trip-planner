@@ -11,9 +11,12 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import droiddevs.com.tripplanner.model.Destination;
 import droiddevs.com.tripplanner.model.SavedPlace;
@@ -293,6 +296,32 @@ public class LocalDataSource implements DataSource {
                 }
                 else {
                     callback.onSuccess();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void loadSavedPlacesIds(String destinationId, final LoadSavedPlacesIdsCallback callback) {
+        ParseQuery<SavedPlace> query = ParseQuery.getQuery(SavedPlace.class).fromLocalDatastore();
+        query.whereEqualTo(SavedPlace.DESTINATION_ID_KEY, destinationId);
+        query.selectKeys(Arrays.asList(SavedPlace.PLACE_ID_KEY));
+
+        query.findInBackground(new FindCallback<SavedPlace>() {
+            @Override
+            public void done(List<SavedPlace> objects, ParseException e) {
+                if (e != null) {
+                    Log.e(LOG_TAG, e.toString(), e);
+                    callback.onFailure();
+                }
+                else {
+                    Set<String> setIds = new TreeSet<String>();
+                    if (objects != null && objects.size() > 0) {
+                        for (SavedPlace place : objects) {
+                            setIds.add(place.getPlaceId());
+                        }
+                    }
+                    callback.onSavedPlacesIdsLoaded(setIds);
                 }
             }
         });

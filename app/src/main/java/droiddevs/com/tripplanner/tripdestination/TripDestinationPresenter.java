@@ -34,7 +34,7 @@ public class TripDestinationPresenter implements TripDestinationContract.Present
         List<PlaceOption> tempOptions = new ArrayList<>();
         tempOptions.add(
                 PlaceOption.newInstance(
-                        ContextCompat.getDrawable(mContext, R.drawable.cafe),
+                        ContextCompat.getDrawable(mContext, R.drawable.icon_coffee),
                         PlaceOption.PlaceOptionType.TYPE_CAFE));
         tempOptions.add(
                 PlaceOption.newInstance(

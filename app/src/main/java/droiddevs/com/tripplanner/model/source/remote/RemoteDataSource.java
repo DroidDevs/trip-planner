@@ -23,10 +23,13 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.model.Destination;
@@ -390,7 +393,7 @@ public class RemoteDataSource implements DataSource {
             @Override
             public void done(ParseException e) {
                 if (e != null) {
-                    Log.e(LOG_TAG, e.toString());
+                    Log.e(LOG_TAG, e.toString(), e);
                     if (callback != null) {
                         callback.onFailed();
                     }
@@ -410,7 +413,7 @@ public class RemoteDataSource implements DataSource {
             @Override
             public void done(ParseException e) {
                 if (e != null) {
-                    Log.e(LOG_TAG, e.toString());
+                    Log.e(LOG_TAG, e.toString(), e);
                     if (callback != null) {
                         callback.onFailed();
                     }
@@ -419,6 +422,32 @@ public class RemoteDataSource implements DataSource {
                     if (callback != null) {
                         callback.onSuccess();
                     }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void loadSavedPlacesIds(String destinationId, final LoadSavedPlacesIdsCallback callback) {
+        ParseQuery<SavedPlace> query = ParseQuery.getQuery(SavedPlace.class);
+        query.whereEqualTo(SavedPlace.DESTINATION_ID_KEY, destinationId);
+        query.selectKeys(Arrays.asList(SavedPlace.PLACE_ID_KEY));
+
+        query.findInBackground(new FindCallback<SavedPlace>() {
+            @Override
+            public void done(List<SavedPlace> objects, ParseException e) {
+                if (e != null) {
+                    Log.e(LOG_TAG, e.toString(), e);
+                    callback.onFailure();
+                }
+                else {
+                    Set<String> setIds = new TreeSet<String>();
+                    if (objects != null && objects.size() > 0) {
+                        for (SavedPlace place : objects) {
+                            setIds.add(place.getPlaceId());
+                        }
+                    }
+                    callback.onSavedPlacesIdsLoaded(setIds);
                 }
             }
         });
