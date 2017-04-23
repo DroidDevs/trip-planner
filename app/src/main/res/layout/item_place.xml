@@ -34,7 +34,8 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:textAlignment="textStart"
-            android:layout_toLeftOf="@+id/rbPlaceRating" />
+            android:layout_toLeftOf="@+id/rbPlaceRating"
+            android:textAppearance="@style/TextRegular"/>
 
         <RatingBar
             android:id="@+id/rbPlaceRating"

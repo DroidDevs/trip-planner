@@ -62,7 +62,7 @@ public class SuggestedPlacesActivity extends AppCompatActivity implements Sugges
 
         // Change actionbar title
         String typeTitle = getIntent().getStringExtra(ARG_PLACE_TYPE_TITLE);
-        setTitle(typeTitle);
+        getSupportActionBar().setTitle(typeTitle);
 
         mPresenter = new SuggestedPlacesPresenter(
                 TripPlannerApplication.getRepository(),

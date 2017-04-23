@@ -13,9 +13,10 @@
         <item name="colorControlActivated">@color/colorControlActivated</item>
         <item name="colorControlHighlight">@color/colorControlHighlight</item>
         <item name="android:dialogTheme">@style/AppDialogTheme</item>
-
         <item name="colorControlNormal">@android:color/white</item>
-        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorPrimary">@color/colorPrimary</item>
+
+        <!--<item name="actionBarStyle">@style/Widget.MyApp.Toolbar</item>-->
 
         <!--Set popup menu style (edit/delete trip) text style-->
         <item name="popupMenuStyle">@style/AppTheme.PopupMenu</item>
@@ -36,10 +37,15 @@
         <item name="android:textColor">@android:color/black</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
     </style>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+    </style>
 
     <style name="NoStatusBarTheme" parent="AppTheme">
         <item name="android:windowTranslucentStatus">true</item>
@@ -159,6 +165,15 @@
 
     <style name="TextAppearance.roboto_light" parent="android:TextAppearance">
         <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="Widget.MyApp.Toolbar" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="titleTextAppearance">@style/ToolbarText</item>
+    </style>
+
+    <style name="ToolbarText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
 </resources>

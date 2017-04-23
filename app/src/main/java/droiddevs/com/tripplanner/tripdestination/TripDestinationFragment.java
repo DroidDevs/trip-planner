@@ -108,19 +108,11 @@ public class TripDestinationFragment extends Fragment implements TripDestination
 
     @Override
     public void OnOptionClicked(PlaceOption option) {
-        /*if (option.getOptionType() == PlaceOption.PlaceOptionType.TYPE_SAVED_PLACES) {
-            Intent intent = new Intent(getContext(), SavedPlacesActivity.class);
-            intent.putExtra(SavedPlacesActivity.ARGUMENT_DESTINATION_ID, mDestinationId);
-            intent.putExtra(SavedPlacesActivity.ARGUMENT_TRIP_ID, mTripId);
-            startActivity(intent);
-        }
-        else { */
         Intent intent = new Intent(getContext(), SuggestedPlacesActivity.class);
         intent.putExtra(ARG_DESTINATION_ID, mDestinationId);
         intent.putExtra(ARG_PLACE_TYPE_SEARCH_STRING, option.getOptionType().typeSearchString());
         intent.putExtra(ARG_PLACE_TYPE_TITLE, option.getOptionTitle());
         intent.putExtra(ARGUMENT_TRIP_ID, mTripId);
         startActivity(intent);
-        //}
     }
 }
