@@ -2,6 +2,8 @@ package droiddevs.com.tripplanner.model.source;
 
 import android.location.Location;
 
+import com.parse.ParseException;
+
 import java.util.List;
 import java.util.Set;
 
@@ -43,7 +45,7 @@ public interface DataSource {
     }
 
     interface LoadFbUserCallback {
-        void onUserLoaded(FbUser user);
+        void onUserLoaded(FbUser user) throws ParseException;
 
 
         void onFailure();

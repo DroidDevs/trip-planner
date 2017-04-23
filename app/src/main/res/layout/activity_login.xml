@@ -15,6 +15,6 @@
         android:background="@color/com_facebook_blue"
         android:text="Continue with Facebook"
         android:textColor="@android:color/white"
-        android:layout_centerInParent="true" />
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

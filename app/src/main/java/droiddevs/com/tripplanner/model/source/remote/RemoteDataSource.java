@@ -223,25 +223,22 @@ public class RemoteDataSource implements DataSource {
                         if (response.getError() != null) {
                             Log.e(LOG_TAG, response.getError().getErrorMessage());
                             callback.onFailure();
-                        }
-                        else {
+                        } else {
                             try {
-                                //FbUser user = FbUser.fromJsonObject(object);
-                                Log.d(LOG_TAG, "FB raw response: " + response.getRawResponse());
                                 FbUser user = gson.fromJson(response.getRawResponse(), FbUser.class);
                                 Log.d(LOG_TAG, "Loaded FB user: " + user.toString());
                                 callback.onUserLoaded(user);
                             } catch (Throwable ex) {
-                                ex.printStackTrace();
                                 Log.e(LOG_TAG, ex.toString());
                                 callback.onFailure();
                             }
                         }
                     }
                 });
+
         Bundle parameters = new Bundle();
         parameters.putString("fields", FbJsonAttributes.User.ID + "," + FbJsonAttributes.User.NAME + "," +
-                FbJsonAttributes.User.COVER + "," + FbJsonAttributes.User.PICTURE);
+                FbJsonAttributes.User.COVER + "," + FbJsonAttributes.User.PICTURE + "," + FbJsonAttributes.User.EMAIL);
         request.setParameters(parameters);
         request.executeAsync();
     }
