@@ -13,6 +13,7 @@ import droiddevs.com.tripplanner.model.SavedPlace;
 import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
 import droiddevs.com.tripplanner.model.googleplaces.OpeningHours;
 import droiddevs.com.tripplanner.model.googleplaces.Photo;
+import droiddevs.com.tripplanner.model.source.remote.PlaceDetailsResponse;
 import droiddevs.com.tripplanner.util.PhotoUrlUtil;
 
 /**
@@ -29,6 +30,9 @@ public class PlaceItem extends BaseMapItem implements Parcelable {
 
     private String placeId;
     private String destinationId;
+
+    private String formattedAddress;
+    private String phoneNumber;
 
     public PlaceItem(SavedPlace place, int position) {
         super(new LatLng(place.getLatitude(), place.getLongitude()), place.getName(), position, place.getPhotoUrl());
@@ -66,6 +70,34 @@ public class PlaceItem extends BaseMapItem implements Parcelable {
         }
     }
 
+    public PlaceItem(PlaceDetailsResponse.PlaceDetails placeDetails,
+                     String destinationId,
+                     PlaceDetailsResponse.PlacePhoto placePhoto) {
+
+        super(new LatLng(placeDetails.getGeometry().getLocation().getLatitude(),
+                placeDetails.getGeometry().getLocation().getLongitude()),
+                placeDetails.getName(),
+                0,
+                placePhoto.getFullPhotoURLReference());
+
+
+        this.rating = (float) placeDetails.getRating();
+
+        this.saved = false;
+        this.destinationId = destinationId;
+
+        this.placeId = placeDetails.getPlaceId();
+
+        this.phoneNumber = placeDetails.getPhoneNumber();
+        this.formattedAddress = placeDetails.getAddress();
+
+        List<PlaceDetailsResponse.PlacePhoto> photos = placeDetails.getPhotos();
+        if (photos != null && photos.size() > 0) {
+            PlaceDetailsResponse.PlacePhoto photo = photos.get(0);
+            this.photoReference = photo.getPhotoReference();
+        }
+    }
+
     public List<Object> getWeekdayHours() {
         return weekdayHours;
     }
@@ -92,6 +124,22 @@ public class PlaceItem extends BaseMapItem implements Parcelable {
 
     public String getPhotoUrl() {
         return PhotoUrlUtil.getPhotoUrl(photoReference);
+    }
+
+    public String getFormattedAddress() {
+        return formattedAddress;
+    }
+
+    public void setFormattedAddress(String formattedAddress) {
+        this.formattedAddress = formattedAddress;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     @Override

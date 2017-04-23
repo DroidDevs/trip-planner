@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+import droiddevs.com.tripplanner.util.PhotoUrlUtil;
+
 /**
  * Created by elmira on 4/13/17.
  */
@@ -216,6 +218,10 @@ public class PlaceDetailsResponse {
 
         public String getPhotoReference() {
             return photoReference;
+        }
+
+        public String getFullPhotoURLReference() {
+            return PhotoUrlUtil.getPhotoUrl(photoReference);
         }
     }
 }
