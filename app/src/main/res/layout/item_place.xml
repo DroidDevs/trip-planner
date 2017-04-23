@@ -33,7 +33,8 @@
             android:layout_below="@+id/ivPlaceImage"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
-            android:textAlignment="textStart"/>
+            android:textAlignment="textStart"
+            android:layout_toLeftOf="@+id/rbPlaceRating" />
 
         <RatingBar
             android:id="@+id/rbPlaceRating"

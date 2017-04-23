@@ -1,7 +1,6 @@
 package droiddevs.com.tripplanner.placedetails;
 
 import droiddevs.com.tripplanner.model.SavedPlace;
-import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
 import droiddevs.com.tripplanner.model.map.PlaceItem;
 import droiddevs.com.tripplanner.model.source.DataSource;
 import droiddevs.com.tripplanner.model.source.Repository;
@@ -32,6 +31,23 @@ public class PlaceDetailsPresenter implements PlaceDetailsContract.Presenter {
 
     @Override
     public void start() {
+        mRepository.loadPlaceDetails(mCurrentPlace.getPlaceId(), mDestinationId, new DataSource.PlaceDetailsCallback() {
+            @Override
+            public void onPlacesDetailsLoaded(PlaceItem place) {
+                if (place != null) {
+                    mCurrentPlace = place;
+                }
+                loadSavedPlace();
+            }
+
+            @Override
+            public void onFailure() {
+                loadSavedPlace();
+            }
+        });
+    }
+
+    private void loadSavedPlace() {
         mRepository.loadSavedPlace(mCurrentPlace.getPlaceId(), mDestinationId, new DataSource.LoadSavedPlaceCallback() {
             @Override
             public void onSavedPlaceLoaded(SavedPlace place) {
@@ -51,44 +67,19 @@ public class PlaceDetailsPresenter implements PlaceDetailsContract.Presenter {
     }
 
     @Override
-    public void savePlace(GooglePlace place) {
-        SavedPlace newSavedPlace = PlaceConverter.convertToSavedPlaceFromGooglePlace(mDestinationId, place);
-
-        mRepository.createSavedPlace(newSavedPlace,
-                new DataSource.CreateSavedPlaceCallback() {
-                    @Override
-                    public void onSuccess() {
-                        mView.onPlaceSaved(true);
-                    }
-
-                    @Override
-                    public void onFailed() {
-                        mView.onPlaceSaved(false);
-                    }
-                });
+    public void savePlace(PlaceItem place) {
+        SavedPlace newSavedPlace = PlaceConverter.convertToSavedPlaceFromPlaceItem(place);
+        mRepository.createSavedPlace(newSavedPlace, null);
     }
 
     @Override
-    public void deletePlace(GooglePlace place) {
+    public void deletePlace(PlaceItem place) {
         if (mCurrentSavedPlace != null) {
             deleteSavedPlace(mCurrentSavedPlace);
-        }
-        else {
-            mView.onPlaceDeleted(false);
         }
     }
 
     private void deleteSavedPlace(SavedPlace place) {
-        mRepository.deleteSavedPlace(place, new DataSource.DeleteSavedPlaceCallback() {
-            @Override
-            public void onSuccess() {
-                mView.onPlaceDeleted(true);
-            }
-
-            @Override
-            public void onFailed() {
-                mView.onPlaceDeleted(false);
-            }
-        });
+        mRepository.deleteSavedPlace(place, null);
     }
 }

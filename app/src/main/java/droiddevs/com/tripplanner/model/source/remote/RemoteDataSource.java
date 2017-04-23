@@ -27,11 +27,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import droiddevs.com.tripplanner.R;
+import droiddevs.com.tripplanner.application.TripPlannerApplication;
 import droiddevs.com.tripplanner.model.Destination;
 import droiddevs.com.tripplanner.model.SavedPlace;
 import droiddevs.com.tripplanner.model.Trip;
@@ -222,25 +223,22 @@ public class RemoteDataSource implements DataSource {
                         if (response.getError() != null) {
                             Log.e(LOG_TAG, response.getError().getErrorMessage());
                             callback.onFailure();
-                        }
-                        else {
+                        } else {
                             try {
-                                //FbUser user = FbUser.fromJsonObject(object);
-                                Log.d(LOG_TAG, "FB raw response: " + response.getRawResponse());
                                 FbUser user = gson.fromJson(response.getRawResponse(), FbUser.class);
                                 Log.d(LOG_TAG, "Loaded FB user: " + user.toString());
                                 callback.onUserLoaded(user);
                             } catch (Throwable ex) {
-                                ex.printStackTrace();
                                 Log.e(LOG_TAG, ex.toString());
                                 callback.onFailure();
                             }
                         }
                     }
                 });
+
         Bundle parameters = new Bundle();
         parameters.putString("fields", FbJsonAttributes.User.ID + "," + FbJsonAttributes.User.NAME + "," +
-                FbJsonAttributes.User.COVER + "," + FbJsonAttributes.User.PICTURE);
+                FbJsonAttributes.User.COVER + "," + FbJsonAttributes.User.PICTURE + "," + FbJsonAttributes.User.EMAIL);
         request.setParameters(parameters);
         request.executeAsync();
     }
@@ -349,6 +347,34 @@ public class RemoteDataSource implements DataSource {
     }
 
     @Override
+    public void loadPlaceDetails(String placeId, final String destinationId, final PlaceDetailsCallback callback) {
+        GooglePlacesService retrofitService = RetrofitGooglePlacesService.newGooglePlacesService();
+
+        Call<PlaceDetailsResponse> listCall = retrofitService.getPlaceDetails(placeId, TripPlannerApplication.getGooglePlacesApiKey());
+        listCall.enqueue(new Callback<PlaceDetailsResponse>() {
+            @Override
+            public void onResponse(Call<PlaceDetailsResponse> call, Response<PlaceDetailsResponse> response) {
+                if (response != null) {
+                    PlaceDetailsResponse details = response.body();
+                    if (details != null) {
+                        callback.onPlacesDetailsLoaded(PlaceConverter.convertToPlaceItemFromPlaceDetailsResponse(destinationId, details));
+                    } else {
+                        callback.onFailure();
+                    }
+                } else {
+                   callback.onFailure();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PlaceDetailsResponse> call, Throwable t) {
+                Log.e(LOG_TAG, t.getLocalizedMessage());
+                //callback.onFailure();
+            }
+        });
+    }
+
+    @Override
     public void loadSavedPlaces(String destinationId, final LoadSavedPlacesCallback callback) {
         ParseQuery<SavedPlace> query = ParseQuery.getQuery(SavedPlace.class);
         query.whereEqualTo(SavedPlace.DESTINATION_ID_KEY, destinationId);
@@ -441,7 +467,7 @@ public class RemoteDataSource implements DataSource {
                     callback.onFailure();
                 }
                 else {
-                    Set<String> setIds = new TreeSet<String>();
+                    Set<String> setIds = new HashSet<String>();
                     if (objects != null && objects.size() > 0) {
                         for (SavedPlace place : objects) {
                             setIds.add(place.getPlaceId());

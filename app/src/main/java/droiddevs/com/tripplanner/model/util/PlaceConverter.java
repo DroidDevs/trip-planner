@@ -140,4 +140,16 @@ public class PlaceConverter {
         //savedPlace.setTypes(place.getTypes());
         return savedPlace;
     }
+
+    public static PlaceItem convertToPlaceItemFromPlaceDetailsResponse(String destinationId, PlaceDetailsResponse placeDetailsResponse) {
+        if (placeDetailsResponse == null) return null;
+        PlaceDetailsResponse.PlaceDetails placeDetails = placeDetailsResponse.getPlaceDetails();
+
+        PlaceDetailsResponse.PlacePhoto placePhoto = null;
+        List<PlaceDetailsResponse.PlacePhoto> photos = placeDetails.getPhotos();
+        if (photos.size() > 0) {
+            placePhoto = photos.get(0);
+        }
+        return new PlaceItem(placeDetails, destinationId, placePhoto);
+    }
 }

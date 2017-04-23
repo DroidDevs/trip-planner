@@ -14,9 +14,9 @@ import com.parse.SaveCallback;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import droiddevs.com.tripplanner.model.Destination;
 import droiddevs.com.tripplanner.model.SavedPlace;
@@ -192,6 +192,11 @@ public class LocalDataSource implements DataSource {
     }
 
     @Override
+    public void loadPlaceDetails(String placeId, String destinationId, PlaceDetailsCallback callback) {
+        throw new UnsupportedOperationException("Operation is not supported in local data source");
+    }
+
+    @Override
     public void loadPlace(String placeId, final LoadPlaceCallback callback) {
         ParseQuery<SavedPlace> query = ParseQuery.getQuery(SavedPlace.class).fromLocalDatastore();
         query.whereEqualTo(SavedPlace.PLACE_ID_KEY, placeId);
@@ -315,7 +320,7 @@ public class LocalDataSource implements DataSource {
                     callback.onFailure();
                 }
                 else {
-                    Set<String> setIds = new TreeSet<String>();
+                    Set<String> setIds = new HashSet<String>();
                     if (objects != null && objects.size() > 0) {
                         for (SavedPlace place : objects) {
                             setIds.add(place.getPlaceId());

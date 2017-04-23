@@ -15,6 +15,7 @@ public interface FbJsonAttributes {
         String PICTURE = "picture";
         String HOMETOWN = "hometown";
         String LOCATION = "location";
+        String EMAIL = "email";
     }
 
     interface CoverPhoto {
