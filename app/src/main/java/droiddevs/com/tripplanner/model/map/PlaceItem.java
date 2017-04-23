@@ -31,6 +31,9 @@ public class PlaceItem extends BaseMapItem implements Parcelable {
     private String placeId;
     private String destinationId;
 
+    private String formattedAddress;
+    private String phoneNumber;
+
     public PlaceItem(SavedPlace place, int position) {
         super(new LatLng(place.getLatitude(), place.getLongitude()), place.getName(), position, place.getPhotoUrl());
         this.photoReference = place.getPhotoReference();
@@ -82,6 +85,9 @@ public class PlaceItem extends BaseMapItem implements Parcelable {
 
         this.placeId = placeDetails.getPlaceId();
 
+        this.phoneNumber = placeDetails.getPhoneNumber();
+        this.formattedAddress = placeDetails.getAddress();
+
         List<PlaceDetailsResponse.PlacePhoto> photos = placeDetails.getPhotos();
         if (photos != null && photos.size() > 0) {
             PlaceDetailsResponse.PlacePhoto photo = photos.get(0);
@@ -115,6 +121,22 @@ public class PlaceItem extends BaseMapItem implements Parcelable {
 
     public String getPhotoUrl() {
         return PhotoUrlUtil.getPhotoUrl(photoReference);
+    }
+
+    public String getFormattedAddress() {
+        return formattedAddress;
+    }
+
+    public void setFormattedAddress(String formattedAddress) {
+        this.formattedAddress = formattedAddress;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     @Override
