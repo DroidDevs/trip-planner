@@ -19,7 +19,7 @@ import butterknife.Unbinder;
 import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.adapters.tripdestination.TripDestinationAdapter;
 import droiddevs.com.tripplanner.model.PlaceOption;
-import droiddevs.com.tripplanner.suggestedplaces.SuggestedPlacesActivity;
+import droiddevs.com.tripplanner.places.PlacesActivity;
 import droiddevs.com.tripplanner.util.ItemOffsetDecoration;
 
 public class TripDestinationFragment extends Fragment implements TripDestinationContract.View, TripDestinationAdapter.DestinationOptionClickedListener {
@@ -108,7 +108,7 @@ public class TripDestinationFragment extends Fragment implements TripDestination
 
     @Override
     public void OnOptionClicked(PlaceOption option) {
-        Intent intent = new Intent(getContext(), SuggestedPlacesActivity.class);
+        Intent intent = new Intent(getContext(), PlacesActivity.class);
         intent.putExtra(ARG_DESTINATION_ID, mDestinationId);
         intent.putExtra(ARG_PLACE_TYPE_SEARCH_STRING, option.getOptionType().typeSearchString());
         intent.putExtra(ARG_PLACE_TYPE_TITLE, option.getOptionTitle());

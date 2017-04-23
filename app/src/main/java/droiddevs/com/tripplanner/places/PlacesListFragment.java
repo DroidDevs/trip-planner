@@ -1,4 +1,4 @@
-package droiddevs.com.tripplanner.suggestedplaces;
+package droiddevs.com.tripplanner.places;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,10 +21,10 @@ import droiddevs.com.tripplanner.adapters.places.PlacesAdapter;
 import droiddevs.com.tripplanner.model.map.PlaceItem;
 import droiddevs.com.tripplanner.placedetails.PlaceDetailsActivity;
 
-public class SuggestedPlacesListFragment extends Fragment implements
+public class PlacesListFragment extends Fragment implements
         PlacesAdapter.OnPlaceClickedListener, PlacesAdapter.OnPlaceFavoriteCheckedListener {
 
-    private SuggestedPlacesContract.Presenter mPresenter;
+    private PlacesContract.Presenter mPresenter;
     private PlacesAdapter mAdapter;
     private Unbinder unbinder;
     private String mDestinationId;
@@ -33,8 +33,8 @@ public class SuggestedPlacesListFragment extends Fragment implements
     @BindView(R.id.rvSuggestedPlaces)
     RecyclerView rvSuggestedPlaces;
 
-    public static SuggestedPlacesListFragment newInstance() {
-        return new SuggestedPlacesListFragment();
+    public static PlacesListFragment newInstance() {
+        return new PlacesListFragment();
     }
 
     @Override
@@ -57,7 +57,7 @@ public class SuggestedPlacesListFragment extends Fragment implements
         }
     }
 
-    public void setPresenter(SuggestedPlacesContract.Presenter mPresenter) {
+    public void setPresenter(PlacesContract.Presenter mPresenter) {
         this.mPresenter = mPresenter;
     }
 

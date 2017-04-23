@@ -29,12 +29,16 @@
         <TextView
             android:id="@+id/tvPlaceTitle"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/ivPlaceImage"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
+            android:layout_marginEnd="@dimen/margin_large"
             android:textAlignment="textStart"
-            android:layout_toLeftOf="@+id/rbPlaceRating"
+            android:layout_above="@+id/rbPlaceRating"
+            android:layout_alignParentLeft="true"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textAppearance="@style/TextRegular"/>
 
         <RatingBar
@@ -43,7 +47,8 @@
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/tvPlaceTitle"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/margin_small"
             android:layout_centerVertical="true"
             android:layout_marginStart="20dp"/>
 
@@ -56,7 +61,8 @@
             android:background="@drawable/toggle_favorite"
             android:textOff=""
             android:textOn=""
-            android:layout_marginRight="@dimen/margin_small"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_small"
             android:layout_marginTop="@dimen/margin_small"
             />
     </RelativeLayout>

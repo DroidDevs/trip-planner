@@ -47,10 +47,11 @@
 
         <activity
             android:name=".tripdetails.TripDetailsActivity"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTask"/>
 
         <activity
-            android:name=".suggestedplaces.SuggestedPlacesActivity"/>
+            android:name=".places.PlacesActivity"
+            android:theme="@style/Base.AppTheme"/>
 
         <activity
             android:name=".placedetails.PlaceDetailsActivity"/>
