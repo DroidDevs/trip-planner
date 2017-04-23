@@ -1,14 +1,12 @@
-package droiddevs.com.tripplanner.suggestedplaces;
+package droiddevs.com.tripplanner.places;
 
 import android.util.Log;
 
-import com.google.android.gms.location.places.Place;
 import com.parse.ParseException;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Function;
 
 import droiddevs.com.tripplanner.application.TripPlannerApplication;
 import droiddevs.com.tripplanner.model.Destination;
@@ -23,14 +21,14 @@ import droiddevs.com.tripplanner.model.util.PlaceConverter;
  * Created by Jared12 on 4/15/17.
  */
 
-public class SuggestedPlacesPresenter implements SuggestedPlacesContract.Presenter {
+public class PlacesPresenter implements PlacesContract.Presenter {
 
-    private static String TAG = SuggestedPlacesPresenter.class.getSimpleName();
+    private static String TAG = PlacesPresenter.class.getSimpleName();
 
     private String mSearchString;
     private String mDestinationId;
 
-    private SuggestedPlacesContract.View mView;
+    private PlacesContract.View mView;
     private Repository mRepository;
 
     private List<PlaceItem> mSuggestedPlaces;
@@ -38,7 +36,7 @@ public class SuggestedPlacesPresenter implements SuggestedPlacesContract.Present
 
     private boolean isLoading = false;
 
-    public SuggestedPlacesPresenter(Repository repository, SuggestedPlacesContract.View view, String placeTypeSearchString, String destinationId) {
+    public PlacesPresenter(Repository repository, PlacesContract.View view, String placeTypeSearchString, String destinationId) {
         mSearchString = placeTypeSearchString;
         mDestinationId = destinationId;
 

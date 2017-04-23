@@ -1,4 +1,4 @@
-package droiddevs.com.tripplanner.suggestedplaces;
+package droiddevs.com.tripplanner.places;
 
 import java.util.List;
 import java.util.Set;
@@ -11,7 +11,7 @@ import droiddevs.com.tripplanner.mvp.BaseView;
  * Created by Jared12 on 4/15/17.
  */
 
-public class SuggestedPlacesContract {
+public class PlacesContract {
 
     interface View extends BaseView<Presenter> {
 

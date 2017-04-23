@@ -1,4 +1,4 @@
-package droiddevs.com.tripplanner.suggestedplaces;
+package droiddevs.com.tripplanner.places;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,9 +24,9 @@ import static droiddevs.com.tripplanner.tripdestination.TripDestinationFragment.
 import static droiddevs.com.tripplanner.tripdestination.TripDestinationFragment.ARG_PLACE_TYPE_SEARCH_STRING;
 import static droiddevs.com.tripplanner.tripdestination.TripDestinationFragment.ARG_PLACE_TYPE_TITLE;
 
-public class SuggestedPlacesActivity extends AppCompatActivity implements SuggestedPlacesContract.View {
+public class PlacesActivity extends AppCompatActivity implements PlacesContract.View {
 
-    private SuggestedPlacesContract.Presenter mPresenter;
+    private PlacesContract.Presenter mPresenter;
 
     private String mPlaceTypeSearchString;
     private String mDestinationId;
@@ -44,13 +44,13 @@ public class SuggestedPlacesActivity extends AppCompatActivity implements Sugges
     private static final String FRAGMENT_TAG_LIST = "places_list";
     private static final String FRAGMENT_TAG_MAP = "places_map";
 
-    public SuggestedPlacesActivity() {
+    public PlacesActivity() {
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_suggested_places);
+        setContentView(R.layout.activity_places);
         ButterKnife.bind(this);
 
         this.mPlaceTypeSearchString = getIntent().getStringExtra(ARG_PLACE_TYPE_SEARCH_STRING);
@@ -64,7 +64,7 @@ public class SuggestedPlacesActivity extends AppCompatActivity implements Sugges
         String typeTitle = getIntent().getStringExtra(ARG_PLACE_TYPE_TITLE);
         setTitle(typeTitle);
 
-        mPresenter = new SuggestedPlacesPresenter(
+        mPresenter = new PlacesPresenter(
                 TripPlannerApplication.getRepository(),
                 this,
                 mPlaceTypeSearchString,
@@ -74,11 +74,11 @@ public class SuggestedPlacesActivity extends AppCompatActivity implements Sugges
     }
 
     private void loadListFragment() {
-        SuggestedPlacesListFragment listFragment =
-                (SuggestedPlacesListFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG_LIST);
+        PlacesListFragment listFragment =
+                (PlacesListFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG_LIST);
 
         if (listFragment == null) {
-            listFragment = SuggestedPlacesListFragment.newInstance();
+            listFragment = PlacesListFragment.newInstance();
         }
         listFragment.setPresenter(mPresenter);
         listFragment.setDestinationId(mDestinationId);
@@ -91,9 +91,9 @@ public class SuggestedPlacesActivity extends AppCompatActivity implements Sugges
     }
 
     private void loadMapFragment() {
-        SuggestedPlacesMapFragment mapFragment = (SuggestedPlacesMapFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG_MAP);
+        PlacesMapFragment mapFragment = (PlacesMapFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG_MAP);
         if (mapFragment == null) {
-            mapFragment = SuggestedPlacesMapFragment.newInstance();
+            mapFragment = PlacesMapFragment.newInstance();
         }
         mapFragment.setPresenter(mPresenter);
         getSupportFragmentManager().beginTransaction().replace(R.id.contentFrame, mapFragment, FRAGMENT_TAG_MAP).commit();
@@ -142,14 +142,14 @@ public class SuggestedPlacesActivity extends AppCompatActivity implements Sugges
     public void showSuggestedPlaces(List<PlaceItem> places, Set<String> savedPlaceIds) {
         hasData = places != null && places.size() > 0;
 
-        if (mCurrentFragment instanceof SuggestedPlacesListFragment) {
-            ((SuggestedPlacesListFragment) mCurrentFragment).setData(places);
-            ((SuggestedPlacesListFragment) mCurrentFragment).setSavedPlacesData(savedPlaceIds);
+        if (mCurrentFragment instanceof PlacesListFragment) {
+            ((PlacesListFragment) mCurrentFragment).setData(places);
+            ((PlacesListFragment) mCurrentFragment).setSavedPlacesData(savedPlaceIds);
             if (mListMenuItem != null) mListMenuItem.setVisible(false);
             if (mMapMenuItem != null) mMapMenuItem.setVisible(hasData);
         }
-        else if (mCurrentFragment instanceof SuggestedPlacesMapFragment) {
-            ((SuggestedPlacesMapFragment) mCurrentFragment).setMapData(places);
+        else if (mCurrentFragment instanceof PlacesMapFragment) {
+            ((PlacesMapFragment) mCurrentFragment).setMapData(places);
             if (mListMenuItem != null) mListMenuItem.setVisible(hasData);
             if (mMapMenuItem != null) mMapMenuItem.setVisible(false);
         }
@@ -157,13 +157,13 @@ public class SuggestedPlacesActivity extends AppCompatActivity implements Sugges
 
     @Override
     public void onSavedPlaceDeleted(PlaceItem placeItem) {
-        if (mCurrentFragment instanceof SuggestedPlacesListFragment) {
-            ((SuggestedPlacesListFragment) mCurrentFragment).onSavedPlaceDeleted(placeItem);
+        if (mCurrentFragment instanceof PlacesListFragment) {
+            ((PlacesListFragment) mCurrentFragment).onSavedPlaceDeleted(placeItem);
         }
     }
 
     @Override
-    public void setPresenter(SuggestedPlacesContract.Presenter presenter) {
+    public void setPresenter(PlacesContract.Presenter presenter) {
         this.mPresenter = presenter;
     }
 }

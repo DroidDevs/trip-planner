@@ -16,4 +16,6 @@
 
     <color name="colorLightGray">#BDBDBD</color>
 
+    <color name="colorRestaurant">#CDDC39</color>
+    <color name="colorPizza">#FF9800</color>
 </resources>

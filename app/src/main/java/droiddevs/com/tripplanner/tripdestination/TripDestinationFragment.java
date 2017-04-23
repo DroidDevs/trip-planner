@@ -19,8 +19,8 @@ import butterknife.Unbinder;
 import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.adapters.tripdestination.TripDestinationAdapter;
 import droiddevs.com.tripplanner.model.PlaceOption;
-import droiddevs.com.tripplanner.suggestedplaces.SuggestedPlacesActivity;
-import droiddevs.com.tripplanner.util.SpacesItemDecoration;
+import droiddevs.com.tripplanner.places.PlacesActivity;
+import droiddevs.com.tripplanner.util.ItemOffsetDecoration;
 
 public class TripDestinationFragment extends Fragment implements TripDestinationContract.View, TripDestinationAdapter.DestinationOptionClickedListener {
     public static final String ARGUMENT_TRIP_ID = "tripId";
@@ -93,7 +93,7 @@ public class TripDestinationFragment extends Fragment implements TripDestination
         StaggeredGridLayoutManager gridLayoutManager =
                 new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         rvDestinationOptions.setLayoutManager(gridLayoutManager);
-        rvDestinationOptions.addItemDecoration(new SpacesItemDecoration(10));
+        rvDestinationOptions.addItemDecoration(new ItemOffsetDecoration(getResources().getDimensionPixelSize(R.dimen.margin_small)));
     }
 
     @Override
@@ -108,19 +108,11 @@ public class TripDestinationFragment extends Fragment implements TripDestination
 
     @Override
     public void OnOptionClicked(PlaceOption option) {
-        /*if (option.getOptionType() == PlaceOption.PlaceOptionType.TYPE_SAVED_PLACES) {
-            Intent intent = new Intent(getContext(), SavedPlacesActivity.class);
-            intent.putExtra(SavedPlacesActivity.ARGUMENT_DESTINATION_ID, mDestinationId);
-            intent.putExtra(SavedPlacesActivity.ARGUMENT_TRIP_ID, mTripId);
-            startActivity(intent);
-        }
-        else { */
-        Intent intent = new Intent(getContext(), SuggestedPlacesActivity.class);
+        Intent intent = new Intent(getContext(), PlacesActivity.class);
         intent.putExtra(ARG_DESTINATION_ID, mDestinationId);
         intent.putExtra(ARG_PLACE_TYPE_SEARCH_STRING, option.getOptionType().typeSearchString());
         intent.putExtra(ARG_PLACE_TYPE_TITLE, option.getOptionTitle());
         intent.putExtra(ARGUMENT_TRIP_ID, mTripId);
         startActivity(intent);
-        //}
     }
 }

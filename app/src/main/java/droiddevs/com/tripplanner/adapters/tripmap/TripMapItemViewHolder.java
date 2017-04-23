@@ -2,6 +2,7 @@ package droiddevs.com.tripplanner.adapters.tripmap;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,9 +33,6 @@ public class TripMapItemViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.tvStartDate)
     TextView startDateTextView;
 
-    @BindView(R.id.tvEndDate)
-    TextView endDateTextView;
-
     @BindView(R.id.tvDuration)
     TextView durationTextView;
 
@@ -53,8 +51,8 @@ public class TripMapItemViewHolder extends RecyclerView.ViewHolder {
 
         nameTextView.setText(destination.getName());
 
-        startDateTextView.setText(destination.getStartDate());
-        endDateTextView.setText(destination.getEndDate());
+        startDateTextView.setText(destination.getDateRange());
+
         durationTextView.setText(destination.getDuration());
 
         if (listener != null) {

@@ -40,7 +40,7 @@ public class TripMapPresenter implements MapContract.Presenter {
                     List<TripDestinationMapItem> mapData = new ArrayList<TripDestinationMapItem>();
                     for (int i = 0; i < trip.getDestinations().size(); i++) {
                         Destination destination = trip.getDestinations().get(i);
-                        mapData.add(new TripDestinationMapItem(destination, i));
+                        mapData.add(new TripDestinationMapItem(mView.getContext(), destination, i));
                     }
                     mMapData = mapData;
                     if (mView != null && mView.isActive()) {

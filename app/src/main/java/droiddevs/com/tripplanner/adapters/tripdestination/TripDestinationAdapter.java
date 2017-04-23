@@ -45,8 +45,7 @@ public class TripDestinationAdapter extends RecyclerView.Adapter<TripDestination
     @Override
     public void onBindViewHolder(TripDestinationViewHolder holder, int position) {
         PlaceOption option = mPlaceOptions.get(position);
-        holder.ivDestinationOptionImage.setImageDrawable(option.getOptionImageDrawable());
-        holder.tvDesinationOptionTitle.setText(option.getOptionTitle());
+        holder.bind(option);
     }
 
     @Override

@@ -63,6 +63,7 @@ dependencies {
     compile "com.android.support:recyclerview-v7:${supportLibraryVersion}"
     compile "com.android.support:cardview-v7:${supportLibraryVersion}"
     compile "com.android.support:support-v4:${supportLibraryVersion}"
+    compile "com.android.support:palette-v7:${supportLibraryVersion}"
 
     // Parse
     compile 'com.parse:parse-android:1.14.1'

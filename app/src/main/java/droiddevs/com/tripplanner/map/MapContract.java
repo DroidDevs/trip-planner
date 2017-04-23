@@ -1,5 +1,7 @@
 package droiddevs.com.tripplanner.map;
 
+import android.content.Context;
+
 import java.util.List;
 
 import droiddevs.com.tripplanner.mvp.BasePresenter;
@@ -18,6 +20,8 @@ public interface MapContract {
         void onLoadFailure();
 
         boolean isActive();
+
+        Context getContext();
     }
 
     interface Presenter extends BasePresenter{

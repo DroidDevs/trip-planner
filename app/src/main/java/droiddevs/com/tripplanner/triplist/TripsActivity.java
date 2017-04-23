@@ -64,6 +64,7 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
             // Change toolbar title
             TextView tvTitle = (TextView) ButterKnife.findById(toolbar, R.id.toolbar_title);
             tvTitle.setText("Trips");
+            //setTitle("Trips");
         }
         else {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

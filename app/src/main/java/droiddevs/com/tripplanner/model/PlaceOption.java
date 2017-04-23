@@ -11,7 +11,7 @@ public class PlaceOption {
         TYPE_CAFE("cafe"),
         TYPE_RESTAURANT("restaurant"),
         TYPE_DRINK("drinks"),
-        TYPE_SAVED_PLACES("saved_places");
+        TYPE_SAVED_PLACES("icon_saved_places");
 
         private String typeString;
 

@@ -32,22 +32,26 @@ public class TripDestinationPresenter implements TripDestinationContract.Present
     @Override
     public void loadDestinationPlaceOptions() {
         List<PlaceOption> tempOptions = new ArrayList<>();
+
         tempOptions.add(
                 PlaceOption.newInstance(
-                        ContextCompat.getDrawable(mContext, R.drawable.icon_coffee),
+                        ContextCompat.getDrawable(mContext, R.drawable.ic_saved_places),
+                        PlaceOption.PlaceOptionType.TYPE_SAVED_PLACES));
+
+        tempOptions.add(
+                PlaceOption.newInstance(
+                        ContextCompat.getDrawable(mContext, R.drawable.ic_pizza),
+                        PlaceOption.PlaceOptionType.TYPE_RESTAURANT));
+
+        tempOptions.add(
+                PlaceOption.newInstance(
+                        ContextCompat.getDrawable(mContext, R.drawable.ic_cappuccino),
                         PlaceOption.PlaceOptionType.TYPE_CAFE));
         tempOptions.add(
                 PlaceOption.newInstance(
-                        ContextCompat.getDrawable(mContext, R.drawable.restaurant),
-                        PlaceOption.PlaceOptionType.TYPE_RESTAURANT));
-        tempOptions.add(
-                PlaceOption.newInstance(
-                        ContextCompat.getDrawable(mContext, R.drawable.drinks),
+                        ContextCompat.getDrawable(mContext, R.drawable.ic_drinks),
                         PlaceOption.PlaceOptionType.TYPE_DRINK));
-        tempOptions.add(
-                PlaceOption.newInstance(
-                        ContextCompat.getDrawable(mContext, R.drawable.savedplaces),
-                        PlaceOption.PlaceOptionType.TYPE_SAVED_PLACES));
+
         mDestinationOptionsView.showDestinationPlaceOptions(tempOptions);
     }
 }

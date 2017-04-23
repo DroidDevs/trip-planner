@@ -26,7 +26,7 @@ public class TripMapAdapter extends BaseMapAdapter<TripDestinationMapItem> {
     private static final Gap GAP = new Gap(PATTERN_GAP_LENGTH_PX);
     private static final List<PatternItem> PATTERN_DOTTED = Arrays.asList(DOT, GAP);
 
-    private static final int STROKE_WIDTH_PX = 10;
+    private static final int STROKE_WIDTH_PX = 14;
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new TripMapItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_map_trip, parent, false));
