@@ -40,8 +40,8 @@ public class PlaceItem extends BaseMapItem implements Parcelable {
         this.destinationId = place.getDestinationId();
         this.placeId = place.getPlaceId();
 
-        setIconResId(R.drawable.ic_favorite_off);
-        setSelectedIconResId(R.drawable.ic_favorite_on);
+        setIconResId(R.drawable.ic_map_saved_place_small);
+        setSelectedIconResId(R.drawable.ic_map_saved_place_big);
     }
 
     public PlaceItem(GooglePlace place, String destinationId, int position, String photoUrl, boolean saved) {
@@ -51,6 +51,9 @@ public class PlaceItem extends BaseMapItem implements Parcelable {
 
         this.destinationId = destinationId;
         this.placeId = place.getPlaceId();
+
+        setIconResId(R.drawable.ic_map_suggested_place_small);
+        setSelectedIconResId(R.drawable.ic_map_place_color_accent_big);
 
         OpeningHours openingHours = place.getOpeningHours();
         if (openingHours != null) {

@@ -20,7 +20,7 @@ import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.adapters.tripdestination.TripDestinationAdapter;
 import droiddevs.com.tripplanner.model.PlaceOption;
 import droiddevs.com.tripplanner.suggestedplaces.SuggestedPlacesActivity;
-import droiddevs.com.tripplanner.util.SpacesItemDecoration;
+import droiddevs.com.tripplanner.util.ItemOffsetDecoration;
 
 public class TripDestinationFragment extends Fragment implements TripDestinationContract.View, TripDestinationAdapter.DestinationOptionClickedListener {
     public static final String ARGUMENT_TRIP_ID = "tripId";
@@ -93,7 +93,7 @@ public class TripDestinationFragment extends Fragment implements TripDestination
         StaggeredGridLayoutManager gridLayoutManager =
                 new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         rvDestinationOptions.setLayoutManager(gridLayoutManager);
-        rvDestinationOptions.addItemDecoration(new SpacesItemDecoration(10));
+        rvDestinationOptions.addItemDecoration(new ItemOffsetDecoration(getResources().getDimensionPixelSize(R.dimen.margin_small)));
     }
 
     @Override

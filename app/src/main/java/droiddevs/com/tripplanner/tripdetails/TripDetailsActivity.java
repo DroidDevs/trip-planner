@@ -5,15 +5,19 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.TextAppearanceSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 
@@ -77,6 +81,10 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        if (mDestinationId == null) {
+            appBarLayout.setExpanded(false);
+        }
+
         setupTabs();
 
         mPresenter = new TripDetailsPresenter(this, TripPlannerApplication.getRepository(), mTripId);
@@ -130,12 +138,15 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
         mTrip = trip;
         mPagerAdapter.setTrip(trip);
 
-        toolbar.setTitle(trip.getName());
         toolbarImage.setVisibility(View.GONE);
+
+        setupToolbarTitle();
+        allowEachTabWithEqualWidth();
 
         if (mDestinationId != null && mTrip.getDestinations() != null) {
             for (int i = 0; i < mTrip.getDestinations().size(); i++) {
                 if (mDestinationId.equals(mTrip.getDestinations().get(i).getDestinationId())) {
+                    //collapsingToolbarLayout.setTitle(mTrip.getDestinations().get(i).getName());
                     loadImagePerTabPosition(i + 1);
                     mViewPager.setCurrentItem(i + 1);
                     appBarLayout.setExpanded(false, true);
@@ -181,7 +192,7 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
     }
 
     private void setupTabs() {
-        mPagerAdapter = new TripDetailsFragmentPagerAdapter(getSupportFragmentManager());
+        mPagerAdapter = new TripDetailsFragmentPagerAdapter(getSupportFragmentManager(), getBaseContext());
         mViewPager.setAdapter(mPagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
 
@@ -195,7 +206,7 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
             public void onPageSelected(int position) {
                 if (position == 0) {
                     toolbarImage.setVisibility(View.GONE);
-                    toolbar.setBackgroundColor(ContextCompat.getColor(TripDetailsActivity.this, R.color.colorPrimary));
+                    appBarLayout.setExpanded(false, true);
                 }
                 else {
                     loadImagePerTabPosition(position);
@@ -209,11 +220,20 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
         });
     }
 
+    private void allowEachTabWithEqualWidth() {
+        ViewGroup slidingTabStrip = (ViewGroup) mTabLayout.getChildAt(0);
+        for (int i = 0; i < mTabLayout.getTabCount(); i++) {
+            View tab = slidingTabStrip.getChildAt(i);
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) tab.getLayoutParams();
+            layoutParams.weight = 1;
+            tab.setLayoutParams(layoutParams);
+        }
+    }
+
     private void loadImagePerTabPosition(int position) {
         if (position == 0) return;
 
         toolbarImage.setVisibility(View.VISIBLE);
-        toolbar.setBackgroundColor(ContextCompat.getColor(TripDetailsActivity.this, android.R.color.transparent));
 
         if (mTrip.getDestinations() != null && position <= mTrip.getDestinations().size()) {
             Destination destination = mTrip.getDestinations().get(position - 1);
@@ -224,7 +244,24 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
                         .load(photoUrl)
                         .centerCrop()
                         .into(toolbarImage);
+
+                appBarLayout.setExpanded(true, true);
             }
         }
+    }
+
+    private void setupToolbarTitle() {
+        SpannableStringBuilder ssb = new SpannableStringBuilder();
+        ssb.append(mTrip.getName());
+
+        ssb.append("\n");
+        int start = ssb.length();
+
+        String dateRange = "";
+        ssb.append(dateRange);
+        TextAppearanceSpan textAppearanceSpan = new TextAppearanceSpan(this, R.style.TextSmall);
+        ssb.setSpan(textAppearanceSpan, start, ssb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        collapsingToolbarLayout.setTitle(ssb);
     }
 }

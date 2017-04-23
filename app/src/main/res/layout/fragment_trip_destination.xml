@@ -1,13 +1,17 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="droiddevs.com.tripplanner.tripdestination.TripDestinationFragment">
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="droiddevs.com.tripplanner.tripdestination.TripDestinationFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvDestinationOptions"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginEnd="@dimen/margin_smaller"
+        android:layout_marginStart="@dimen/margin_smaller"
+        android:layout_marginTop="@dimen/margin_smaller">
+
     </android.support.v7.widget.RecyclerView>
 
 </FrameLayout>

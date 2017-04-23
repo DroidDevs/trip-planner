@@ -3,6 +3,7 @@ package droiddevs.com.tripplanner.adapters.placemap;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -27,6 +28,9 @@ public class PlaceMapViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.tvRating)
     TextView ratingTextView;
 
+    @BindView(R.id.rbPlaceRating)
+    RatingBar ratingBar;
+
     public PlaceMapViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
@@ -34,7 +38,11 @@ public class PlaceMapViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(PlaceItem placeItem) {
         nameTextView.setText(placeItem.getName());
-        ratingTextView.setText("" + placeItem.getRating());
+
+        if (placeItem.getRating() > 0) {
+            ratingTextView.setText("" + placeItem.getRating());
+            ratingBar.setRating(placeItem.getRating());
+        }
 
         String photoUrl = placeItem.getPhotoUrl();
         if (photoUrl != null) {
