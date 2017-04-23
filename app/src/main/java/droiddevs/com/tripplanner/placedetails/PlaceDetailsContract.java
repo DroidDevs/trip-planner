@@ -1,6 +1,5 @@
 package droiddevs.com.tripplanner.placedetails;
 
-import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
 import droiddevs.com.tripplanner.model.map.PlaceItem;
 import droiddevs.com.tripplanner.mvp.BasePresenter;
 import droiddevs.com.tripplanner.mvp.BaseView;
@@ -12,15 +11,11 @@ import droiddevs.com.tripplanner.mvp.BaseView;
 public class PlaceDetailsContract {
     public interface View extends BaseView<Presenter> {
         void showPlaceDetails(PlaceItem place, boolean savedPlace);
-
-        void onPlaceSaved(boolean success);
-
-        void onPlaceDeleted(boolean success);
     }
 
     public interface Presenter extends BasePresenter {
-        void savePlace(GooglePlace place);
+        void savePlace(PlaceItem place);
 
-        void deletePlace(GooglePlace place);
+        void deletePlace(PlaceItem place);
     }
 }

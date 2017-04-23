@@ -13,6 +13,7 @@ import droiddevs.com.tripplanner.model.SavedPlace;
 import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
 import droiddevs.com.tripplanner.model.googleplaces.OpeningHours;
 import droiddevs.com.tripplanner.model.googleplaces.Photo;
+import droiddevs.com.tripplanner.model.source.remote.PlaceDetailsResponse;
 import droiddevs.com.tripplanner.util.PhotoUrlUtil;
 
 /**
@@ -59,6 +60,31 @@ public class PlaceItem extends BaseMapItem implements Parcelable {
         List<Photo> photos = place.getPhotos();
         if (photos != null && photos.size() > 0) {
             Photo photo = photos.get(0);
+            this.photoReference = photo.getPhotoReference();
+        }
+    }
+
+    public PlaceItem(PlaceDetailsResponse.PlaceDetails placeDetails,
+                     String destinationId,
+                     PlaceDetailsResponse.PlacePhoto placePhoto) {
+
+        super(new LatLng(placeDetails.getGeometry().getLocation().getLatitude(),
+                placeDetails.getGeometry().getLocation().getLongitude()),
+                placeDetails.getName(),
+                0,
+                placePhoto.getFullPhotoURLReference());
+
+
+        this.rating = (float) placeDetails.getRating();
+
+        this.saved = false;
+        this.destinationId = destinationId;
+
+        this.placeId = placeDetails.getPlaceId();
+
+        List<PlaceDetailsResponse.PlacePhoto> photos = placeDetails.getPhotos();
+        if (photos != null && photos.size() > 0) {
+            PlaceDetailsResponse.PlacePhoto photo = photos.get(0);
             this.photoReference = photo.getPhotoReference();
         }
     }

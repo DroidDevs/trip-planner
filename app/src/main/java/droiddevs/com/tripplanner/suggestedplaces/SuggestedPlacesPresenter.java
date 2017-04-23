@@ -2,9 +2,13 @@ package droiddevs.com.tripplanner.suggestedplaces;
 
 import android.util.Log;
 
+import com.google.android.gms.location.places.Place;
 import com.parse.ParseException;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
 
 import droiddevs.com.tripplanner.application.TripPlannerApplication;
 import droiddevs.com.tripplanner.model.Destination;
@@ -30,6 +34,8 @@ public class SuggestedPlacesPresenter implements SuggestedPlacesContract.Present
     private Repository mRepository;
 
     private List<PlaceItem> mSuggestedPlaces;
+    private Set<String> mSavedPlaceIds;
+
     private boolean isLoading = false;
 
     public SuggestedPlacesPresenter(Repository repository, SuggestedPlacesContract.View view, String placeTypeSearchString, String destinationId) {
@@ -49,9 +55,10 @@ public class SuggestedPlacesPresenter implements SuggestedPlacesContract.Present
 
     @Override
     public void reloadData() {
-        if (mSuggestedPlaces != null && mSuggestedPlaces.size() > 0) {
+        if (mSuggestedPlaces != null
+                && mSuggestedPlaces.size() > 0) {
             if (mView != null) {
-                mView.showSuggestedPlaces(mSuggestedPlaces);
+                mView.showSuggestedPlaces(mSuggestedPlaces, mSavedPlaceIds);
             }
         }
         else start();
@@ -78,7 +85,7 @@ public class SuggestedPlacesPresenter implements SuggestedPlacesContract.Present
         });
     }
 
-    private void loadSuggestedPlacesForDestination(Destination destination, String placeTypeSearchString) {
+    private void loadSuggestedPlacesForDestination(final Destination destination, String placeTypeSearchString) {
         if (placeTypeSearchString.equals(
                 PlaceOption.PlaceOptionType.TYPE_SAVED_PLACES.typeSearchString())) {
             loadSavedPlaces(destination);
@@ -93,12 +100,24 @@ public class SuggestedPlacesPresenter implements SuggestedPlacesContract.Present
                     @Override
                     public void onPlacesFound(List<PlaceItem> places) {
                         mSuggestedPlaces = places;
-                        mView.showSuggestedPlaces(places);
+
+                        mRepository.loadSavedPlacesIds(destination.getDestinationId(), new DataSource.LoadSavedPlacesIdsCallback() {
+                            @Override
+                            public void onSavedPlacesIdsLoaded(Set<String> ids) {
+                                mSavedPlaceIds = ids;
+                                mView.showSuggestedPlaces(mSuggestedPlaces, ids);
+                            }
+
+                            @Override
+                            public void onFailure() {
+                                mView.showSuggestedPlaces(mSuggestedPlaces, new HashSet<String>());
+                            }
+                        });
                     }
 
                     @Override
                     public void onFailure() {
-                        mView.showSuggestedPlaces(null);
+                        mView.showSuggestedPlaces(null, null);
                     }
                 });
     }
@@ -109,20 +128,30 @@ public class SuggestedPlacesPresenter implements SuggestedPlacesContract.Present
             public void onSavedPlacesLoaded(List<SavedPlace> places) {
                 List<PlaceItem> placeItems = PlaceConverter.convertToPlaceItemListFromSavedPlace(places);
                 mSuggestedPlaces = placeItems;
-                mView.showSuggestedPlaces(placeItems);
+                mSavedPlaceIds = convertToIdSet(placeItems);
+                mView.showSuggestedPlaces(placeItems, mSavedPlaceIds);
             }
 
             @Override
             public void onFailure() {
-                mView.showSuggestedPlaces(null);
+                mView.showSuggestedPlaces(null, null);
             }
         });
+    }
+
+    private Set<String> convertToIdSet(List<PlaceItem> places) {
+        Set<String> idSet = new HashSet<>();
+        for (PlaceItem place : places) {
+            idSet.add(place.getPlaceId());
+        }
+        return idSet;
     }
 
     @Override
     public void savePlace(PlaceItem placeItem) {
         SavedPlace savedPlace = PlaceConverter.convertToSavedPlaceFromPlaceItem(placeItem);
         try {
+            mSavedPlaceIds.add(placeItem.getPlaceId());
             savedPlace.save();
         } catch (ParseException e) {
             Log.e(TAG, "Error saving place: " + e.getLocalizedMessage());
@@ -152,6 +181,7 @@ public class SuggestedPlacesPresenter implements SuggestedPlacesContract.Present
             public void onSuccess() {
                 if (PlaceOption.PlaceOptionType.fromString(mSearchString)
                         == PlaceOption.PlaceOptionType.TYPE_SAVED_PLACES) {
+                    mSavedPlaceIds.remove(savedPlace.getPlaceId());
                     mView.onSavedPlaceDeleted(new PlaceItem(savedPlace, 0));
                 }
             }

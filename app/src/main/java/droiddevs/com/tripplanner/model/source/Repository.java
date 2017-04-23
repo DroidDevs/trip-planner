@@ -284,6 +284,11 @@ public class Repository implements DataSource {
         remoteDataSource.searchGooglePlaces(location, destinationId, radiusInMeters, searchTypeString, apiKey, callback);
     }
 
+    @Override
+    public void loadPlaceDetails(String placeId, String destinationId, PlaceDetailsCallback callback) {
+        remoteDataSource.loadPlaceDetails(placeId, destinationId, callback);
+    }
+
     public boolean isCurrentFbUserDefined() {
         Log.d(LOG_TAG, "current FB user: " + (mCurrentFbUser == null ? "undefined" : mCurrentFbUser.toString()));
         return mCurrentFbUser != null;
@@ -390,13 +395,17 @@ public class Repository implements DataSource {
         remoteDataSource.deleteSavedPlace(savedPlace, new DeleteSavedPlaceCallback() {
             @Override
             public void onSuccess() {
-                callback.onSuccess();
+                if (callback != null) {
+                    callback.onSuccess();
+                }
                 remoteDataSource.deleteSavedPlace(savedPlace, null);
             }
 
             @Override
             public void onFailed() {
-                callback.onFailed();
+                if (callback != null) {
+                    callback.onFailed();
+                }
             }
         });
     }
@@ -406,13 +415,17 @@ public class Repository implements DataSource {
         localDataSource.createSavedPlace(savedPlace, new CreateSavedPlaceCallback() {
             @Override
             public void onSuccess() {
-                callback.onSuccess();
+                if (callback != null) {
+                    callback.onSuccess();
+                }
                 remoteDataSource.createSavedPlace(savedPlace, null);
             }
 
             @Override
             public void onFailed() {
-                callback.onFailed();
+                if (callback != null) {
+                    callback.onFailed();
+                }
             }
         });
     }

@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.model.map.PlaceItem;
@@ -16,7 +17,8 @@ import droiddevs.com.tripplanner.model.map.PlaceItem;
 
 public class PlacesAdapter extends RecyclerView.Adapter<PlacesViewHolder> {
 
-    private List<PlaceItem> places;
+    private List<PlaceItem> mPlaces;
+    private Set<String> mSavedPlaceIds;
 
     private OnPlaceFavoriteCheckedListener placeFavoriteCheckedListener;
     private OnPlaceClickedListener placeClickedListener;
@@ -36,26 +38,38 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesViewHolder> {
 
     @Override
     public void onBindViewHolder(PlacesViewHolder holder, int position) {
-        PlaceItem placeItem = places.get(position);
-        holder.bind(placeItem, placeFavoriteCheckedListener, placeClickedListener);
+
+        PlaceItem placeItem = mPlaces.get(position);
+        holder.bind(placeItem,
+                mSavedPlaceIds.contains(placeItem.getPlaceId()),
+                placeFavoriteCheckedListener,
+                placeClickedListener);
     }
 
     public void setPlaces(List<PlaceItem> places) {
-        this.places = new ArrayList<>(places);
+        this.mPlaces = new ArrayList<>(places);
         notifyDataSetChanged();
     }
 
     public void deletePlace(PlaceItem placeItem) {
-        int index = this.places.indexOf(placeItem);
+        int index = this.mPlaces.indexOf(placeItem);
         if (index > -1) {
-            this.places.remove(index);
+            this.mPlaces.remove(index);
             notifyItemRemoved(index);
+        }
+    }
+
+    public void setPlaceSaved(boolean save, String placeId) {
+        if (save) {
+            mSavedPlaceIds.add(placeId);
+        } else {
+            mSavedPlaceIds.remove(placeId);
         }
     }
 
     @Override
     public int getItemCount() {
-        return places == null ? 0 : places.size();
+        return mPlaces == null ? 0 : mPlaces.size();
     }
 
     public void setPlaceFavoriteCheckedListener(OnPlaceFavoriteCheckedListener placeFavoriteCheckedListener) {
@@ -64,5 +78,9 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesViewHolder> {
 
     public void setPlaceClickedListener(OnPlaceClickedListener placeClickedListener) {
         this.placeClickedListener = placeClickedListener;
+    }
+
+    public void setPlacesSavedIdSet(Set<String> idSet) {
+        this.mSavedPlaceIds = idSet;
     }
 }

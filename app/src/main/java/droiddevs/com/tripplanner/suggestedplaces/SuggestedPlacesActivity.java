@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -138,11 +139,12 @@ public class SuggestedPlacesActivity extends AppCompatActivity implements Sugges
     }
 
     @Override
-    public void showSuggestedPlaces(List<PlaceItem> places) {
+    public void showSuggestedPlaces(List<PlaceItem> places, Set<String> savedPlaceIds) {
         hasData = places != null && places.size() > 0;
 
         if (mCurrentFragment instanceof SuggestedPlacesListFragment) {
             ((SuggestedPlacesListFragment) mCurrentFragment).setData(places);
+            ((SuggestedPlacesListFragment) mCurrentFragment).setSavedPlacesData(savedPlaceIds);
             if (mListMenuItem != null) mListMenuItem.setVisible(false);
             if (mMapMenuItem != null) mMapMenuItem.setVisible(hasData);
         }

@@ -12,7 +12,6 @@ import java.util.List;
 
 public class OpeningHours implements Parcelable
 {
-
     @SerializedName("open_now")
     @Expose
     private Boolean openNow;

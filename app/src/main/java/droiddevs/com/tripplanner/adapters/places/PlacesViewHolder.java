@@ -36,12 +36,15 @@ public class PlacesViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.cardView)
     View cardView;
 
+    private boolean settingSavedState = false;
+
     public PlacesViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
     }
 
     public void bind(final PlaceItem placeItem,
+                     final boolean savedPlace,
                      final PlacesAdapter.OnPlaceFavoriteCheckedListener favouriteCheckedListener,
                      final PlacesAdapter.OnPlaceClickedListener placeClickedListener) {
 
@@ -56,16 +59,21 @@ public class PlacesViewHolder extends RecyclerView.ViewHolder {
                     .into(imageView);
         }
 
-        favoriteButton.setChecked(placeItem.isSaved());
-
         if (favouriteCheckedListener != null) {
             favoriteButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    favouriteCheckedListener.onPlaceFavoriteChecked(placeItem, isChecked);
+                    if (!settingSavedState) {
+                        favouriteCheckedListener.onPlaceFavoriteChecked(placeItem, isChecked);
+                    }
+                    settingSavedState = false;
                 }
             });
         }
+
+        // setChecked fires the callback, which will delete places when scrolling, only if value changing
+        settingSavedState = (favoriteButton.isChecked() != savedPlace);
+        favoriteButton.setChecked(savedPlace);
 
         if (placeClickedListener != null) {
             cardView.setOnClickListener(new View.OnClickListener() {
