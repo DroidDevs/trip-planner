@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -58,6 +59,12 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
     @BindView(R.id.appBarLayout)
     AppBarLayout appBarLayout;
 
+    @BindView(R.id.loadingLayout)
+    View loadingLayout;
+
+    @BindView(R.id.failureViewStub)
+    ViewStub failureViewStub;
+
     private TripDetailsContract.Presenter mPresenter;
     private TripDetailsFragmentPagerAdapter mPagerAdapter;
 
@@ -71,12 +78,17 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
         ButterKnife.bind(this);
 
         mTripId = getIntent().getStringExtra(ARGUMENT_TRIP_ID);
+        if (mTripId == null && savedInstanceState != null) {
+            mTripId = savedInstanceState.getString(ARGUMENT_TRIP_ID);
+        }
+        mDestinationId = getIntent().getStringExtra(ARGUMENT_DESTINATION_ID);
+        if (mDestinationId == null && savedInstanceState != null) {
+            mDestinationId = savedInstanceState.getString(ARGUMENT_DESTINATION_ID);
+        }
+        Log.d(LOG_TAG, "mTripId: " + mTripId + ", mDestinationId: " + mDestinationId);
         if (mTripId == null) {
             finish();
         }
-
-        mDestinationId = getIntent().getStringExtra(ARGUMENT_DESTINATION_ID);
-
         // Setup toolbar
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -92,8 +104,26 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
     }
 
     @Override
-    public void setLoadingIndicator(boolean active) {
-        //todo set loading indicator
+    protected void onSaveInstanceState(Bundle outState) {
+        Log.d(LOG_TAG, "onSaveInstanceState()");
+        super.onSaveInstanceState(outState);
+
+        outState.putString(ARGUMENT_TRIP_ID, mTripId);
+
+        if (mDestinationId != null) {
+            outState.putString(ARGUMENT_DESTINATION_ID, mDestinationId);
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        Log.d(LOG_TAG, "onRestoreInstanceState()");
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void setLoadingIndicator(boolean isLoading) {
+        loadingLayout.setVisibility(isLoading ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -134,7 +164,7 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
 
     @Override
     public void onTripLoaded(Trip trip) {
-        Log.d(LOG_TAG, "");
+        Log.d(LOG_TAG, "onTripLoaded() " + trip.toString() + ", mDestinationId: " + mDestinationId);
         mTrip = trip;
         mPagerAdapter.setTrip(trip);
 
@@ -146,7 +176,6 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
         if (mDestinationId != null && mTrip.getDestinations() != null) {
             for (int i = 0; i < mTrip.getDestinations().size(); i++) {
                 if (mDestinationId.equals(mTrip.getDestinations().get(i).getDestinationId())) {
-                    //collapsingToolbarLayout.setTitle(mTrip.getDestinations().get(i).getName());
                     loadImagePerTabPosition(i + 1);
                     mViewPager.setCurrentItem(i + 1);
                     appBarLayout.setExpanded(false, true);
@@ -158,7 +187,7 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
 
     @Override
     public void onLoadingFailure() {
-        finish();
+        failureViewStub.inflate();
     }
 
     @Override

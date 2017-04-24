@@ -40,13 +40,14 @@ public class TripDestinationPresenter implements TripDestinationContract.Present
 
         tempOptions.add(
                 PlaceOption.newInstance(
-                        ContextCompat.getDrawable(mContext, R.drawable.ic_pizza),
-                        PlaceOption.PlaceOptionType.TYPE_RESTAURANT));
+                        ContextCompat.getDrawable(mContext, R.drawable.ic_cappuccino),
+                        PlaceOption.PlaceOptionType.TYPE_CAFE));
 
         tempOptions.add(
                 PlaceOption.newInstance(
-                        ContextCompat.getDrawable(mContext, R.drawable.ic_cappuccino),
-                        PlaceOption.PlaceOptionType.TYPE_CAFE));
+                        ContextCompat.getDrawable(mContext, R.drawable.ic_pizza),
+                        PlaceOption.PlaceOptionType.TYPE_RESTAURANT));
+
         tempOptions.add(
                 PlaceOption.newInstance(
                         ContextCompat.getDrawable(mContext, R.drawable.ic_drinks),

@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#6D4C41</color>
     <color name="colorAccent">#D81B60</color>
     <color name="textPrimary">#3E2723</color>
+    <color name="colorPrimaryLight">#A1887F</color>
 
     <color name="colorControlNormal">#6D4C41</color>
     <color name="colorControlActivated">#D81B60</color>
@@ -18,4 +19,12 @@
 
     <color name="colorRestaurant">#CDDC39</color>
     <color name="colorPizza">#FF9800</color>
+
+    <color name="text_primary_light">#ffffffff</color>
+    <color name="fab_heart_empty">@color/text_primary_light</color>
+    <color name="fab_heart_full">#ffffffff</color>
+
+    <color name="rippleColor">#fff06292</color> <!-- pink 300 -->
+    <color name="rippleColorLight">#99ffffff</color>
+
 </resources>

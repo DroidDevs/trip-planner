@@ -47,11 +47,16 @@
 
         <activity
             android:name=".tripdetails.TripDetailsActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTop"/>
 
         <activity
             android:name=".places.PlacesActivity"
-            android:theme="@style/Base.AppTheme"/>
+            android:theme="@style/Base.AppTheme">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".tripdetails.TripDetailsActivity"/>
+        </activity>
 
         <activity
             android:name=".placedetails.PlaceDetailsActivity"/>

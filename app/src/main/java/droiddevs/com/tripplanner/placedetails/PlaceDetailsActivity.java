@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -14,12 +15,22 @@ import butterknife.ButterKnife;
 import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.application.TripPlannerApplication;
 import droiddevs.com.tripplanner.model.map.PlaceItem;
+import droiddevs.com.tripplanner.widget.FABToggle;
+
+/**
+ * Updated by Elmira Andreeva on 4/24/2017
+ * Created by Jared12 on 4/15/17.
+ */
 
 public class PlaceDetailsActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
     @BindView(R.id.ivToolbarImage)
     ImageView toolbarImage;
+
+    @BindView(R.id.fabHeart)
+    FABToggle fab;
 
     private String mDestinationId;
 
@@ -39,27 +50,28 @@ public class PlaceDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("");
 
-        //todo this should be a PlaceItem object
         mCurrentPlace = getIntent().getParcelableExtra(ARG_PLACE_OBJ);
 
         mDestinationId = getIntent().getStringExtra(ARG_DESTINATION_ID);
         loadPlaceImage();
 
         // Add fragment to content frame
-        PlaceDetailsFragment suggestedPlaceDetailsFragment =
+        PlaceDetailsFragment placeDetailsFragment =
                 (PlaceDetailsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
 
-        if (suggestedPlaceDetailsFragment == null) {
-            suggestedPlaceDetailsFragment = PlaceDetailsFragment.newInstance();
-
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.contentFrame, suggestedPlaceDetailsFragment);
-            transaction.commit();
+        if (placeDetailsFragment == null) {
+            placeDetailsFragment = PlaceDetailsFragment.newInstance();
         }
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.contentFrame, placeDetailsFragment);
+        transaction.commit();
+
+        setupFab();
 
         mPresenter = new PlaceDetailsPresenter(
                 TripPlannerApplication.getRepository(),
-                suggestedPlaceDetailsFragment,
+                placeDetailsFragment,
                 mCurrentPlace,
                 mDestinationId);
     }
@@ -90,5 +102,25 @@ public class PlaceDetailsActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setupFab() {
+
+        if (mCurrentPlace != null) {
+            fab.setChecked(mCurrentPlace.isSaved());
+        }
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fab.toggle();
+                if (fab.isChecked()) {
+                    mPresenter.savePlace();
+                }
+                else {
+                    mPresenter.deletePlace();
+                }
+            }
+        });
     }
 }

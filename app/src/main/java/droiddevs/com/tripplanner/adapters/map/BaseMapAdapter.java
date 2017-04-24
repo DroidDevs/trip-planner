@@ -2,6 +2,7 @@ package droiddevs.com.tripplanner.adapters.map;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 
 import com.google.android.gms.maps.model.PatternItem;
 
@@ -20,12 +21,12 @@ public abstract class BaseMapAdapter<T extends BaseMapItem> extends RecyclerView
 
     private List<T> mapData;
 
-    public OnMapItemClickListener mListener;
+    private OnMapItemClickListener<T> mOnClickListener;
 
     public int selectedIconResId;
 
     public interface OnMapItemClickListener<T> {
-        void onMapItemClick(T data, int position);
+        void onMapItemClick(T data);
     }
 
     public BaseMapAdapter() {
@@ -33,7 +34,7 @@ public abstract class BaseMapAdapter<T extends BaseMapItem> extends RecyclerView
     }
 
     public void setMapData(List<T> data) {
-        Log.d(LOG_TAG, "setMapData() data count: "+ (data==null? 0: data.size()));
+        Log.d(LOG_TAG, "setMapData() data count: " + (data == null ? 0 : data.size()));
 
         this.mapData = data;
         notifyDataSetChanged();
@@ -52,8 +53,20 @@ public abstract class BaseMapAdapter<T extends BaseMapItem> extends RecyclerView
         return mapData == null ? 0 : mapData.size();
     }
 
-    public void setListener(OnMapItemClickListener mListener) {
-        this.mListener = mListener;
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        if (mOnClickListener != null) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnClickListener.onMapItemClick(getMapData().get(position));
+                }
+            });
+        }
+    }
+
+    public void setOnClickListener(OnMapItemClickListener<T> mOnClickListener) {
+        this.mOnClickListener = mOnClickListener;
     }
 
     public int getSelectedIconResId() {

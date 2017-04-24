@@ -34,8 +34,10 @@ public class TripMapAdapter extends BaseMapAdapter<TripDestinationMapItem> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        super.onBindViewHolder(holder, position);
+
         TripDestinationMapItem item = getMapDataItem(position);
-        ((TripMapItemViewHolder) holder).bind(item, position, mListener);
+        ((TripMapItemViewHolder) holder).bind(item);
     }
 
     @Override

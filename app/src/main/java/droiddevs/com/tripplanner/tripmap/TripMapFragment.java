@@ -48,12 +48,12 @@ public class TripMapFragment extends BaseMapFragment<TripDestinationMapItem> {
     }
 
     @Override
-    public void onLoadFailure() {
-
+    public void setPresenter(MapContract.Presenter presenter) {
+        this.mPresenter = presenter;
     }
 
     @Override
-    public void setPresenter(MapContract.Presenter presenter) {
-        this.mPresenter = presenter;
+    public void onMapItemClick(TripDestinationMapItem data) {
+
     }
 }

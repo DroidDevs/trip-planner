@@ -1,21 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <include
         android:id="@+id/include_toolbar"
         layout="@layout/toolbar_with_title"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <FrameLayout
         android:id="@+id/contentFrame"
+        android:layout_below="@+id/include_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
-</LinearLayout>
+    <include
+        android:id="@+id/loadingLayout"
+        android:layout_below="@+id/include_toolbar"
+        layout="@layout/content_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+
+    <ViewStub
+        android:id="@+id/emptyViewStub"
+        android:inflatedId="@+id/emptyLayout"
+        android:layout_below="@+id/include_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/content_empty_data"/>
+
+    <ViewStub
+        android:id="@+id/failureViewStub"
+        android:layout_below="@+id/include_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/content_failure"/>
+
+</RelativeLayout>
 

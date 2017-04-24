@@ -18,6 +18,7 @@ import droiddevs.com.tripplanner.model.source.Repository;
 import droiddevs.com.tripplanner.model.util.PlaceConverter;
 
 /**
+ * Updated by Elmira Andreeva on 4/24/2017
  * Created by Jared12 on 4/15/17.
  */
 
@@ -33,8 +34,6 @@ public class PlacesPresenter implements PlacesContract.Presenter {
 
     private List<PlaceItem> mSuggestedPlaces;
     private Set<String> mSavedPlaceIds;
-
-    private boolean isLoading = false;
 
     public PlacesPresenter(Repository repository, PlacesContract.View view, String placeTypeSearchString, String destinationId) {
         mSearchString = placeTypeSearchString;
@@ -53,9 +52,10 @@ public class PlacesPresenter implements PlacesContract.Presenter {
 
     @Override
     public void reloadData() {
-        if (mSuggestedPlaces != null
-                && mSuggestedPlaces.size() > 0) {
+        mView.setLoadingLayout(true);
+        if (mSuggestedPlaces != null && mSuggestedPlaces.size() > 0) {
             if (mView != null) {
+                mView.setLoadingLayout(false);
                 mView.showSuggestedPlaces(mSuggestedPlaces, mSavedPlaceIds);
             }
         }
@@ -78,6 +78,8 @@ public class PlacesPresenter implements PlacesContract.Presenter {
 
             @Override
             public void onFailure() {
+                mView.setLoadingLayout(false);
+                mView.onFailure();
                 Log.e(TAG, "Error loading destination for sugg");
             }
         });
@@ -103,11 +105,22 @@ public class PlacesPresenter implements PlacesContract.Presenter {
                             @Override
                             public void onSavedPlacesIdsLoaded(Set<String> ids) {
                                 mSavedPlaceIds = ids;
+                                mView.setLoadingLayout(false);
+
+                                if (mSuggestedPlaces != null) {
+                                    for (PlaceItem placeItem : mSuggestedPlaces) {
+                                        if (ids.contains(placeItem.getPlaceId())) {
+                                            placeItem.setSaved(true);
+                                        }
+                                    }
+                                }
+
                                 mView.showSuggestedPlaces(mSuggestedPlaces, ids);
                             }
 
                             @Override
                             public void onFailure() {
+                                mView.setLoadingLayout(false);
                                 mView.showSuggestedPlaces(mSuggestedPlaces, new HashSet<String>());
                             }
                         });
@@ -115,6 +128,7 @@ public class PlacesPresenter implements PlacesContract.Presenter {
 
                     @Override
                     public void onFailure() {
+                        mView.setLoadingLayout(false);
                         mView.showSuggestedPlaces(null, null);
                     }
                 });
@@ -127,11 +141,14 @@ public class PlacesPresenter implements PlacesContract.Presenter {
                 List<PlaceItem> placeItems = PlaceConverter.convertToPlaceItemListFromSavedPlace(places);
                 mSuggestedPlaces = placeItems;
                 mSavedPlaceIds = convertToIdSet(placeItems);
+
+                mView.setLoadingLayout(false);
                 mView.showSuggestedPlaces(placeItems, mSavedPlaceIds);
             }
 
             @Override
             public void onFailure() {
+                mView.setLoadingLayout(false);
                 mView.showSuggestedPlaces(null, null);
             }
         });
@@ -148,8 +165,10 @@ public class PlacesPresenter implements PlacesContract.Presenter {
     @Override
     public void savePlace(PlaceItem placeItem) {
         SavedPlace savedPlace = PlaceConverter.convertToSavedPlaceFromPlaceItem(placeItem);
+        placeItem.setSaved(true);
         try {
             mSavedPlaceIds.add(placeItem.getPlaceId());
+            //todo: to Jared: bad idea to save a place on main thread
             savedPlace.save();
         } catch (ParseException e) {
             Log.e(TAG, "Error saving place: " + e.getLocalizedMessage());
@@ -157,13 +176,14 @@ public class PlacesPresenter implements PlacesContract.Presenter {
     }
 
     @Override
-    public void deletePlace(PlaceItem placeItem) {
+    public void deletePlace(final PlaceItem placeItem) {
         // Load saved place object from db
         mRepository.loadSavedPlace(placeItem.getPlaceId(), placeItem.getDestinationId(), new DataSource.LoadSavedPlaceCallback() {
             @Override
             public void onSavedPlaceLoaded(SavedPlace place) {
                 // Delete db object
                 deleteSavedPlace(place);
+                placeItem.setSaved(false);
             }
 
             @Override
@@ -174,13 +194,16 @@ public class PlacesPresenter implements PlacesContract.Presenter {
     }
 
     private void deleteSavedPlace(final SavedPlace savedPlace) {
+        final String placeId = savedPlace.getPlaceId();
         mRepository.deleteSavedPlace(savedPlace, new DataSource.DeleteSavedPlaceCallback() {
             @Override
             public void onSuccess() {
-                if (PlaceOption.PlaceOptionType.fromString(mSearchString)
-                        == PlaceOption.PlaceOptionType.TYPE_SAVED_PLACES) {
-                    mSavedPlaceIds.remove(savedPlace.getPlaceId());
-                    mView.onSavedPlaceDeleted(new PlaceItem(savedPlace, 0));
+                mSavedPlaceIds.remove(savedPlace.getPlaceId());
+                for (int i = 0; i < mSuggestedPlaces.size(); i++) {
+                    if (mSuggestedPlaces.get(i).getPlaceId().equals(placeId)) {
+                        mSuggestedPlaces.remove(i);
+                        break;
+                    }
                 }
             }
 

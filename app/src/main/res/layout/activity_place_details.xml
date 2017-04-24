@@ -8,21 +8,24 @@
     android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="256dp"
         android:background="@android:color/transparent"
         android:fitsSystemWindows="true">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:titleEnabled="false">
+            android:fitsSystemWindows="true"
+            app:titleEnabled="false"
+            app:contentScrim="@color/colorPrimaryLight">
 
             <ImageView
                 android:id="@+id/ivToolbarImage"
                 android:layout_width="match_parent"
-                android:layout_height="270dp"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="0dp"
                 android:layout_marginRight="0dp"
                 android:layout_marginTop="0dp"
@@ -43,7 +46,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <RelativeLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -51,8 +54,20 @@
         <FrameLayout
             android:id="@+id/contentFrame"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
 
-    </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <droiddevs.com.tripplanner.widget.FABToggle
+        android:id="@+id/fabHeart"
+        android:layout_width="@dimen/fab_size"
+        android:layout_height="@dimen/fab_size"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:background="@drawable/fab_ripple_fav"
+        android:elevation="@dimen/fab_toggle"
+        android:src="@drawable/asl_fab_heart"
+        android:stateListAnimator="@animator/raise"
+        app:layout_anchor="@id/appBarLayout"
+        app:layout_anchorGravity="bottom|right|end"/>
 
 </android.support.design.widget.CoordinatorLayout>

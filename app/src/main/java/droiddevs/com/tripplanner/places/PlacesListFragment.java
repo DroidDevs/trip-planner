@@ -52,7 +52,8 @@ public class PlacesListFragment extends Fragment implements
         if (mPlaceDetailsOpened) {
             mPlaceDetailsOpened = false;
             mPresenter.start();
-        } else {
+        }
+        else {
             mPresenter.reloadData();
         }
     }
@@ -64,7 +65,7 @@ public class PlacesListFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_suggested_places, container, false);
+        View view = inflater.inflate(R.layout.fragment_places, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
@@ -117,7 +118,8 @@ public class PlacesListFragment extends Fragment implements
     public void onPlaceFavoriteChecked(PlaceItem placeItem, boolean checked) {
         if (checked) {
             mPresenter.savePlace(placeItem);
-        } else {
+        }
+        else {
             mPresenter.deletePlace(placeItem);
         }
         mAdapter.setPlaceSaved(checked, placeItem.getPlaceId());

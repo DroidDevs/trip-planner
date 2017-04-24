@@ -369,7 +369,7 @@ public class RemoteDataSource implements DataSource {
             @Override
             public void onFailure(Call<PlaceDetailsResponse> call, Throwable t) {
                 Log.e(LOG_TAG, t.getLocalizedMessage());
-                //callback.onFailure();
+                callback.onFailure();
             }
         });
     }
