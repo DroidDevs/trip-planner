@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -53,6 +54,12 @@ public abstract class BaseMapFragment<T extends BaseMapItem> extends Fragment im
     @BindView(R.id.rvMapData)
     RecyclerView mRecyclerView;
 
+    @BindView(R.id.failureViewStub)
+    ViewStub failureViewStub;
+
+    @BindView(R.id.emptyViewStub)
+    ViewStub emptyViewStub;
+
     private GoogleMap mGoogleMap;
     private BaseMapAdapter<T> mAdapter;
 
@@ -87,7 +94,6 @@ public abstract class BaseMapFragment<T extends BaseMapItem> extends Fragment im
         hashMarkers = new HashMap<>();
 
         mAdapter = getMapAdapter();
-        mAdapter.setListener(this);
         setupRecyclerView();
 
         mMapView.onCreate(savedInstanceState);
@@ -181,11 +187,18 @@ public abstract class BaseMapFragment<T extends BaseMapItem> extends Fragment im
     @Override
     public void setMapData(List<T> data) {
         Log.d(LOG_TAG, "setMapData() count: " + (data == null ? 0 : data.size()));
+
+        boolean emptyData = data == null || data.size() == 0;
+        if (emptyData) {
+            emptyViewStub.inflate();
+            return;
+        }
+
         mAdapter.setMapData(data);
-        if (mRecyclerView != null && data!=null && data.size()>0) {
+        if (mRecyclerView != null && data.size() > 0) {
             mRecyclerView.smoothScrollToPosition(0);
         }
-        if (isMapReady){
+        if (isMapReady) {
             createMapMarkers();
         }
     }
@@ -282,8 +295,8 @@ public abstract class BaseMapFragment<T extends BaseMapItem> extends Fragment im
     public abstract BaseMapAdapter getMapAdapter();
 
     @Override
-    public void onMapItemClick(T data, int position) {
-
+    public void onLoadFailure() {
+        failureViewStub.inflate();
     }
 
     private void navigateToMapItemMarker(int newPosition) {

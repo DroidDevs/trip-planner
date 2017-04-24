@@ -21,6 +21,8 @@ public class PlaceMapAdapter extends BaseMapAdapter<PlaceItem> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        super.onBindViewHolder(holder, position);
+
         PlaceItem placeItem = getMapDataItem(position);
         ((PlaceMapViewHolder) holder).bind(placeItem);
     }

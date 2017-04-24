@@ -50,4 +50,13 @@
     <string name="pick_days">pick\ndays</string>
     <string name="done">Done</string>
 
+    <string name="empty_data">There is no data</string>
+    <string name="failure">Ops..something went wrong. Please reload the content</string>
+    <string name="loading">Loading...</string>
+
+    <string name="directions">Directions</string>
+    <string name="call">Call</string>
+    <string name="share">Share</string>
+
+
 </resources>

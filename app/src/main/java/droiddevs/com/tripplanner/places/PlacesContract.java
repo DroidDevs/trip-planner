@@ -18,6 +18,10 @@ public class PlacesContract {
         void showSuggestedPlaces(List<PlaceItem> places, Set<String> savedPlaceIds);
 
         void onSavedPlaceDeleted(PlaceItem placeItem);
+
+        void setLoadingLayout(boolean isLoading);
+
+        void onFailure();
     }
 
     interface Presenter extends MapContract.Presenter {

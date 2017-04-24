@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
@@ -54,6 +55,9 @@ public class AddEditTripFragment extends Fragment implements Contract.View, AddE
 
     @BindView(R.id.rvAddEditTrip)
     RecyclerView mRecyclerView;
+
+    @BindView(R.id.failureViewStub)
+    ViewStub failureViewStub;
 
     private AddEditTripAdapter mAdapter;
     private String lastDestinationId;
@@ -137,6 +141,7 @@ public class AddEditTripFragment extends Fragment implements Contract.View, AddE
     @Override
     public void onTripSaveFailure() {
         Toast.makeText(this.getContext(), R.string.trip_addedit_save_failed, Toast.LENGTH_SHORT).show();
+        failureViewStub.inflate();
     }
 
     @Override

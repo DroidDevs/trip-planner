@@ -75,7 +75,7 @@ public class PlaceItem extends BaseMapItem implements Parcelable {
                      PlaceDetailsResponse.PlacePhoto placePhoto) {
 
         super(new LatLng(placeDetails.getGeometry().getLocation().getLatitude(),
-                placeDetails.getGeometry().getLocation().getLongitude()),
+                        placeDetails.getGeometry().getLocation().getLongitude()),
                 placeDetails.getName(),
                 0,
                 placePhoto.getFullPhotoURLReference());
@@ -120,6 +120,10 @@ public class PlaceItem extends BaseMapItem implements Parcelable {
 
     public boolean isSaved() {
         return saved;
+    }
+
+    public void setSaved(boolean saved) {
+        this.saved = saved;
     }
 
     public String getPhotoUrl() {

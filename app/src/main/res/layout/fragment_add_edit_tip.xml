@@ -10,7 +10,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:focusable="true"
-        android:focusableInTouchMode="true" />
+        android:focusableInTouchMode="true"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvAddEditTrip"
@@ -19,5 +19,11 @@
         android:clipToPadding="false"
         android:scrollbars="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    <ViewStub
+        android:id="@+id/failureViewStub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/content_failure"/>
 
 </RelativeLayout>

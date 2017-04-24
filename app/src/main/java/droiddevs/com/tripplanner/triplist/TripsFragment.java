@@ -43,6 +43,9 @@ public class TripsFragment extends Fragment implements TripsContract.View, TripA
     @BindView(R.id.rvTrips)
     RecyclerView rvTrips;
 
+    @BindView(R.id.loadingLayout)
+    View loadingLayout;
+
     public static TripsFragment newInstance() {
         TripsFragment fragment = new TripsFragment();
         return fragment;
@@ -161,6 +164,6 @@ public class TripsFragment extends Fragment implements TripsContract.View, TripA
 
     @Override
     public void setLoadingLayout(boolean isLoading) {
-        //todo Jared: show loading layout
+        loadingLayout.setVisibility(isLoading ? View.VISIBLE : View.GONE);
     }
 }

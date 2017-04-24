@@ -131,6 +131,13 @@
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
+    <style name="TextTitle.Light" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
     <style name="TextSmall.Header" parent="TextSmall">
         <item name="android:textSize">15sp</item>
         <item name="android:textStyle">bold</item>
@@ -138,6 +145,13 @@
 
     <style name="TextSmall.Accent" parent="TextSmall">
         <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="TextTitle.Regular" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
     <style name="CustomTabLayout" parent="Widget.Design.TabLayout">

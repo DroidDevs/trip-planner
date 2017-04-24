@@ -1,0 +1,134 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                tools:context="droiddevs.com.tripplanner.placedetails.PlaceDetailsFragment">
+
+    <TextView
+        android:id="@+id/tvPlaceTitle"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginTop="0dp"
+        android:background="@color/background_color_light"
+        android:textAppearance="@style/TextTitle.Light"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/margin_medium"/>
+
+    <RatingBar
+        android:id="@+id/rbPlaceRating"
+        style="@style/Base.Widget.AppCompat.RatingBar.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvPlaceTitle"
+        android:layout_marginStart="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_medium"/>
+
+    <TextView
+        android:id="@+id/tvRating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvPlaceTitle"
+        android:layout_toEndOf="@+id/rbPlaceRating"
+        android:layout_marginStart="@dimen/margin_smaller"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:textAppearance="@style/TextSmall.Accent"/>
+
+    <LinearLayout
+        android:id="@+id/actionsLayout"
+        android:layout_below="@+id/rbPlaceRating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginStart="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:weightSum="3">
+
+        <TextView
+            android:id="@+id/tvDirections"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/directions"
+            android:drawableTop="@drawable/ic_directions"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/tvCall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/call"
+            android:drawableTop="@drawable/ic_call"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/tvShare"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/share"
+            android:drawableTop="@drawable/ic_share"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="256dp"
+        android:layout_below="@id/actionsLayout"
+        android:layout_margin="@dimen/margin_medium"
+        app:cameraZoom="15"
+        app:liteMode="true"
+        app:mapType="normal"
+        />
+
+    <TextView
+        android:id="@+id/tvAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/map"
+        android:drawableStart="@drawable/ic_place_details"
+        android:layout_marginStart="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:drawablePadding="@dimen/margin_medium"/>
+
+    <TextView
+        android:id="@+id/tvPhoneNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvAddress"
+
+        android:drawableStart="@drawable/ic_call_24dp"
+        android:layout_marginStart="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:drawablePadding="@dimen/margin_medium"
+        />
+
+    <TextView
+        android:id="@+id/tvOpenNow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvPhoneNumber"
+        android:drawableLeft="@drawable/ic_access_time_color_primary_light"
+        android:layout_marginStart="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:drawablePadding="@dimen/margin_medium"/>
+
+
+    <ViewStub
+        android:id="@+id/failureViewStub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/content_failure"/>
+
+</RelativeLayout>

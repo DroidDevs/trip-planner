@@ -68,4 +68,18 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         />
 
+    <include
+        android:id="@+id/loadingLayout"
+        layout="@layout/content_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+
+    <ViewStub
+        android:id="@+id/failureViewStub"
+        android:layout_below="@+id/include_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/content_failure"/>
+
 </android.support.design.widget.CoordinatorLayout>

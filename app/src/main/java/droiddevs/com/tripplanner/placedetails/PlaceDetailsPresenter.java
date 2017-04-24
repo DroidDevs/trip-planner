@@ -7,15 +7,17 @@ import droiddevs.com.tripplanner.model.source.Repository;
 import droiddevs.com.tripplanner.model.util.PlaceConverter;
 
 /**
+ * Updated by Elmira Andreeva on 4/24/2017
  * Created by Jared12 on 4/15/17.
  */
 
 public class PlaceDetailsPresenter implements PlaceDetailsContract.Presenter {
-    private PlaceItem mCurrentPlace;
 
     private PlaceDetailsContract.View mView;
     private Repository mRepository;
+
     private SavedPlace mCurrentSavedPlace;
+    private PlaceItem mCurrentPlace;
 
     private String mDestinationId;
 
@@ -31,52 +33,73 @@ public class PlaceDetailsPresenter implements PlaceDetailsContract.Presenter {
 
     @Override
     public void start() {
+        if (mCurrentPlace == null) return;
+
         mRepository.loadPlaceDetails(mCurrentPlace.getPlaceId(), mDestinationId, new DataSource.PlaceDetailsCallback() {
             @Override
             public void onPlacesDetailsLoaded(PlaceItem place) {
                 if (place != null) {
                     mCurrentPlace = place;
                 }
-                loadSavedPlace();
+                mRepository.loadSavedPlace(mCurrentPlace.getPlaceId(), mDestinationId, new DataSource.LoadSavedPlaceCallback() {
+                    @Override
+                    public void onSavedPlaceLoaded(SavedPlace place) {
+                        if (mView == null || !mView.isActive()) return;
+
+                        if (place != null) {
+                            mCurrentSavedPlace = place;
+                            mCurrentPlace.setSaved(true);
+                        }
+                        else {
+                            mCurrentPlace.setSaved(false);
+                        }
+                        mView.showPlaceDetails(mCurrentPlace);
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        if (mView == null || !mView.isActive()) return;
+
+                        mCurrentPlace.setSaved(false);
+                        mView.showPlaceDetails(mCurrentPlace);
+                    }
+                });
             }
 
             @Override
             public void onFailure() {
-                loadSavedPlace();
-            }
-        });
-    }
+                if (mView == null || !mView.isActive()) return;
 
-    private void loadSavedPlace() {
-        mRepository.loadSavedPlace(mCurrentPlace.getPlaceId(), mDestinationId, new DataSource.LoadSavedPlaceCallback() {
-            @Override
-            public void onSavedPlaceLoaded(SavedPlace place) {
-                mCurrentSavedPlace = place;
-                if (place != null) {
-                    mView.showPlaceDetails(mCurrentPlace, true);
-                    return;
+                if (mCurrentPlace == null) {
+                    mView.onFailure();
                 }
-                mView.showPlaceDetails(mCurrentPlace, false);
-            }
-
-            @Override
-            public void onFailure() {
-                mView.showPlaceDetails(mCurrentPlace, false);
+                else {
+                    mView.showPlaceDetails(mCurrentPlace);
+                }
             }
         });
     }
 
     @Override
-    public void savePlace(PlaceItem place) {
-        SavedPlace newSavedPlace = PlaceConverter.convertToSavedPlaceFromPlaceItem(place);
-        mRepository.createSavedPlace(newSavedPlace, null);
+    public void savePlace() {
+        if (mCurrentPlace != null) {
+            SavedPlace newSavedPlace = PlaceConverter.convertToSavedPlaceFromPlaceItem(mCurrentPlace);
+            mRepository.createSavedPlace(newSavedPlace, null);
+            mCurrentSavedPlace = newSavedPlace;
+        }
     }
 
     @Override
-    public void deletePlace(PlaceItem place) {
+    public void deletePlace() {
         if (mCurrentSavedPlace != null) {
             deleteSavedPlace(mCurrentSavedPlace);
+            mCurrentSavedPlace = null;
         }
+    }
+
+    @Override
+    public PlaceItem getCurrentPlace() {
+        return mCurrentPlace;
     }
 
     private void deleteSavedPlace(SavedPlace place) {

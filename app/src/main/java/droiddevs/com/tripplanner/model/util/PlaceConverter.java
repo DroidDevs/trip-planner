@@ -1,13 +1,10 @@
 package droiddevs.com.tripplanner.model.util;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import droiddevs.com.tripplanner.model.SavedPlace;
 import droiddevs.com.tripplanner.model.googleplaces.GooglePlace;
-import droiddevs.com.tripplanner.model.googleplaces.OpeningHours;
 import droiddevs.com.tripplanner.model.googleplaces.Photo;
 import droiddevs.com.tripplanner.model.map.PlaceItem;
 import droiddevs.com.tripplanner.model.source.remote.PlaceDetailsResponse;
@@ -88,38 +85,6 @@ public class PlaceConverter {
         return list;
     }
 
-    public static SavedPlace convertToSavedPlaceFromGooglePlace(String destinationId, GooglePlace place) {
-        Log.d(LOG_TAG, "convertToSavedPlaceFromGooglePlace(), destId: " + destinationId);
-        //todo Jared check why destinationId is null sometimes
-
-        SavedPlace savedPlace = new SavedPlace();
-        savedPlace.setDestinationId(destinationId);
-
-        savedPlace.setName(place.getName());
-        savedPlace.setPlaceId(place.getPlaceId());
-        savedPlace.setLatitude(place.getGeometry().getLocation().getLat());
-        savedPlace.setLongitude(place.getGeometry().getLocation().getLng());
-        savedPlace.setRating(place.getRating());
-        savedPlace.setTypes(place.getTypes());
-
-        OpeningHours openingHours = place.getOpeningHours();
-        if (openingHours != null) {
-            savedPlace.setOpenNow(openingHours.getOpenNow());
-
-            List<Object> weekdayHours = openingHours.getWeekdayText();
-            if (weekdayHours != null) {
-                savedPlace.setOpenNowWeekdayText(weekdayHours);
-            }
-        }
-
-        List<Photo> photos = place.getPhotos();
-        if (photos != null && photos.size() > 0) {
-            Photo photo = photos.get(0);
-            savedPlace.setPhotoReference(photo.getPhotoReference());
-        }
-        return savedPlace;
-    }
-
     public static SavedPlace convertToSavedPlaceFromPlaceItem(PlaceItem placeItem) {
         SavedPlace savedPlace = new SavedPlace();
         savedPlace.setDestinationId(placeItem.getDestinationId());
@@ -136,8 +101,6 @@ public class PlaceConverter {
         if (placeItem.getPhotoReference() != null) {
             savedPlace.setPhotoReference(placeItem.getPhotoReference());
         }
-
-        //savedPlace.setTypes(place.getTypes());
         return savedPlace;
     }
 

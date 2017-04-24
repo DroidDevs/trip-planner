@@ -1,13 +1,17 @@
 package droiddevs.com.tripplanner.places;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewStub;
+import android.widget.FrameLayout;
 
 import java.util.List;
 import java.util.Set;
@@ -17,7 +21,6 @@ import butterknife.ButterKnife;
 import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.application.TripPlannerApplication;
 import droiddevs.com.tripplanner.model.map.PlaceItem;
-import droiddevs.com.tripplanner.tripdetails.TripDetailsActivity;
 
 import static droiddevs.com.tripplanner.tripdestination.TripDestinationFragment.ARGUMENT_TRIP_ID;
 import static droiddevs.com.tripplanner.tripdestination.TripDestinationFragment.ARG_DESTINATION_ID;
@@ -27,6 +30,7 @@ import static droiddevs.com.tripplanner.tripdestination.TripDestinationFragment.
 public class PlacesActivity extends AppCompatActivity implements PlacesContract.View {
 
     private PlacesContract.Presenter mPresenter;
+    private static String LOG_TAG = "PlacesActivity";
 
     private String mPlaceTypeSearchString;
     private String mDestinationId;
@@ -34,6 +38,18 @@ public class PlacesActivity extends AppCompatActivity implements PlacesContract.
 
     @BindView(R.id.include_toolbar)
     Toolbar toolbar;
+
+    @BindView(R.id.emptyViewStub)
+    ViewStub emptyViewStub;
+
+    @BindView(R.id.contentFrame)
+    FrameLayout frameLayout;
+
+    @BindView(R.id.loadingLayout)
+    View loadingLayout;
+
+    @BindView(R.id.failureViewStub)
+    ViewStub failureViewStub;
 
     private MenuItem mListMenuItem;
     private MenuItem mMapMenuItem;
@@ -114,13 +130,7 @@ public class PlacesActivity extends AppCompatActivity implements PlacesContract.
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
-
-                Intent intent = new Intent(this, TripDetailsActivity.class);
-                intent.putExtra(TripDetailsActivity.ARGUMENT_TRIP_ID, mTripId);
-                intent.putExtra(TripDetailsActivity.ARGUMENT_DESTINATION_ID, mDestinationId);
-                startActivity(intent);
-
+                NavUtils.navigateUpFromSameTask(this);
                 return true;
 
             case R.id.actionList:
@@ -141,18 +151,29 @@ public class PlacesActivity extends AppCompatActivity implements PlacesContract.
     @Override
     public void showSuggestedPlaces(List<PlaceItem> places, Set<String> savedPlaceIds) {
         hasData = places != null && places.size() > 0;
+        Log.d(LOG_TAG, "showSuggestedPlaces() hasData: " + hasData);
+
+        if (!hasData) {
+            emptyViewStub.inflate();
+        }
+        frameLayout.setVisibility(hasData ? View.VISIBLE : View.GONE);
 
         if (mCurrentFragment instanceof PlacesListFragment) {
-            ((PlacesListFragment) mCurrentFragment).setData(places);
-            ((PlacesListFragment) mCurrentFragment).setSavedPlacesData(savedPlaceIds);
+            if (hasData) {
+                ((PlacesListFragment) mCurrentFragment).setData(places);
+                ((PlacesListFragment) mCurrentFragment).setSavedPlacesData(savedPlaceIds);
+            }
             if (mListMenuItem != null) mListMenuItem.setVisible(false);
             if (mMapMenuItem != null) mMapMenuItem.setVisible(hasData);
         }
         else if (mCurrentFragment instanceof PlacesMapFragment) {
-            ((PlacesMapFragment) mCurrentFragment).setMapData(places);
+            if (hasData) {
+                ((PlacesMapFragment) mCurrentFragment).setMapData(places);
+            }
             if (mListMenuItem != null) mListMenuItem.setVisible(hasData);
             if (mMapMenuItem != null) mMapMenuItem.setVisible(false);
         }
+
     }
 
     @Override
@@ -160,6 +181,17 @@ public class PlacesActivity extends AppCompatActivity implements PlacesContract.
         if (mCurrentFragment instanceof PlacesListFragment) {
             ((PlacesListFragment) mCurrentFragment).onSavedPlaceDeleted(placeItem);
         }
+    }
+
+    @Override
+    public void onFailure() {
+        failureViewStub.inflate();
+    }
+
+    @Override
+    public void setLoadingLayout(boolean isLoading) {
+        Log.d(LOG_TAG, "setLoadingLayout() " + isLoading);
+        loadingLayout.setVisibility(isLoading ? View.VISIBLE : View.GONE);
     }
 
     @Override
