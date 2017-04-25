@@ -78,9 +78,9 @@ The following **bonus** features are implemented:
 | ... | SavedPlacesMap | map with saved places | Elmira | Functionally Complete |
 | SuggestedPlaces |  | List with suggested places: user can switch to list or map view. Suggested places are egnerated at runtime from Google Places API | Jared, Elmira | Functionally Complete |
 | ... | SuggestedPlacesList |  | Jared | Functionally Complete |
-| ... | SuggestedPlacesMap | map with saved places | Elmira | In Progress |
+| ... | SuggestedPlacesMap | map with saved places | Elmira | Functionally Complete |
 | PlaceDetails | PlaceDetails | details per place: all data we can take from Google Places | Jared, Elmira | Functionally Complete |
-| ... | PlaceDetailsMap | a map per a place | Elmira | In Progress |
+| ... | PlaceDetailsMap | a map per a place | Elmira | Functionally Complete |
 
 |  |  |  |  |  |
 
