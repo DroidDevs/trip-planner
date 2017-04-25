@@ -12,11 +12,11 @@ The following **required** functionality is completed:
     * [x] Trip will be nameable
     * [x] Trip will have a start date
     * [x] Trip can have multiple destinations, user will select them via location search from Google Map API. Destination will have geographical coordinates.
-    * [ ] Trip destinations can be reordered via drag and drop
+    * [x] Trip destinations can be reordered via drag and drop
 * [x] Trip should be editable
     * [x] Ability the change trip name/start date
     * [x] Ability to add/remove destinations
-    * [ ] Ability to change the destination(s) order (drag and drop)
+    * [x] Ability to change the destination(s) order (drag and drop)
     * [x] Ability to change the duration in days per a single destination. Zero days are allowed.
 * [x] Trips should be selectable which would then show a trip details screen
     * [x] Trip details would show all destinations, start times and durations, any other relevant info
@@ -68,19 +68,19 @@ The following **bonus** features are implemented:
 | Activity name | Fragment name | Comments | Developer | Status |
 | ------------- | ------------- | ---------- | ---------- | ----- | 
 | AddEditTrip | AddEditTrip | ability to add/edit trip | Elmira | Functionally Complete |
-| Trips | Trips | list of open trips | Jared | Functionally Complete |
+| Trips | Trips | list of open trips | Jared, Elmira | Functionally Complete |
 | FacebookLogin |  | login with facebook account | Jared | Functionally Complete |
 | TripDetails| | map + destinations tabs | Elmira | Functionally Complete |
 | ... | TripMap | a map of connected trip destinations | Elmira | Functionally Complete |
-| ... | TripDestination | only trip start/edn dates + places group names | Jared | Functionally Complete |
-| SavedPlaces |  | List with saved places: user can switch to list or map view | Elmira | Functionally Complete |
-| ... | SavedPlacesList | list | Elmira | Functionally Complete |
+| ... | TripDestination | only trip start/edn dates + places group names | Elmira | Functionally Complete |
+| SavedPlaces |  | List with saved places: user can switch to list or map view | Elmira, Jared | Functionally Complete |
+| ... | SavedPlacesList | list | Elmira, Jared | Functionally Complete |
 | ... | SavedPlacesMap | map with saved places | Elmira | Functionally Complete |
-| SuggestedPlaces |  | List with suggested places: user can switch to list or map view. Suggested places are egnerated at runtime from Google Places API | Jared | Functionally Complete |
+| SuggestedPlaces |  | List with suggested places: user can switch to list or map view. Suggested places are egnerated at runtime from Google Places API | Jared, Elmira | Functionally Complete |
 | ... | SuggestedPlacesList |  | Jared | Functionally Complete |
-| ... | SuggestedPlacesMap | map with saved places | Elmira | In Progress |
-| PlaceDetails | PlaceDetails | details per place: all data we can take from Google Places | Jared | Functionally Complete |
-| ... | PlaceDetailsMap | a map per a place | Elmira | In Progress |
+| ... | SuggestedPlacesMap | map with saved places | Elmira | Functionally Complete |
+| PlaceDetails | PlaceDetails | details per place: all data we can take from Google Places | Jared, Elmira | Functionally Complete |
+| ... | PlaceDetailsMap | a map per a place | Elmira | Functionally Complete |
 
 |  |  |  |  |  |
 
