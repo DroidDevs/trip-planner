@@ -69,10 +69,12 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
             mDrawerLayout.addDrawerListener(mDrawerToggle);
             setupDrawerHeader(nvDrawer.getHeaderView(0));
             setupDrawerContent(nvDrawer);
+            fab.setVisibility(View.VISIBLE);
         }
         else {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             setTitle(getString(R.string.past_trips));
+            fab.setVisibility(View.GONE);
         }
         // Add fragment to content frame
         TripsFragment tripsFragment = (TripsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
