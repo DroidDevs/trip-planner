@@ -9,6 +9,7 @@
 
     <string name="create_trip">Create new trip</string>
     <string name="past_trips">Past trips</string>
+    <string name="log_out">Log out</string>
 
     <string name="trip_addedit_name">Trip name</string>
     <string name="trip_addedit_start_date">Start date</string>

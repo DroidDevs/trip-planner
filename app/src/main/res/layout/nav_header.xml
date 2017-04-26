@@ -3,18 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="192dp"
     android:background="?attr/colorPrimaryDark"
-    android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:orientation="vertical"
     android:gravity="bottom">
+
+    <ImageView
+        android:id="@+id/ivUserBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.5"/>
 
     <ImageView
         android:id="@+id/ivUserImage"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_above="@+id/tvUsername"
-        android:layout_marginBottom="10dp"/>
+        android:layout_above="@+id/tvUsername" />
 
     <TextView
         android:id="@+id/tvUsername"
@@ -26,7 +30,9 @@
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:layout_above="@+id/tvUserEmail"
-        android:layout_marginBottom="2dp"/>
+        android:layout_marginBottom="2dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
 
     <TextView
         android:id="@+id/tvUserEmail"
@@ -38,6 +44,8 @@
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
 
 </RelativeLayout>

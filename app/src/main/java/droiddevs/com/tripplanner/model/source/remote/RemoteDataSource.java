@@ -212,7 +212,7 @@ public class RemoteDataSource implements DataSource {
     }
 
     @Override
-    public void loadCurrentFBUser(final LoadFbUserCallback callback) {
+    public void loadCurrentFBUser(Context context, final LoadFbUserCallback callback) {
         GraphRequest request = GraphRequest.newMeRequest(
                 AccessToken.getCurrentAccessToken(),
                 new GraphRequest.GraphJSONObjectCallback() {
@@ -227,10 +227,14 @@ public class RemoteDataSource implements DataSource {
                             try {
                                 FbUser user = gson.fromJson(response.getRawResponse(), FbUser.class);
                                 Log.d(LOG_TAG, "Loaded FB user: " + user.toString());
-                                callback.onUserLoaded(user);
+                                if (callback != null) {
+                                    callback.onUserLoaded(user);
+                                }
                             } catch (Throwable ex) {
                                 Log.e(LOG_TAG, ex.toString());
-                                callback.onFailure();
+                                if (callback != null) {
+                                    callback.onFailure();
+                                }
                             }
                         }
                     }

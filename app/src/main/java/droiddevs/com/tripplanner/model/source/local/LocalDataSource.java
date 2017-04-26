@@ -177,7 +177,7 @@ public class LocalDataSource implements DataSource {
     }
 
     @Override
-    public void loadCurrentFBUser(LoadFbUserCallback callback) {
+    public void loadCurrentFBUser(Context context, LoadFbUserCallback callback) {
         throw new UnsupportedOperationException("Operation is not supported in local data source");
     }
 
