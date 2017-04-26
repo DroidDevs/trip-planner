@@ -15,15 +15,15 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/margin_small"
-        android:layout_marginStart="@dimen/margin_small"
         android:layout_marginEnd="@dimen/margin_small"
+        android:layout_marginStart="@dimen/margin_small"
         android:alpha=".92"/>
 
     <ViewStub
         android:id="@+id/emptyViewStub"
-        android:inflatedId="@+id/emptyLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:inflatedId="@+id/emptyLayout"
         android:layout="@layout/content_empty_data"/>
 
     <ViewStub

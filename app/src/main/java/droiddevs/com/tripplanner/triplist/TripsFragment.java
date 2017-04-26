@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 
 import java.util.List;
 
@@ -45,6 +46,12 @@ public class TripsFragment extends Fragment implements TripsContract.View, TripA
 
     @BindView(R.id.loadingLayout)
     View loadingLayout;
+
+    @BindView(R.id.emptyViewStub)
+    ViewStub emptyViewStub;
+
+    @BindView(R.id.failureViewStub)
+    ViewStub failureViewStub;
 
     public static TripsFragment newInstance() {
         TripsFragment fragment = new TripsFragment();
@@ -101,7 +108,7 @@ public class TripsFragment extends Fragment implements TripsContract.View, TripA
     @Override
     public void showTrips(List<Trip> trips) {
         if (trips == null || trips.size() == 0) {
-            //todo Jared: show empty layout
+            emptyViewStub.inflate();
         }
         else {
             mAdapter.setTrips(trips);
@@ -112,6 +119,9 @@ public class TripsFragment extends Fragment implements TripsContract.View, TripA
     @Override
     public void onTripDeleted(String tripId) {
         mAdapter.deleteTrip(tripId);
+        if (mAdapter.getItemCount()==0){
+            emptyViewStub.inflate();
+        }
     }
 
     @Override
@@ -165,5 +175,10 @@ public class TripsFragment extends Fragment implements TripsContract.View, TripA
     @Override
     public void setLoadingLayout(boolean isLoading) {
         loadingLayout.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void onFailure() {
+        failureViewStub.inflate();
     }
 }

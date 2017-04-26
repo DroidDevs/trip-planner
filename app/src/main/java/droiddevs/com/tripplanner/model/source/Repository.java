@@ -69,6 +69,9 @@ public class Repository implements DataSource {
             @Override
             public void onTripListLoaded(final List<Trip> trips) {
                 Collections.sort(trips);
+                for (Trip trip: trips){
+                    trip.fetchIfNeededInBackground();
+                }
                 callback.onTripListLoaded(trips);
 
                 if (trips.size() > 0) {

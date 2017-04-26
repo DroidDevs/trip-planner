@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ import droiddevs.com.tripplanner.places.PlacesActivity;
 import droiddevs.com.tripplanner.util.ItemOffsetDecoration;
 
 public class TripDestinationFragment extends Fragment implements TripDestinationContract.View, TripDestinationAdapter.DestinationOptionClickedListener {
+    private static final String LOG_TAG = "TripDestinationFragment";
+
     public static final String ARGUMENT_TRIP_ID = "tripId";
     public static final String ARG_DESTINATION_ID = "destination_id";
     public static final String ARG_PLACE_TYPE_SEARCH_STRING = "placeTypeSearchString";
@@ -56,9 +59,10 @@ public class TripDestinationFragment extends Fragment implements TripDestination
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mDestinationId = getArguments().getString(ARG_DESTINATION_ID);
             mTripId = getArguments().getString(ARGUMENT_TRIP_ID);
+            mDestinationId = getArguments().getString(ARG_DESTINATION_ID);
         }
+        Log.d(LOG_TAG, "onCreate(), mDestinationId: " + mDestinationId);
         mPresenter = new TripDestinationPresenter(getContext(), this);
     }
 
@@ -66,6 +70,11 @@ public class TripDestinationFragment extends Fragment implements TripDestination
     public void onResume() {
         super.onResume();
         mPresenter.start();
+    }
+
+    public void setDestinationId(String destinationId) {
+        this.mDestinationId = destinationId;
+        Log.d(LOG_TAG, "setDestinationId() mDestinationId: " + mDestinationId);
     }
 
     @Override
@@ -108,6 +117,7 @@ public class TripDestinationFragment extends Fragment implements TripDestination
 
     @Override
     public void OnOptionClicked(PlaceOption option) {
+        Log.d(LOG_TAG, "OnOptionClicked() mDestinationId: " + mDestinationId);
         Intent intent = new Intent(getContext(), PlacesActivity.class);
         intent.putExtra(ARG_DESTINATION_ID, mDestinationId);
         intent.putExtra(ARG_PLACE_TYPE_SEARCH_STRING, option.getOptionType().typeSearchString());

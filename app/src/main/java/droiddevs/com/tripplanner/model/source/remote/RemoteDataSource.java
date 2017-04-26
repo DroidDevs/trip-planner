@@ -88,7 +88,7 @@ public class RemoteDataSource implements DataSource {
             @Override
             public void done(List<Trip> objects, ParseException e) {
                 if (e != null) {
-                    Log.e(LOG_TAG, e.toString());
+                    Log.e(LOG_TAG, e.toString(), e);
                     callback.onFailure();
                 }
                 else {
@@ -107,7 +107,7 @@ public class RemoteDataSource implements DataSource {
             @Override
             public void done(List<Trip> objects, ParseException e) {
                 if (e != null) {
-                    Log.e(LOG_TAG, e.toString());
+                    Log.e(LOG_TAG, e.toString(), e);
                     callback.onFailure();
                 }
                 else {
@@ -125,7 +125,7 @@ public class RemoteDataSource implements DataSource {
             @Override
             public void done(final Trip trip, ParseException e) {
                 if (e != null) {
-                    Log.e(LOG_TAG, e.toString());
+                    Log.e(LOG_TAG, e.toString(), e);
                     callback.onFailure();
                 }
                 else {
@@ -145,7 +145,7 @@ public class RemoteDataSource implements DataSource {
             @Override
             public void done(List<Destination> objects, ParseException e) {
                 if (e != null) {
-                    Log.e(LOG_TAG, e.toString());
+                    Log.e(LOG_TAG, e.toString(), e);
                     callback.onFailure();
                 }
                 else {
@@ -160,6 +160,7 @@ public class RemoteDataSource implements DataSource {
 
     @Override
     public void loadDestination(String destinationId, final LoadDestinationCallback callback) {
+        Log.d(LOG_TAG, "loadDestination() destinationId: " + destinationId);
         if (destinationId == null) {
             callback.onFailure();
             return;
@@ -171,7 +172,7 @@ public class RemoteDataSource implements DataSource {
             @Override
             public void done(Destination object, ParseException e) {
                 if (e != null) {
-                    Log.e(LOG_TAG, e.toString());
+                    Log.e(LOG_TAG, e.toString(), e);
                     callback.onFailure();
                 }
                 else {
@@ -188,7 +189,7 @@ public class RemoteDataSource implements DataSource {
             @Override
             public void done(ParseException e) {
                 if (e != null) {
-                    Log.e(LOG_TAG, e.toString());
+                    Log.e(LOG_TAG, e.toString(), e);
                     callback.onFailed();
                 }
                 else {
@@ -202,7 +203,7 @@ public class RemoteDataSource implements DataSource {
     @Override
     public void updateTrip(Trip trip) {
         if (trip == null) return;
-        trip.saveEventually();
+        trip.saveInBackground();
     }
 
     @Override
@@ -223,7 +224,8 @@ public class RemoteDataSource implements DataSource {
                         if (response.getError() != null) {
                             Log.e(LOG_TAG, response.getError().getErrorMessage());
                             callback.onFailure();
-                        } else {
+                        }
+                        else {
                             try {
                                 FbUser user = gson.fromJson(response.getRawResponse(), FbUser.class);
                                 Log.d(LOG_TAG, "Loaded FB user: " + user.toString());
@@ -266,7 +268,7 @@ public class RemoteDataSource implements DataSource {
 
             @Override
             public void onFailure(Call<PlaceDetailsResponse> call, Throwable t) {
-                Log.e(LOG_TAG, t.toString());
+                Log.e(LOG_TAG, t.toString(), t);
                 callback.onFailure();
             }
         });
@@ -285,7 +287,7 @@ public class RemoteDataSource implements DataSource {
                 return null;
             }
         } catch (IOException e) {
-            Log.e(LOG_TAG, e.getLocalizedMessage());
+            Log.e(LOG_TAG, e.getLocalizedMessage(), e);
             return null;
         }
     }
@@ -344,7 +346,7 @@ public class RemoteDataSource implements DataSource {
 
             @Override
             public void onFailure(Call<List<GooglePlace>> call, Throwable t) {
-                Log.e(LOG_TAG, t.getLocalizedMessage());
+                Log.e(LOG_TAG, t.getLocalizedMessage(), t);
                 callback.onFailure();
             }
         });
@@ -362,11 +364,13 @@ public class RemoteDataSource implements DataSource {
                     PlaceDetailsResponse details = response.body();
                     if (details != null) {
                         callback.onPlacesDetailsLoaded(PlaceConverter.convertToPlaceItemFromPlaceDetailsResponse(destinationId, details));
-                    } else {
+                    }
+                    else {
                         callback.onFailure();
                     }
-                } else {
-                   callback.onFailure();
+                }
+                else {
+                    callback.onFailure();
                 }
             }
 
@@ -387,7 +391,7 @@ public class RemoteDataSource implements DataSource {
             @Override
             public void done(List<SavedPlace> objects, ParseException e) {
                 if (e != null) {
-                    Log.e(LOG_TAG, e.toString());
+                    Log.e(LOG_TAG, e.toString(), e);
                     callback.onFailure();
                 }
                 else {
@@ -407,7 +411,7 @@ public class RemoteDataSource implements DataSource {
             @Override
             public void done(SavedPlace object, ParseException e) {
                 if (e != null) {
-                    Log.e(LOG_TAG, e.toString());
+                    Log.e(LOG_TAG, e.toString(), e);
                     callback.onFailure();
                 }
                 else {

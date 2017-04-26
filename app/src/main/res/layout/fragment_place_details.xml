@@ -17,7 +17,8 @@
         android:background="@color/background_color_light"
         android:textAppearance="@style/TextTitle.Light"
         android:gravity="center_vertical"
-        android:paddingStart="@dimen/margin_medium"/>
+        android:paddingStart="@dimen/margin_medium"
+        android:paddingEnd="@dimen/margin_medium"/>
 
     <RatingBar
         android:id="@+id/rbPlaceRating"

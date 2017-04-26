@@ -75,7 +75,6 @@ public class PlacesListFragment extends Fragment implements
         super.onViewCreated(view, savedInstanceState);
 
         mAdapter = new PlacesAdapter();
-        //mAdapter.setPlacesSavedIdSet();
         mAdapter.setPlaceClickedListener(this);
         mAdapter.setPlaceFavoriteCheckedListener(this);
 
