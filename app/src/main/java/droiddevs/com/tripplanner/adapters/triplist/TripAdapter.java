@@ -6,12 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.model.Trip;
@@ -52,19 +48,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripViewHolder> implements
     @Override
     public void onBindViewHolder(TripViewHolder holder, int position) {
         final Trip trip = mTrips.get(position);
-        holder.tvTripTitle.setText(trip.getName());
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM d", Locale.US);
-        String dateString = simpleDateFormat.format(trip.getStartDate()) + " - " + simpleDateFormat.format(trip.getEndDate());
-        holder.tvTripDate.setText(dateString);
-
-        String photoUrl = trip.getPhotoUrl();
-        if (photoUrl != null) {
-            Glide.with(getContext())
-                    .load(photoUrl)
-                    .centerCrop()
-                    .into(holder.ivTripImage);
-        }
+        holder.bind(trip);
 
         holder.ibTripMenu.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -23,6 +23,8 @@ import droiddevs.com.tripplanner.places.PlacesActivity;
 import droiddevs.com.tripplanner.util.ItemOffsetDecoration;
 
 public class TripDestinationFragment extends Fragment implements TripDestinationContract.View, TripDestinationAdapter.DestinationOptionClickedListener {
+    private static final String LOG_TAG = "TripDestinationFragment";
+
     public static final String ARGUMENT_TRIP_ID = "tripId";
     public static final String ARG_DESTINATION_ID = "destination_id";
     public static final String ARG_PLACE_TYPE_SEARCH_STRING = "placeTypeSearchString";
@@ -56,9 +58,10 @@ public class TripDestinationFragment extends Fragment implements TripDestination
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mDestinationId = getArguments().getString(ARG_DESTINATION_ID);
             mTripId = getArguments().getString(ARGUMENT_TRIP_ID);
+            mDestinationId = getArguments().getString(ARG_DESTINATION_ID);
         }
+
         mPresenter = new TripDestinationPresenter(getContext(), this);
     }
 
@@ -67,6 +70,11 @@ public class TripDestinationFragment extends Fragment implements TripDestination
         super.onResume();
         mPresenter.start();
     }
+
+    /*public void setDestinationId(String mDestinationId) {
+        this.mDestinationId = mDestinationId;
+        Log.d(LOG_TAG, "setDestinationId() mDestinationId: " + mDestinationId);
+    }*/
 
     @Override
     public void onDestroyView() {

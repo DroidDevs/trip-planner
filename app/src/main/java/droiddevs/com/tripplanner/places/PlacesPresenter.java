@@ -63,12 +63,8 @@ public class PlacesPresenter implements PlacesContract.Presenter {
     }
 
     @Override
-    public void loadSuggestedPlaces(String placeTypeSearchString, String destinationId) {
+    public void loadSuggestedPlaces(final String placeTypeSearchString, String destinationId) {
         // Load destination before places so we can pass destination as location
-        loadDestinationFromId(destinationId, placeTypeSearchString);
-    }
-
-    private void loadDestinationFromId(String destinationId, final String placeTypeSearchString) {
         mRepository.loadDestination(destinationId, new DataSource.LoadDestinationCallback() {
             @Override
             public void onDestinationLoaded(Destination destination) {
