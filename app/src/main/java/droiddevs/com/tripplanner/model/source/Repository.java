@@ -1,10 +1,13 @@
 package droiddevs.com.tripplanner.model.source;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Process;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.parse.DeleteCallback;
@@ -263,16 +266,31 @@ public class Repository implements DataSource {
     }
 
     @Override
-    public void loadCurrentFBUser(LoadFbUserCallback callback) {
-        remoteDataSource.loadCurrentFBUser(new LoadFbUserCallback() {
+    public void loadCurrentFBUser(final Context context, final LoadFbUserCallback callback) {
+        remoteDataSource.loadCurrentFBUser(context, new LoadFbUserCallback() {
             @Override
             public void onUserLoaded(FbUser user) {
                 mCurrentFbUser = user;
+
+                if (mCurrentFbUser.getCover() != null
+                        && mCurrentFbUser.getCover().getSource() != null) {
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+                    SharedPreferences.Editor prefsEdit = prefs.edit();
+                    prefsEdit.putString("cover_url", mCurrentFbUser.getCover().getSource());
+                    prefsEdit.apply();
+                }
+
+                if (callback != null) {
+                    callback.onUserLoaded(user);
+                }
             }
 
             @Override
             public void onFailure() {
-                // do nothing
+
+                if (callback != null) {
+                    callback.onFailure();
+                }
             }
         });
     }

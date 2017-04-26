@@ -1,7 +1,9 @@
 package droiddevs.com.tripplanner.triplist;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -156,7 +158,16 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
             case R.id.nav_view_past_trips:
                 showPastTrips();
                 break;
+            case R.id.nav_log_out:
+                logOut();
+                break;
         }
+    }
+
+    public void logOut() {
+        ParseUser.logOut();
+        mDrawerLayout.closeDrawer(Gravity.LEFT);
+        super.authenticate();
     }
 
     private void showAddEditTrip(@Nullable String tripId) {
@@ -178,10 +189,12 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
     private void setupDrawerHeader(View headerLayout) {
         ParseUser currentParseUser = ParseUser.getCurrentUser();
         Profile currentUser = Profile.getCurrentProfile();
+
         if (currentUser != null) {
             TextView tvUsername = (TextView) headerLayout.findViewById(R.id.tvUsername);
             TextView tvUserEmail = (TextView) headerLayout.findViewById(R.id.tvUserEmail);
             ImageView ivUserImage = (ImageView) headerLayout.findViewById(R.id.ivUserImage);
+            ImageView ivUserBackground = (ImageView) headerLayout.findViewById(R.id.ivUserBackground);
 
             tvUsername.setText(currentUser.getName());
 
@@ -190,6 +203,19 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
                 if (email != null && email.length() > 0) {
                     tvUserEmail.setText(email);
                 }
+            }
+
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            if (prefs.contains("cover_url")) {
+                String cover = prefs.getString("cover_url", "");
+                if (cover.length() > 0) {
+                    Glide.with(TripsActivity.this)
+                            .load(cover)
+                            .into(ivUserBackground);
+                    ivUserBackground.setVisibility(View.VISIBLE);
+                }
+            } else {
+                ivUserBackground.setVisibility(View.GONE);
             }
 
             Glide.with(TripsActivity.this)

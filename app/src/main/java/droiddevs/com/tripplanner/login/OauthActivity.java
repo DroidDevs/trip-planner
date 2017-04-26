@@ -19,7 +19,10 @@ public class OauthActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        authenticate();
+    }
 
+    public void authenticate() {
         if (AccessToken.getCurrentAccessToken() == null) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
@@ -28,7 +31,7 @@ public class OauthActivity extends AppCompatActivity {
         else {
             Repository repository = TripPlannerApplication.getRepository();
             if (!repository.isCurrentFbUserDefined()) {
-                repository.loadCurrentFBUser(null);
+                repository.loadCurrentFBUser(this, null);
             }
         }
     }

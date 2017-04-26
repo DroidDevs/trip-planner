@@ -6,6 +6,11 @@
             android:title="@string/create_trip" />
         <item
             android:id="@+id/nav_view_past_trips"
+            android:icon="@drawable/ic_access_time_black_24dp"
             android:title="@string/past_trips" />
+        <item
+            android:id="@+id/nav_log_out"
+            android:icon="@drawable/ic_block_black_24dp"
+            android:title="@string/log_out" />
     </group>
 </menu>

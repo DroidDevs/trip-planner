@@ -1,7 +1,9 @@
 package droiddevs.com.tripplanner.login;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -30,11 +32,16 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.btContinueWithFB)
     Button btContinueWithFB;
 
+    SharedPreferences.Editor prefEdit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        prefEdit = pref.edit();
 
         // Login OnClick
         btContinueWithFB.setOnClickListener(new View.OnClickListener() {
@@ -56,8 +63,9 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     if (user.isNew()) { // New user
                         saveUserInfoFromFacebook(); // Save email to parse
+                    } else {
+                        showTrips();
                     }
-                    showTrips();
                 }
             }
         });
@@ -65,20 +73,27 @@ public class LoginActivity extends AppCompatActivity {
 
     private void saveUserInfoFromFacebook() {
         Repository repo = TripPlannerApplication.getRepository();
-        repo.loadCurrentFBUser(new DataSource.LoadFbUserCallback() {
+        repo.loadCurrentFBUser(this, new DataSource.LoadFbUserCallback() {
             @Override
-            public void onUserLoaded(FbUser user) throws ParseException {
+            public void onUserLoaded(FbUser user) {
                 if (user.getEmail() != null) {
                     ParseUser parseUser = ParseUser.getCurrentUser();
                     if (parseUser != null) {
                         parseUser.setEmail(user.getEmail());
-                        parseUser.save();
+
+                        try {
+                            parseUser.save();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
+                showTrips();
             }
 
             @Override
             public void onFailure() {
+                showTrips();
             }
         });
     }
