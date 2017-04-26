@@ -1,20 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#000000"
     tools:context="droiddevs.com.tripplanner.login.LoginActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.4"
+        android:scaleType="centerCrop"
+        android:src="@drawable/night_eiffel_tower_paris_france" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_marginTop="125dp">
+
+        <ImageView
+            android:id="@+id/ivPtImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_map_place_color_accent_big" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="sans-serif-thin"
+            android:textSize="45dp"
+            android:textColor="@android:color/white"
+            android:text="Trip Planner"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/ivPtImage"/>
+    </LinearLayout>
 
     <Button
         android:id="@+id/btContinueWithFB"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="20dp"
-        android:background="@color/com_facebook_blue"
+        android:layout_height="55dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="75dp"
+        android:background="@drawable/background_facebook_login"
         android:text="Continue with Facebook"
         android:textColor="@android:color/white"
+        android:fontFamily="sans-serif"
         android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

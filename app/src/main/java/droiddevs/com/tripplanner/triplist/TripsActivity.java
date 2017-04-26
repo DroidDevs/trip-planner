@@ -25,6 +25,7 @@ import droiddevs.com.tripplanner.R;
 import droiddevs.com.tripplanner.addedittrip.AddEditTripActivity;
 import droiddevs.com.tripplanner.application.TripPlannerApplication;
 import droiddevs.com.tripplanner.login.OauthActivity;
+import droiddevs.com.tripplanner.util.CropCircleTransform;
 
 import static droiddevs.com.tripplanner.addedittrip.AddEditTripFragment.ARGUMENT_TRIP_ID;
 
@@ -193,6 +194,7 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
 
             Glide.with(TripsActivity.this)
                     .load(currentUser.getProfilePictureUri(400, 0))
+                    .bitmapTransform(new CropCircleTransform(this))
                     .into(ivUserImage);
         }
     }
