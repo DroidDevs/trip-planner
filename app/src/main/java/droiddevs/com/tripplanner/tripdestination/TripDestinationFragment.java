@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,7 +62,7 @@ public class TripDestinationFragment extends Fragment implements TripDestination
             mTripId = getArguments().getString(ARGUMENT_TRIP_ID);
             mDestinationId = getArguments().getString(ARG_DESTINATION_ID);
         }
-
+        Log.d(LOG_TAG, "onCreate(), mDestinationId: " + mDestinationId);
         mPresenter = new TripDestinationPresenter(getContext(), this);
     }
 
@@ -71,10 +72,10 @@ public class TripDestinationFragment extends Fragment implements TripDestination
         mPresenter.start();
     }
 
-    /*public void setDestinationId(String mDestinationId) {
-        this.mDestinationId = mDestinationId;
+    public void setDestinationId(String destinationId) {
+        this.mDestinationId = destinationId;
         Log.d(LOG_TAG, "setDestinationId() mDestinationId: " + mDestinationId);
-    }*/
+    }
 
     @Override
     public void onDestroyView() {
@@ -116,6 +117,7 @@ public class TripDestinationFragment extends Fragment implements TripDestination
 
     @Override
     public void OnOptionClicked(PlaceOption option) {
+        Log.d(LOG_TAG, "OnOptionClicked() mDestinationId: " + mDestinationId);
         Intent intent = new Intent(getContext(), PlacesActivity.class);
         intent.putExtra(ARG_DESTINATION_ID, mDestinationId);
         intent.putExtra(ARG_PLACE_TYPE_SEARCH_STRING, option.getOptionType().typeSearchString());

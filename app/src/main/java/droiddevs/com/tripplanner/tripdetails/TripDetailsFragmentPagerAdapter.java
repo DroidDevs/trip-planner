@@ -2,15 +2,15 @@ package droiddevs.com.tripplanner.tripdetails;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
 import android.util.Log;
-import android.view.ViewGroup;
 
 import java.lang.ref.WeakReference;
 
@@ -21,15 +21,14 @@ import droiddevs.com.tripplanner.tripdestination.TripDestinationFragment;
 import droiddevs.com.tripplanner.tripmap.TripMapFragment;
 
 /**
- * Created by elmira on 4/13/17.
+ * Created by Elmira Andreeva on 4/13/17.
  */
 
-public class TripDetailsFragmentPagerAdapter extends FragmentPagerAdapter {
+public class TripDetailsFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     private static final String LOG_TAG = "TripDetailsPagerAdapter";
     private WeakReference<Context> context;
 
-    //private SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
     private Trip mTrip;
 
     public TripDetailsFragmentPagerAdapter(FragmentManager fm, Context context) {
@@ -39,35 +38,27 @@ public class TripDetailsFragmentPagerAdapter extends FragmentPagerAdapter {
 
     public void setTrip(Trip trip) {
         this.mTrip = trip;
-        notifyDataSetChanged();
 
-        /*if (mTrip.getDestinations() != null) {
+        Log.d(LOG_TAG, "setTrip()");
+
+        if (mTrip.getDestinations() != null) {
             for (int i = 0; i < mTrip.getDestinations().size(); i++) {
-                TripDestinationFragment fragment = (TripDestinationFragment) getRegisteredFragment(i + 1);
+                TripDestinationFragment fragment = (TripDestinationFragment) getItem(i + 1);
+                Log.d(LOG_TAG, "position "+i+", fragment: "+fragment);
                 if (fragment != null) {
                     fragment.setDestinationId(mTrip.getDestinations().get(i).getDestinationId());
                 }
             }
-        }*/
+        }
+
+        notifyDataSetChanged();
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        Fragment fragment = (Fragment) super.instantiateItem(container, position);
-        //registeredFragments.put(position, fragment);
-        return fragment;
+    public Parcelable saveState()
+    {
+        return null;
     }
-
-    @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-        //registeredFragments.remove(position);
-        super.destroyItem(container, position, object);
-    }
-
-    // Returns the fragment for the position (if instantiated)
-    /*public Fragment getRegisteredFragment(int position) {
-        return registeredFragments.get(position);
-    }*/
 
     @Override
     public Fragment getItem(int position) {
@@ -76,7 +67,7 @@ public class TripDetailsFragmentPagerAdapter extends FragmentPagerAdapter {
             return TripMapFragment.newInstance(mTrip.getTripId());
         }
         else {
-            Log.d(LOG_TAG, "destinationId: "+mTrip.getDestinations().get(position - 1).getDestinationId());
+            Log.d(LOG_TAG, "destinationId: " + mTrip.getDestinations().get(position - 1).getDestinationId());
             return TripDestinationFragment.newInstance(mTrip.getDestinations().get(position - 1).getDestinationId(), mTrip.getTripId());
         }
     }
@@ -93,11 +84,6 @@ public class TripDetailsFragmentPagerAdapter extends FragmentPagerAdapter {
             return sb;
         }
         Destination destination = mTrip.getDestinations().get(position - 1);
-        /*TripDestinationFragment fragment = (TripDestinationFragment) getRegisteredFragment(position);
-        Log.d(LOG_TAG, "fragment: " + fragment);
-        if (fragment != null) {
-            fragment.setDestinationId(destination.getDestinationId());
-        }*/
         return destination.getName();
     }
 
