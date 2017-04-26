@@ -3,6 +3,7 @@ package droiddevs.com.tripplanner.triplist;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -32,12 +33,17 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
     public static final String ARG_PAST_EVENTS = "past_events";
     private static final String LOG_DATA = "TripsActivity";
 
-    @BindView(R.id.include_toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
+
     @BindView(R.id.nvView)
     NavigationView nvDrawer;
+
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
+
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
 
     TripsPresenter mTripsPresenter;
     ActionBarDrawerToggle mDrawerToggle;
@@ -52,39 +58,33 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
 
         // Setup toolbar
         setSupportActionBar(toolbar);
+        setTitle(getString(R.string.trips_title));
+        setupFab();
 
         boolean pastEvents = getIntent().getBooleanExtra(ARG_PAST_EVENTS, false);
         if (!pastEvents) {
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-
             mDrawerToggle = setupDrawerToggle();
             mDrawerLayout.addDrawerListener(mDrawerToggle);
             setupDrawerHeader(nvDrawer.getHeaderView(0));
             setupDrawerContent(nvDrawer);
-
-            // Change toolbar title
-            TextView tvTitle = (TextView) ButterKnife.findById(toolbar, R.id.toolbar_title);
-            tvTitle.setText("Trips");
-            //setTitle("Trips");
         }
         else {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            setTitle("Past Trips");
+            setTitle(getString(R.string.past_trips));
         }
-
         // Add fragment to content frame
         TripsFragment tripsFragment = (TripsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
         if (tripsFragment == null) {
             tripsFragment = TripsFragment.newInstance();
-            tripsFragment.setTripFragmentCallbackListener(this);
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.contentFrame, tripsFragment)
-                    .commit();
         }
-        else {
-            tripsFragment.setTripFragmentCallbackListener(this);
-        }
+
+        tripsFragment.setTripFragmentCallbackListener(this);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.contentFrame, tripsFragment)
+                .commit();
+
+
         // Create the presenter
         mTripsPresenter = new TripsPresenter(TripPlannerApplication.getRepository(), tripsFragment, pastEvents);
     }
@@ -203,5 +203,15 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
         Intent intent = new Intent(this, TripsActivity.class);
         intent.putExtra(ARG_PAST_EVENTS, true);
         startActivity(intent);
+        mDrawerLayout.closeDrawer(Gravity.LEFT);
+    }
+
+    private void setupFab() {
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAddEditTrip(null);
+            }
+        });
     }
 }

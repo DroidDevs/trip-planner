@@ -17,10 +17,10 @@
         <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
             android:fitsSystemWindows="true"
-            app:titleEnabled="false"
-            app:contentScrim="@color/colorPrimaryLight">
+            app:contentScrim="@color/colorPrimaryLight"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:titleEnabled="false">
 
             <ImageView
                 android:id="@+id/ivToolbarImage"

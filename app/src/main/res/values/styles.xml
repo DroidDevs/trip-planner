@@ -1,11 +1,7 @@
 <resources>
 
-    <!-- Application theme. -->
-    <style name="AppTheme" parent="Base.AppTheme">
-    </style>
-
     <!-- Base application theme. -->
-    <style name="Base.AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -23,6 +19,10 @@
         <item name="android:popupMenuStyle">@style/AppTheme.PopupMenu</item>
         <item name="android:textAppearanceSmallPopupMenu">@style/AppTheme.PopupMenuTextSmall</item>
         <item name="android:textAppearanceLargePopupMenu">@style/AppTheme.PopupMenuTextLarge</item>
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme.NoStatusBar" parent="AppTheme">
     </style>
 
     <style name="AppTheme.PopupMenu" parent="@android:style/Widget.PopupMenu">
@@ -124,6 +124,10 @@
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
+    <style name="TextRegular.Header" parent="TextRegular">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="TextSmall" parent="TextAppearance.AppCompat.Medium">
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">normal</item>
@@ -161,7 +165,7 @@
         <item name="tabIndicatorHeight">3dp</item>
         <item name="tabPaddingStart">12dp</item>
         <item name="tabPaddingEnd">12dp</item>
-        <item name="tabBackground">@color/background_color</item>
+        <item name="tabBackground">@color/colorPrimaryLight</item>
         <item name="tabTextAppearance">@style/CustomTabTextAppearance</item>
         <item name="tabSelectedTextColor">@android:color/white</item>
     </style>
@@ -188,6 +192,30 @@
 
     <style name="ToolbarText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">21sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:typeface">serif</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <!-- android:textColorPrimary is the color of the title text in the Toolbar  -->
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:titleTextColor">@android:color/white</item>
+        <item name="android:textColorHint">@color/colorControlHighlight</item>
+        <!-- actionMenuTextColor is the color of the text of action (menu) items  -->
+        <item name="actionMenuTextColor">@color/colorControlHighlight</item>
+        <!-- Tints the input fields like checkboxes and text fields -->
+        <item name="colorAccent">@color/colorAccent</item>
+        <!-- Applies to views in their normal state. -->
+        <item name="colorControlNormal">@android:color/white</item>
+        <!-- Applies to views in their activated state (i.e checked or switches) -->
+        <item name="colorControlActivated">@color/colorControlActivated</item>
+        <!-- Applied to framework control highlights (i.e ripples or list selectors) -->
+        <item name="colorControlHighlight">@color/colorControlHighlight</item>
     </style>
 
 </resources>

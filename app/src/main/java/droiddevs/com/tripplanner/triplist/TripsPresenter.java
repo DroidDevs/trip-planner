@@ -70,7 +70,7 @@ public class TripsPresenter implements TripsContract.Presenter {
             @Override
             public void onFailure() {
                 mTripsView.setLoadingLayout(false);
-                // TODO: SHOW FAILURE TO LOAD TRIPS
+                mTripsView.onFailure();
             }
         });
     }
@@ -86,7 +86,7 @@ public class TripsPresenter implements TripsContract.Presenter {
 
             @Override
             public void onFailure() {
-                // TODO: SHOW FAILURE TO LOAD TRIPS
+                mTripsView.onFailure();
             }
         });
     }

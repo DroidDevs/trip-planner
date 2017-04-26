@@ -36,7 +36,7 @@ public class PlacesActivity extends AppCompatActivity implements PlacesContract.
     private String mDestinationId;
     private String mTripId;
 
-    @BindView(R.id.include_toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
 
     @BindView(R.id.emptyViewStub)
@@ -66,12 +66,15 @@ public class PlacesActivity extends AppCompatActivity implements PlacesContract.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(LOG_TAG, "onCreate()");
+
         setContentView(R.layout.activity_places);
         ButterKnife.bind(this);
 
         this.mPlaceTypeSearchString = getIntent().getStringExtra(ARG_PLACE_TYPE_SEARCH_STRING);
         this.mDestinationId = getIntent().getStringExtra(ARG_DESTINATION_ID);
         this.mTripId = getIntent().getStringExtra(ARGUMENT_TRIP_ID);
+        Log.d(LOG_TAG, "mDestinationId: " + mDestinationId + ", mTripId: " + mTripId);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -108,10 +111,12 @@ public class PlacesActivity extends AppCompatActivity implements PlacesContract.
 
     private void loadMapFragment() {
         PlacesMapFragment mapFragment = (PlacesMapFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG_MAP);
+
         if (mapFragment == null) {
             mapFragment = PlacesMapFragment.newInstance();
         }
         mapFragment.setPresenter(mPresenter);
+
         getSupportFragmentManager().beginTransaction().replace(R.id.contentFrame, mapFragment, FRAGMENT_TAG_MAP).commit();
         mCurrentFragment = mapFragment;
     }

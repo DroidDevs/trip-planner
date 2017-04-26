@@ -72,7 +72,6 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(LOG_TAG, "onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_details);
         ButterKnife.bind(this);
@@ -85,7 +84,7 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
         if (mDestinationId == null && savedInstanceState != null) {
             mDestinationId = savedInstanceState.getString(ARGUMENT_DESTINATION_ID);
         }
-        Log.d(LOG_TAG, "mTripId: " + mTripId + ", mDestinationId: " + mDestinationId);
+        Log.d(LOG_TAG, "onCreate() mTripId: " + mTripId + ", mDestinationId: " + mDestinationId);
         if (mTripId == null) {
             finish();
         }
@@ -168,20 +167,27 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
         mTrip = trip;
         mPagerAdapter.setTrip(trip);
 
+        mTabLayout.setVisibility(View.VISIBLE);
         toolbarImage.setVisibility(View.GONE);
 
         setupToolbarTitle();
         allowEachTabWithEqualWidth();
 
+        boolean foundDestination = false;
         if (mDestinationId != null && mTrip.getDestinations() != null) {
             for (int i = 0; i < mTrip.getDestinations().size(); i++) {
                 if (mDestinationId.equals(mTrip.getDestinations().get(i).getDestinationId())) {
+                    foundDestination = true;
                     loadImagePerTabPosition(i + 1);
                     mViewPager.setCurrentItem(i + 1);
                     appBarLayout.setExpanded(false, true);
                     break;
                 }
             }
+        }
+        if (!foundDestination){
+            appBarLayout.setExpanded(false);
+            mDestinationId = null;
         }
     }
 
@@ -221,6 +227,8 @@ public class TripDetailsActivity extends AppCompatActivity implements TripDetail
     }
 
     private void setupTabs() {
+        mTabLayout.setVisibility(View.GONE);
+
         mPagerAdapter = new TripDetailsFragmentPagerAdapter(getSupportFragmentManager(), getBaseContext());
         mViewPager.setAdapter(mPagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
