@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="192dp"
+    android:layout_height="225dp"
     android:background="?attr/colorPrimaryDark"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:orientation="vertical"
@@ -11,14 +11,14 @@
         android:id="@+id/ivUserBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:alpha="0.5"/>
+        android:alpha="0.5"
+        android:scaleType="centerCrop" />
 
     <ImageView
         android:id="@+id/ivUserImage"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@+id/tvUsername" />
+        android:layout_centerInParent="true" />
 
     <TextView
         android:id="@+id/tvUsername"
