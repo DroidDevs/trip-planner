@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import com.facebook.AccessToken;
 
 import droiddevs.com.tripplanner.application.TripPlannerApplication;
+import droiddevs.com.tripplanner.model.fb.FbUser;
+import droiddevs.com.tripplanner.model.source.DataSource;
 import droiddevs.com.tripplanner.model.source.Repository;
 
 /**
@@ -31,8 +33,20 @@ public class OauthActivity extends AppCompatActivity {
         else {
             Repository repository = TripPlannerApplication.getRepository();
             if (!repository.isCurrentFbUserDefined()) {
-                repository.loadCurrentFBUser(this, null);
+                repository.loadCurrentFBUser(this, new DataSource.LoadFbUserCallback() {
+                    @Override
+                    public void onUserLoaded(FbUser user) {
+                        facebookProfileLoaded();
+                    }
+
+                    @Override
+                    public void onFailure() {}
+                });
             }
         }
+    }
+
+    public void facebookProfileLoaded() {
+        // Reload Drawer In Parent
     }
 }

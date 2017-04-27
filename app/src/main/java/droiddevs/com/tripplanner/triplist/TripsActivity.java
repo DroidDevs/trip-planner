@@ -242,4 +242,12 @@ public class TripsActivity extends OauthActivity implements TripsFragment.TripFr
             }
         });
     }
+
+    @Override
+    public void facebookProfileLoaded() {
+        super.facebookProfileLoaded();
+        if (nvDrawer != null) {
+            setupDrawerHeader(nvDrawer.getHeaderView(0));
+        }
+    }
 }
